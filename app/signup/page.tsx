@@ -4,36 +4,9 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { signUpUser } from "@/lib/signup";
+import Image from "next/image";
 
-export default function SignUp({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) 
-{
-  const logIn = () => {
-    return redirect("/login");
-  }
-  const signIn = async (formData: FormData) => {
-    "use server";
-
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
-    }
-
-
-    return redirect("/protected");
-  };
-
+export default function SignUp({ searchParams }: { searchParams: { message: string } }) {
   const signUp = async (formData: FormData) => {
     "use server";
 
@@ -51,33 +24,50 @@ export default function SignUp({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      const path = "/signup?message=" + error.message;
+      return redirect(path);
     }
     console.log(data?.user?.id);
-  
-    await signUpUser(email, data?.user?.id as string);
 
+    await signUpUser(email, data?.user?.id as string, formData.get("phone") as string, formData.get("address") as string);
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect("/login?message=Log in to continue");
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-        <label className="text-md" htmlFor="email">Email</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-6" name="email" placeholder="you@example.com" required/>
-        
-        <label className="text-md" htmlFor="password">Password</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-6" type="password" name="password" placeholder="••••••••" required/>
-        
-        <label className="text-md" htmlFor="email">Email</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-6" name="email" placeholder="you@example.com" required/>
-        
-        <SubmitButton formAction={signUp} className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2" pendingText="Signing Up...">Sign Up </SubmitButton>
-        <p>Already have an account?{" "}<Link href="/login" className="">Log in</Link></p>
-        {searchParams?.message && ( 
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">{searchParams.message}</p>
-        )}
+    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
+      <Image src="/images/logo-rit.png" alt="Logo Rit" width={64} height={64} className="self-center pb-5"></Image>
+      <h1 className="self-center font-bold text-xl">Registreren</h1>
+      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background">
+        <label className="text-md" htmlFor="email">
+          Email
+        </label>
+        <input className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="email" placeholder="you@example.com" required />
+
+        <label className="text-md" htmlFor="password">
+          Wachtwoord
+        </label>
+        <input className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" type="password" name="password" placeholder="••••••••" required />
+
+        <label className="text-md" htmlFor="phone">
+          Telefoon
+        </label>
+        <input className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="phone" placeholder="+32..." required />
+
+        <label className="text-md" htmlFor="address">
+          Adres
+        </label>
+        <input className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="address" placeholder="Straatnaam 123" required />
+        <SubmitButton formAction={signUp} className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500" pendingText="Signing Up...">
+          Registreren
+        </SubmitButton>
+        <p className="px-4 py-2 text-background mb-2 self-center">
+          Heb je al een account?{" "}
+          <Link href="/login" className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline">
+            Log in
+          </Link>
+        </p>
+        {searchParams?.message && <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">{searchParams.message}</p>}
       </form>
     </div>
   );

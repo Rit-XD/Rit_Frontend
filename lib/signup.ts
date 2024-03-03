@@ -1,12 +1,13 @@
-export async function signUpUser(email: string, uid: string) {
+export async function signUpUser(email: string, uid: string,  phone: string, address: string) {
     const params = { 
         email: email,
-        name: uid,
+        name: "test",
+        supaBaseId: uid,
+        address: address,
+        phone: phone,
         "password": "test",
         "passwordCheck": "test",
-        "address": "test 1",
-        "phone": "0412345678",
-        "cars": []
+        cars: []
      };
   const res = await fetch("http://127.0.0.1:8000/api/carecenter/create", { 
     method: "POST",

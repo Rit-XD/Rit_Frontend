@@ -4,6 +4,9 @@ import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
+import { getUser } from "@/lib/getuser";
+import { RootState, useAppSelector } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -18,6 +21,8 @@ export default async function ProtectedPage() {
     return redirect("/login");
   }
 
+  // const u = await getUser(user.id);
+  
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <div className="w-full">
@@ -28,7 +33,9 @@ export default async function ProtectedPage() {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
             <DeployButton />
-            <AuthButton />
+            {/* <AuthButton /> */}
+            {u?.name}
+
           </div>
         </nav>
       </div>

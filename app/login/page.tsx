@@ -3,10 +3,14 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
-import { signUpUser } from "@/lib/signup";
 import Image from "next/image";
+import { useAppDispatch } from "@/lib/store";
+import { setAuthState } from "@/lib/features/slices/authslice";
+import { getUser } from "@/lib/getuser";
 
 export default function Login({ searchParams }: { searchParams: { message: string } }) {
+  const dispatch = useAppDispatch();
+
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -14,56 +18,45 @@ export default function Login({ searchParams }: { searchParams: { message: strin
     const password = formData.get("password") as string;
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      const path = "/login?message="+error.message;
+      return redirect(path);
     }
+    const user = await getUser(data.user.id);
+    dispatch(setAuthState(user));
 
-    return redirect("/protected");
+    return redirect("/dashboard");
   };
+  
+
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
-      {/* <Link
-          href="/"
-          className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
-          >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>{" "}
-          Back
-        </Link> */}
-
+      <Image src="/images/logo-rit.png" alt="Logo Rit" width={64} height={64} className="self-center pb-5"></Image>
+      <h1 className="self-center font-bold text-xl">Log in</h1>
       <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background">
         <label className="text-md" htmlFor="email">
-          Email
+          E-mail
         </label>
-        <input className="px-4 py-3 bg-inherit border mb-6 border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="email" placeholder="you@example.com" required />
+        <input className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="email" placeholder="naam@voorbeeld.com" required />
         <label className="text-md" htmlFor="password">
-          Password
+          Wachtwoord
         </label>
         <input className="rounded-full px-4 py-3 bg-inherit border border-slate-200 mb-6 focus:outline-orange-500 focus:border-0 focus:outline-none" type="password" name="password" placeholder="••••••••" required />
         <SubmitButton formAction={signIn} className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500" pendingText="Signing In...">
-          Sign In
+          Log in
         </SubmitButton>
-        <Link href="/signup" className="border border-foreground/20 rounded-md px-4 py-2 text-background mb-2">
-          Sign Up
+        <p className="px-4 py-2 text-background mb-2 self-center">
+        Heb je nog geen account?{" "}
+        <Link href="/signup" className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline">
+          Registreer je nu
         </Link>
+        </p>
         {searchParams?.message && <p className="mt-4 p-4 bg-background/10 text-foreground text-center">{searchParams.message}</p>}
       </form>
     </div>
