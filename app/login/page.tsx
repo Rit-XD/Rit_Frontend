@@ -1,15 +1,11 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import Image from "next/image";
-import { useAppDispatch } from "@/lib/store";
-import { setAuthState } from "@/lib/features/slices/authslice";
-import { getUser } from "@/lib/getuser";
+
 
 export default function Login({ searchParams }: { searchParams: { message: string } }) {
-  const dispatch = useAppDispatch();
 
   const signIn = async (formData: FormData) => {
     "use server";
@@ -27,8 +23,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
       const path = "/login?message="+error.message;
       return redirect(path);
     }
-    const user = await getUser(data.user.id);
-    dispatch(setAuthState(user));
+    // const user = await getUser(data.user.id);
 
     return redirect("/dashboard");
   };

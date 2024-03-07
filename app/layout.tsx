@@ -1,9 +1,5 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import ReduxProvider from "@/lib/features/slices/redux-provider";
-import { Provider } from "react-redux";
-import { persistor, store } from "@/lib/store";
-import { PersistGate } from "redux-persist/integration/react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,13 +20,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
-          <ReduxProvider>
-          {/* <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}> */}
             {children}
-            {/* </PersistGate>
-          </Provider> */}
-          </ReduxProvider>
         </main>
       </body>
     </html>
