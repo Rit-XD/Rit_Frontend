@@ -1,9 +1,7 @@
-"use client";
 import { getUser } from "@/lib/getuser";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -13,21 +11,16 @@ export default async function AuthButton() {
   } = await supabase.auth.getUser();
 
   const signOut = async () => {
+    "use server";
 
     const supabase = createClient();
     await supabase.auth.signOut();
     return redirect("/login");
   };
 
-  if (!user) {
-    return redirect("/login");
-  }
-
-  // const u = await getUser(user.id);
-
   return user ? (
     <div className="flex items-center gap-4">
-      {/* Hey, {u?.name}! */}
+      Hey, {user.email}!
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
           Logout
