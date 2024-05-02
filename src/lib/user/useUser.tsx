@@ -1,6 +1,6 @@
 "use client";
 
-import { createSupabaseForBrowser } from "@/utils/supabase/createSupabaseForBrowser";
+import { createSupabaseForBrowser } from "@/src/utils/supabase/createSupabaseForBrowser";
 import React, {
   PropsWithChildren,
   createContext,

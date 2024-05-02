@@ -1,7 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { useContext } from 'react';
-import { UserProvider } from "@/lib/user/useUser";
+import { UserProvider } from "@/src/lib/user/useUser";
 // import { UserProvider } from './context/UserProvider';
 
 

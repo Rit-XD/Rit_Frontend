@@ -1,5 +1,5 @@
-import { getUser } from "@/lib/getuser";
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/src/lib/getuser";
+import { createClient } from "@/src/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

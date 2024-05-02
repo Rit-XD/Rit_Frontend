@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/src/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import Image from "next/image";
-import { signUpUser } from "@/lib/signup";
+import { signUpUser } from "@/src/lib/signup";
 
 export default function SignUp({
   searchParams,

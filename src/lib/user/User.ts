@@ -1,4 +1,4 @@
-import { Database } from "@/types/database.type";
+import { Database } from "@/src/types/database.type";
 
 export type User = {
     _id: string,

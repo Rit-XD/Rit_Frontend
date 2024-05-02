@@ -3,9 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import Image from "next/image";
-import { createSupabaseForServer } from "@/utils/supabase/createSupabaseForServer";
-import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
-import { generatePasswordFromIcons } from "@/utils/supabase/constructPassword";
+import { createSupabaseForServer } from "@/src/utils/supabase/createSupabaseForServer";
+import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
+import { generatePasswordFromIcons } from "@/src/utils/supabase/constructPassword";
 import { useFormState } from "react-dom";
 import { LoginSteps } from "./LoginSteps";
 
