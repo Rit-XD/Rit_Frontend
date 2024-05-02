@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { SubmitButton } from "./submit-button";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { handleLogin } from "./page";
 import { useUser } from "@/src/lib/user/useUser";
 import { useRouter } from "next/navigation";
+import { handleLogin } from "./HandleLogin";
 
 export const LoginSteps: React.FC = () => {
   const { user } = useUser();
