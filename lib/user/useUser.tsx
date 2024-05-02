@@ -1,7 +1,7 @@
 "use client";
 
 import { createSupabaseForBrowser } from "@/utils/supabase/createSupabaseForBrowser";
-import React, { PropsWithChildren, createContext, useEffect, useState } from "react";
+import React, { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 import { User } from "./User";
 import { fetchUser } from "./fetchUser";
 
@@ -12,6 +12,16 @@ const Context = createContext<{
     user: null,
     setUser: () => {}
 })
+
+export const useUser = () => { 
+    const supabase = createSupabaseForBrowser();
+    const {
+        user,
+        setUser
+    } = useContext(Context);
+
+    return {user}
+}
 
 export const UserProvider : React.FC<PropsWithChildren> = ({children}) => {
     const supabase = createSupabaseForBrowser();

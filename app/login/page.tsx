@@ -1,59 +1,102 @@
+"use server"
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import Image from "next/image";
+import { createSupabaseForServer } from "@/utils/supabase/createSupabaseForServer";
+import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
+import { generatePasswordFromIcons } from "@/utils/supabase/constructPassword";
+import { useFormState } from "react-dom";
+import { LoginSteps } from "./LoginSteps";
+
+//TODO: remove state
+
+export type LoginState = 
+  | {step: "username"; error?: string} 
+  | {step: "password"; email: string; error?: string};
+
+export async function handleLogin(
+  state: LoginState,
+  formData: FormData
+): Promise<LoginState> {
+  const supabase = await createSupabaseForServer();
+
+  switch (state.step) { 
+    case "username": 
+      const username = String(formData.get("username")).toLowerCase();
+      const isEmail = username.includes("@") && username.includes(".");
+      if (isEmail) {
+        return {step: "password", email: username};
+      }
+
+      const {error: queryError, data: record} = await supabaseAdmin
+      .from('Carecenter')
+      .select()
+      .eq('username', username)
+      .maybeSingle();
+
+      if (queryError) return {step: "username", error: queryError.message};
+      if (!record || !record?.email) return {step: "username", error: "Er is geen gebruiker gekoppeld aan de gebruikersnaam of het e-mailadres."};
+      return {step: "password", email: record.email};
+
+    case "password":
+      if (formData.get("back")) return {step: 'username'};
+
+      const password = String(formData.get('password'));
+      const email = state.email.toLowerCase();
+
+      const {error: signInError} = await supabase.auth.signInWithPassword({
+        email,
+        password: generatePasswordFromIcons(password)
+      });
+      if (signInError) {
+        if (signInError.message === 'Invalid login credentials') {
+          console.error(signInError)
+          return {step: 'password', email, error: 'Ongeldig wachtwoord'};
+        } else {
+          return {step: 'password', email, error: signInError.message};
+        }
+      } else {
+        // Clear failed attempts
+        await supabaseAdmin
+          .from('password_failed_verification_attempts')
+          .delete()
+          .eq('email', email)
+      }
+      redirect('/dashboard');    
+  }
+  return state;
+}
 
 
-export default function Login({ searchParams }: { searchParams: { message: string } }) {
+export default async function Login({ searchParams }: { searchParams: { message: string } }) {
+  // const signIn = async (formData: FormData) => {
+  //   "use server";
 
-  const signIn = async (formData: FormData) => {
-    "use server";
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+  //   const supabase = createClient();
 
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
+  //   const { data, error } = await supabase.auth.signInWithPassword({
+  //     email,
+  //     password,
+  //   });
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  //   if (error) {
+  //     const path = "/login?message="+error.message;
+  //     return redirect(path);
+  //   }
+  //   // const user = await getUser(data.user.id);
 
-    if (error) {
-      const path = "/login?message="+error.message;
-      return redirect(path);
-    }
-    // const user = await getUser(data.user.id);
-
-    return redirect("/dashboard");
-  };
-  
+  //   return redirect("/dashboard");
+  // };
 
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
       <Image src="/images/logo-rit.png" alt="Logo Rit" width={64} height={64} className="self-center pb-5"></Image>
       <h1 className="self-center font-bold text-xl">Log in</h1>
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background">
-        <label className="text-md" htmlFor="email">
-          E-mail
-        </label>
-        <input className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none" name="email" placeholder="naam@voorbeeld.com" required />
-        <label className="text-md" htmlFor="password">
-          Wachtwoord
-        </label>
-        <input className="rounded-full px-4 py-3 bg-inherit border border-slate-200 mb-6 focus:outline-orange-500 focus:border-0 focus:outline-none" type="password" name="password" placeholder="••••••••" required />
-        <SubmitButton formAction={signIn} className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500" pendingText="Signing In...">
-          Log in
-        </SubmitButton>
-        <p className="px-4 py-2 text-background mb-2 self-center">
-        Heb je nog geen account?{" "}
-        <Link href="/signup" className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline">
-          Registreer je nu
-        </Link>
-        </p>
-        {searchParams?.message && <p className="mt-4 p-4 bg-background/10 text-foreground text-center">{searchParams.message}</p>}
-      </form>
+      <LoginSteps/>
     </div>
   );
 }

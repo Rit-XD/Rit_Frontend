@@ -2,6 +2,7 @@
 
 import { createSupabaseForServerComponent } from "@/utils/supabase/createSupabaseForServerComponent";
 import { User, careCenterRow } from "./User";
+import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
 
 const selectQuery =
   '*';
@@ -14,7 +15,7 @@ const selectQuery =
     if (!session) return null;
     const user = session.user;
 
-    const {data} = await supabase
+    const {data} = await supabaseAdmin
     .from('Carecenter')
     .select(selectQuery)
     .eq("id", user.id)
