@@ -1,14 +1,13 @@
 import { getUser } from "@/src/lib/getuser";
+import { fetchUser } from "@/src/lib/user/fetchUser";
 import { createClient } from "@/src/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AuthButton() {
   const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const profile = await fetchUser();
+  const user = profile?.carecenter;
 
   const signOut = async () => {
     "use server";
@@ -20,7 +19,20 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      Hey, {user.name}!
+      <br />
+      {user.email}
+      <br />
+      {user.city}
+      <br />
+      {user.phone}
+      <br />
+      {user.street} {user.number}
+      <br />
+      {user.postal}
+      <br />
+      {user.country}
+      <br />
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
           Logout

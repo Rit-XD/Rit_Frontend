@@ -14,7 +14,6 @@ export const LoginSteps: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(user, state);
     if (user) {
       router.push("/dashboard");
     }
