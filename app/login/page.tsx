@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
@@ -11,9 +11,9 @@ import { LoginSteps } from "./LoginSteps";
 
 //TODO: remove state
 
-export type LoginState = 
-  | {step: "username"; error?: string} 
-  | {step: "password"; email: string; error?: string};
+export type LoginState =
+  | { step: "username"; error?: string }
+  | { step: "password"; email: string; error?: string };
 
 export async function handleLogin(
   state: LoginState,
@@ -21,55 +21,64 @@ export async function handleLogin(
 ): Promise<LoginState> {
   const supabase = await createSupabaseForServer();
 
-  switch (state.step) { 
-    case "username": 
+  switch (state.step) {
+    case "username":
       const username = String(formData.get("username")).toLowerCase();
       const isEmail = username.includes("@") && username.includes(".");
       if (isEmail) {
-        return {step: "password", email: username};
+        return { step: "password", email: username };
       }
 
-      const {error: queryError, data: record} = await supabaseAdmin
-      .from('Carecenter')
-      .select()
-      .eq('username', username)
-      .maybeSingle();
+      const { error: queryError, data: record } = await supabaseAdmin
+        .from("Carecenter")
+        .select()
+        .eq("username", username)
+        .maybeSingle();
 
-      if (queryError) return {step: "username", error: queryError.message};
-      if (!record || !record?.email) return {step: "username", error: "Er is geen gebruiker gekoppeld aan de gebruikersnaam of het e-mailadres."};
-      return {step: "password", email: record.email};
+      if (queryError) return { step: "username", error: queryError.message };
+      if (!record || !record?.email)
+        return {
+          step: "username",
+          error:
+            "Er is geen gebruiker gekoppeld aan de gebruikersnaam of het e-mailadres.",
+        };
+      return { step: "password", email: record.email };
 
     case "password":
-      if (formData.get("back")) return {step: 'username'};
+      if (formData.get("back")) return { step: "username" };
 
-      const password = String(formData.get('password'));
+      const password = String(formData.get("password"));
       const email = state.email.toLowerCase();
 
-      const {error: signInError} = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
-        password: generatePasswordFromIcons(password)
+        password: generatePasswordFromIcons(password),
       });
       if (signInError) {
-        if (signInError.message === 'Invalid login credentials') {
-          console.error(signInError)
-          return {step: 'password', email, error: 'Ongeldig wachtwoord'};
+        if (signInError.message === "Invalid login credentials") {
+          console.error(signInError);
+          return { step: "password", email, error: "Ongeldig wachtwoord" };
         } else {
-          return {step: 'password', email, error: signInError.message};
+          return { step: "password", email, error: signInError.message };
         }
       } else {
         // Clear failed attempts
-        await supabaseAdmin
-          .from('password_failed_verification_attempts')
-          .delete()
-          .eq('email', email)
+        //TODO: add failed attempts
+        //   await supabaseAdmin
+        //     .from("password_failed_verification_attempts")
+        //     .delete()
+        //     .eq("email", email);
       }
-      redirect('/dashboard');    
+      redirect("/dashboard");
   }
   return state;
 }
 
-
-export default async function Login({ searchParams }: { searchParams: { message: string } }) {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) {
   // const signIn = async (formData: FormData) => {
   //   "use server";
 
@@ -91,12 +100,17 @@ export default async function Login({ searchParams }: { searchParams: { message:
   //   return redirect("/dashboard");
   // };
 
-
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
-      <Image src="/images/logo-rit.png" alt="Logo Rit" width={64} height={64} className="self-center pb-5"></Image>
+      <Image
+        src="/images/logo-rit.png"
+        alt="Logo Rit"
+        width={64}
+        height={64}
+        className="self-center pb-5"
+      ></Image>
       <h1 className="self-center font-bold text-xl">Log in</h1>
-      <LoginSteps/>
+      <LoginSteps />
     </div>
   );
 }

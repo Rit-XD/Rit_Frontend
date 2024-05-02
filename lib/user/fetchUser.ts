@@ -1,35 +1,32 @@
-'use server'
+"use server";
 
 import { createSupabaseForServerComponent } from "@/utils/supabase/createSupabaseForServerComponent";
 import { User, careCenterRow } from "./User";
 import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
 
-const selectQuery =
-  '*';
+const selectQuery = "*";
 
-  export async function fetchUser(): Promise<User | null> {
-    const supabase = await createSupabaseForServerComponent();
-    const {
-      data: {session}
-    } = await supabase.auth.getSession();
-    if (!session) return null;
-    const user = session.user;
+export async function fetchUser(): Promise<User | null> {
+  const supabase = await createSupabaseForServerComponent();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) return null;
+  const user = session.user;
 
-    const {data} = await supabaseAdmin
-    .from('Carecenter')
+  const { data } = await supabaseAdmin
+    .from("Carecenter")
     .select(selectQuery)
     .eq("id", user.id)
     .maybeSingle()
     .throwOnError();
 
-    const carecenter = data as unknown as careCenterRow | undefined;
-    if (!carecenter) return null;
+  const carecenter = data as unknown as careCenterRow | undefined;
+  if (!carecenter) return null;
 
-    return {
-        _id: user.id,
-        email: user.email!,
-        carecenter
-      }
+  return {
+    _id: user.id,
+    email: user.email!,
+    carecenter,
+  };
 }
-
-
