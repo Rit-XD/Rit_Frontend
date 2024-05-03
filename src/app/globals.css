@@ -40,8 +40,3 @@
     transform: translateY(0);
   }
 }
-
-.bg-login {
-  background-image: url('/images/background-login.png');
-  background-position: center;
-}

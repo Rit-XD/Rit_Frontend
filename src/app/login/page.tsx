@@ -1,25 +1,24 @@
-"use server";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { SubmitButton } from "./submit-button";
-import Image from "next/image";
-import { createSupabaseForServer } from "@/src/utils/supabase/createSupabaseForServer";
-import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
-import { generatePasswordFromIcons } from "@/src/utils/supabase/constructPassword";
-import { useFormState } from "react-dom";
-import { LoginSteps } from "./LoginSteps";
-import { fetchUser } from "@/src/lib/user/fetchUser";
+'use server'
+import background from '@/public/images/background-login.png'
+import {fetchUser} from '@/src/lib/user/fetchUser'
+import {fromModule} from '@/src/utils/styler/Styler'
+import Image from 'next/image'
+import {redirect} from 'next/navigation'
+import {LoginSteps} from './LoginSteps'
+import css from './LoginSteps.module.scss'
 
 //TODO: remove state
 
+const styles = fromModule(css)
+
 export default async function Login({
-  searchParams,
+  searchParams
 }: {
-  searchParams: { message: string };
+  searchParams: {message: string}
 }) {
-  const user = await fetchUser();
+  const user = await fetchUser()
   if (user) {
-    return redirect("/dashboard");
+    return redirect('/dashboard')
   }
   // const signIn = async (formData: FormData) => {
   //   "use server";
@@ -43,16 +42,27 @@ export default async function Login({
   // };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
+    <>
       <Image
-        src="/images/logo-rit.png"
-        alt="Logo Rit"
-        width={64}
-        height={64}
-        className="self-center pb-5"
-      ></Image>
-      <h1 className="self-center font-bold text-xl">Log in</h1>
-      <LoginSteps />
-    </div>
-  );
+        src={background}
+        fill
+        sizes="100vw"
+        style={{objectFit: 'cover'}}
+        alt="background login"
+      />
+      <span className={styles.form.overlay1()} />
+      <span className={styles.form.overlay2()} />
+      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl z-10">
+        <Image
+          src="/images/logo-rit.png"
+          alt="Logo Rit"
+          width={64}
+          height={64}
+          className="self-center pb-5"
+        ></Image>
+        <h1 className="self-center font-bold text-xl">Log in</h1>
+        <LoginSteps />
+      </div>
+    </>
+  )
 }
