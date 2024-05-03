@@ -1,7 +1,6 @@
 import { fetchUser } from "@/src/lib/user/fetchUser";
-import AuthButton from "../../components/AuthButton";
+import AuthButton from "../../../components/AuthButton";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 export default async function Dashboard() {
   const user = await fetchUser();
@@ -9,9 +8,8 @@ export default async function Dashboard() {
 
   return (
     <main>
-      <AuthButton />
+      Ik ben in de settings
       {/* we use serverside page and only import small client side component*/}
-      <Link href="/dashboard/settings">Settings</Link>
     </main>
   );
 }

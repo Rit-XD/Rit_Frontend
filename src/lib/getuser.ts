@@ -9,6 +9,5 @@ export async function getUser(uid: string): Promise<User> {
     },
   });
   const data = await res.json();
-  // console.log(data.data);
   return data.data;
 }

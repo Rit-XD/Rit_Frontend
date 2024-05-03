@@ -31,7 +31,6 @@ export default function SignUp({
       const path = "/signup?message=" + error.message;
       return redirect(path);
     }
-    console.log(data?.user?.id);
 
     await signUpUser(
       email,

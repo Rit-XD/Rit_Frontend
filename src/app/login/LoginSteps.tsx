@@ -1,35 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { SubmitButton } from "./submit-button";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { useUser } from "@/src/lib/user/useUser";
-import { useRouter } from "next/navigation";
 import { handleLogin } from "./HandleLogin";
 
 export const LoginSteps: React.FC = () => {
-  const { user } = useUser();
-  const [state, action] = useFormState(handleLogin, { step: "username" });
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [state, user]);
+  const [state, action] = useFormState(handleLogin, { error: "" });
 
   return (
     <form
       className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background"
       action={action}
     >
-      <label className="text-md" htmlFor="username">
+      <label className="text-md" htmlFor="email">
         E-mail
       </label>
       <input
         className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-        name="username"
+        name="email"
+        type="email"
         placeholder="naam@voorbeeld.com"
         required
       />
@@ -45,7 +36,7 @@ export const LoginSteps: React.FC = () => {
         placeholder="••••••••"
         required
       />
-
+      {state.error}
       <SubmitButton
         type="submit"
         className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500"

@@ -8,18 +8,19 @@ import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
 import { generatePasswordFromIcons } from "@/src/utils/supabase/constructPassword";
 import { useFormState } from "react-dom";
 import { LoginSteps } from "./LoginSteps";
+import { fetchUser } from "@/src/lib/user/fetchUser";
 
 //TODO: remove state
-
-export type LoginState =
-  | { step: "username"; error?: string }
-  | { step: "password"; email: string; error?: string };
 
 export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  const user = await fetchUser();
+  if (user) {
+    return redirect("/dashboard");
+  }
   // const signIn = async (formData: FormData) => {
   //   "use server";
 
