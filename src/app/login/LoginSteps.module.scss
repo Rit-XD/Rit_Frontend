@@ -37,6 +37,12 @@
       border: 2px solid var(--primary);
     }
   }
+  &-error {
+    color: red;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
   &-submit {
     padding-block: 12px;
     padding-inline: 16px;

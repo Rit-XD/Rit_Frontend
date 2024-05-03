@@ -1,46 +1,45 @@
-"use server";
+'use server'
 
-import { createSupabaseForServer } from "@/src/utils/supabase/createSupabaseForServer";
-import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
-import { error } from "console";
-import { redirect } from "next/navigation";
+import {createSupabaseForServer} from '@/src/utils/supabase/createSupabaseForServer'
+import {supabaseAdmin} from '@/src/utils/supabase/supabaseAdmin'
+import {redirect} from 'next/navigation'
 
 export async function handleLogin(
-  state: { error: string },
+  state: {error: string},
   formData: FormData
-): Promise<{ error: string }> {
-  const supabase = await createSupabaseForServer();
+): Promise<{error: string}> {
+  const supabase = await createSupabaseForServer()
 
-  const email = String(formData.get("email")).toLowerCase();
-  const password = String(formData.get("password"));
-  const isValidEmail = email.includes("@") && email.includes(".");
-  if (!isValidEmail) return { error: "Ongeldig e-mailadres" };
+  const email = String(formData.get('email')).toLowerCase()
+  const password = String(formData.get('password'))
+  const isValidEmail = email.includes('@') && email.includes('.')
+  if (!isValidEmail) return {error: 'Ongeldig e-mailadres'}
 
-  const { error: queryError, data: record } = await supabaseAdmin
-    .from("Carecenter")
+  const {error: queryError, data: record} = await supabaseAdmin
+    .from('Carecenter')
     .select()
-    .eq("email", email)
-    .maybeSingle();
+    .eq('email', email)
+    .maybeSingle()
 
   if (queryError)
     return {
-      error: queryError.message,
-    };
+      error: queryError.message
+    }
   if (!record || !record?.email)
     return {
-      error: "Er is geen gebruiker gekoppeld aan het e-mailadres.",
-    };
+      error: 'Onjuiste gebruikersnaam of wachtwoord.'
+    }
 
-  const { error: signInError } = await supabase.auth.signInWithPassword({
+  const {error: signInError} = await supabase.auth.signInWithPassword({
     email,
-    password,
-  });
+    password
+  })
 
   if (signInError) {
-    if (signInError.message === "Invalid login credentials") {
-      return { error: "Ongeldig wachtwoord" };
+    if (signInError.message === 'Invalid login credentials') {
+      return {error: 'Onjuiste gebruikersnaam of wachtwoord.'}
     }
-    return { error: signInError.message };
+    return {error: signInError.message}
   }
   // Clear failed attempts
   //TODO: add failed attempts
@@ -49,5 +48,5 @@ export async function handleLogin(
   //   .delete()
   //   .eq("email", email);
 
-  redirect("/dashboard");
+  redirect('/dashboard')
 }

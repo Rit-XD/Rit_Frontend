@@ -1,25 +1,22 @@
-import { GeistSans } from "geist/font/sans";
-import "../globals.css";
-import { useContext } from "react";
-import { UserProvider } from "@/src/lib/user/useUser";
-import { fetchUser } from "@/src/lib/user/fetchUser";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import {UserProvider} from '@/src/lib/user/useUser'
+import {GeistSans} from 'geist/font/sans'
+import Link from 'next/link'
+import '../globals.css'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : 'http://localhost:3000'
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Rit | Dashboard",
-  description: "Revolution in transport",
-};
+  title: 'Rit | Dashboard',
+  description: 'Revolution in transport'
+}
 
 export default async function DashboardLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
@@ -28,10 +25,10 @@ export default async function DashboardLayout({
           <nav>
             <ul>
               <li>
-                <Link href={"/dashboard"}>Home</Link>
+                <Link href={'/dashboard'}>Home</Link>
               </li>
               <li>
-                <Link href={"/dashboard/settings"}>Settings</Link>
+                <Link href={'/dashboard/settings'}>Settings</Link>
               </li>
             </ul>
           </nav>
@@ -42,5 +39,5 @@ export default async function DashboardLayout({
         </UserProvider>
       </body>
     </html>
-  );
+  )
 }

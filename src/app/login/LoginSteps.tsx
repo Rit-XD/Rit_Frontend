@@ -33,7 +33,7 @@ export const LoginSteps: React.FC = () => {
         placeholder="Wachtwoord"
         required
       />
-      {state.error}
+      {state.error && <p className={styles.form.error()}>{state.error}</p>}
       <SubmitButton
         type="submit"
         className={styles.form.submit()}
