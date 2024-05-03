@@ -1,58 +1,52 @@
-"use client";
+'use client'
 
-import React from "react";
-import { SubmitButton } from "./submit-button";
-import Link from "next/link";
-import { useFormState } from "react-dom";
-import { handleLogin } from "./HandleLogin";
+import {fromModule} from '@/src/utils/styler/Styler'
+import Link from 'next/link'
+import React from 'react'
+import {useFormState} from 'react-dom'
+import {handleLogin} from './HandleLogin'
+import css from './LoginSteps.module.scss'
+import {SubmitButton} from './submit-button'
+
+const styles = fromModule(css)
 
 export const LoginSteps: React.FC = () => {
-  const [state, action] = useFormState(handleLogin, { error: "" });
+  const [state, action] = useFormState(handleLogin, {error: ''})
 
   return (
-    <form
-      className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background"
-      action={action}
-    >
-      <label className="text-md" htmlFor="email">
-        E-mail
-      </label>
+    <form className={styles.form()} action={action}>
+      <label htmlFor="email">E-mail</label>
       <input
-        className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
+        className={styles.form.input()}
         name="email"
         type="email"
-        placeholder="naam@voorbeeld.com"
+        placeholder="E-mail"
         required
       />
 
-      <label className="text-md" htmlFor="password">
-        Wachtwoord
-      </label>
+      <label htmlFor="password">Wachtwoord</label>
 
       <input
-        className="rounded-full px-4 py-3 bg-inherit border border-slate-200 mb-6 focus:outline-orange-500 focus:border-0 focus:outline-none"
+        className={styles.form.input()}
         type="password"
         name="password"
-        placeholder="••••••••"
+        placeholder="Wachtwoord"
         required
       />
       {state.error}
       <SubmitButton
         type="submit"
-        className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500"
+        className={styles.form.submit()}
         pendingText="Signing In..."
       >
         Log in
       </SubmitButton>
-      <p className="px-4 py-2 text-background mb-2 self-center">
-        Heb je nog geen account?{" "}
-        <Link
-          href="/signup"
-          className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline"
-        >
+      <p className={styles.form.text()}>
+        Heb je nog geen account?{' '}
+        <Link href="/signup" className={styles.form.link()}>
           Registreer je nu
         </Link>
       </p>
     </form>
-  );
-};
+  )
+}
