@@ -1,46 +1,51 @@
-import Link from "next/link";
-import { headers } from "next/headers";
-import { createClient } from "@/src/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { SubmitButton } from "./submit-button";
-import Image from "next/image";
-import { signUpUser } from "@/src/lib/signup";
+import {createClient} from '@/src/utils/supabase/server'
+import {headers} from 'next/headers'
+import Image from 'next/image'
+import Link from 'next/link'
+import {redirect} from 'next/navigation'
+import handleSignup from './HandleSignup'
+import {SubmitButton} from './submit-button'
 
 export default function SignUp({
-  searchParams,
+  searchParams
 }: {
-  searchParams: { message: string };
+  searchParams: {message: string}
 }) {
   const signUp = async (formData: FormData) => {
-    "use server";
+    'use server'
 
-    const origin = headers().get("origin");
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
+    const origin = headers().get('origin')
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const supabase = createClient()
 
-    const { data, error } = await supabase.auth.signUp({
+    const {data, error} = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
-    });
+        emailRedirectTo: `${origin}/auth/callback`
+      }
+    })
 
     if (error) {
-      const path = "/signup?message=" + error.message;
-      return redirect(path);
+      const path = '/signup?message=' + error.message
+      return redirect(path)
     }
 
-    await signUpUser(
+    await handleSignup(
+      formData.get('name') as string,
+      formData.get('phone') as string,
+      formData.get('street') as string,
+      formData.get('number') as string,
+      parseInt(formData.get('postal') as string),
+      formData.get('city') as string,
+      formData.get('country') as string,
       email,
-      data?.user?.id as string,
-      formData.get("phone") as string,
-      formData.get("address") as string
-    );
+      formData.get('logo') as string
+    )
 
-    return redirect("/login?message=Log in to continue");
-  };
+    return redirect('/login?message=Log in to continue')
+  }
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
@@ -53,6 +58,15 @@ export default function SignUp({
       ></Image>
       <h1 className="self-center font-bold text-xl">Registreren</h1>
       <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background">
+        <label className="text-md" htmlFor="name">
+          Naam
+        </label>
+        <input
+          className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
+          name="name"
+          placeholder="Naam"
+          required
+        />
         <label className="text-md" htmlFor="email">
           Email
         </label>
@@ -101,7 +115,7 @@ export default function SignUp({
           Registreren
         </SubmitButton>
         <p className="px-4 py-2 text-background mb-2 self-center">
-          Heb je al een account?{" "}
+          Heb je al een account?{' '}
           <Link
             href="/login"
             className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline"
@@ -116,5 +130,5 @@ export default function SignUp({
         )}
       </form>
     </div>
-  );
+  )
 }
