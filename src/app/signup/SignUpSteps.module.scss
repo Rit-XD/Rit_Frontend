@@ -113,4 +113,15 @@
       border-bottom: 1px solid var(--primary);
     }
   }
+  &-adres {
+    display: flex;
+    flex: 1 1 0%;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    z-index: 10;
+    input{
+      width: 50%;
+    }
+  }
 }
