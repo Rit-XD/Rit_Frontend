@@ -8,7 +8,6 @@ export default async function handleSignup(
   number: string,
   postal: number,
   city: string,
-  country: string,
   email: string,
   logo: string
 ) {
@@ -23,7 +22,6 @@ export default async function handleSignup(
         number: number,
         postal: postal,
         city: city,
-        country: country,
         email: email,
         logo: logo
       }

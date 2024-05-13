@@ -3,15 +3,20 @@
 import {SubmitButton} from './submit-button'
 
 import {fromModule} from '@/utils/styler/Styler'
+import Link from 'next/link'
 import {useState} from 'react'
 import css from './SignUpSteps.module.scss'
 
 const styles = fromModule(css)
 
-export const SignupSteps: React.FC = () => {
+export const SignupSteps: React.FC<{
+  signUp: (formData: FormData) => Promise<void>
+}> = ({signUp}) => {
   const [showAddress, setShowAddress] = useState(false)
+  const [formData, setFormData] = useState({} as FormData)
+
   return (
-    <>
+    <form className={styles.form()}>
       {!showAddress && (
         <>
           <label className="text-md" htmlFor="name">
@@ -60,6 +65,12 @@ export const SignupSteps: React.FC = () => {
           >
             Volgende
           </SubmitButton>
+          <p className={styles.form.text()}>
+            Heb je al een account?{' '}
+            <Link href="/login" className={styles.form.link()}>
+              Log in
+            </Link>
+          </p>
         </>
       )}
       {showAddress && (
@@ -70,32 +81,53 @@ export const SignupSteps: React.FC = () => {
           <div className={styles.form.adres()}>
             <input
               className={styles.form.input()}
-              name="address"
+              name="street"
               placeholder="Straatnaam"
               required
             />
             <input
               className={styles.form.input()}
-              name="address"
+              name="number"
               placeholder="Nr."
               required
             />
           </div>
-          <input
-            className={styles.form.input()}
-            name="address"
-            placeholder="Postcode"
-            required
-          />
+          <div className={styles.form.adres()}>
+            <input
+              className={styles.form.input()}
+              name="city"
+              placeholder="Stad"
+              required
+            />
+            <input
+              className={styles.form.input()}
+              name="postal"
+              placeholder="Postcode"
+              required
+              type="number"
+            />
+          </div>
           <SubmitButton
-            formAction={(formData: FormData) => {}}
+            formAction={signUp}
             className={styles.form.submit()}
             pendingText="Signing Up..."
           >
             Registreren
           </SubmitButton>
+          <p className={styles.form.text()}>
+            Heb je al een account?{' '}
+            <Link href="/login" className={styles.form.link()}>
+              Log in
+            </Link>
+          </p>
+
+          {/* {searchParams && (
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+              {(searchParams as { message: string }).message}
+            </p>
+          )} */}
         </>
       )}
-    </>
+    </form>
   )
 }

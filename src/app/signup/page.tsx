@@ -3,19 +3,16 @@ import {fromModule} from '@/utils/styler/Styler'
 import {createClient} from '@/utils/supabase/server'
 import {headers} from 'next/headers'
 import Image from 'next/image'
-import Link from 'next/link'
 import {redirect} from 'next/navigation'
 import handleSignup from './HandleSignup'
 import css from './SignUpSteps.module.scss'
 import {SignupSteps} from './SignupSteps'
 
 const styles = fromModule(css)
-let showAddress = false
 
-export default function SignUp({
-  searchParams
-}: {
-  searchParams: {message: string}
+export default function SignUp({}: // searchParams
+{
+  // searchParams?: {message: string}
 }) {
   // const toggleAddress = () => {
   //   showAddress = !showAddress
@@ -48,9 +45,8 @@ export default function SignUp({
       formData.get('phone') as string,
       formData.get('street') as string,
       formData.get('number') as string,
-      parseInt(formData.get('postal') as string),
+      parseInt(formData.get('postal') as string), // Convert to number using parseInt
       formData.get('city') as string,
-      formData.get('country') as string,
       email,
       formData.get('logo') as string
     )
@@ -78,104 +74,7 @@ export default function SignUp({
           className="self-center pb-5"
         ></Image>
         <h1 className="self-center font-bold text-xl">Registreren</h1>
-        <form className={styles.form()}>
-          {/* <>
-            <label className="text-md" htmlFor="name">
-              Naam
-            </label>
-            <input
-              className={styles.form.input()}
-              name="name"
-              placeholder="Naam"
-              required
-            />
-            <label className="text-md" htmlFor="email">
-              Email
-            </label>
-            <input
-              className={styles.form.input()}
-              name="email"
-              placeholder="you@example.com"
-              required
-            />
-
-            <label className="text-md" htmlFor="password">
-              Wachtwoord
-            </label>
-            <input
-              className={styles.form.input()}
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              required
-            />
-
-            <label className="text-md" htmlFor="phone">
-              Telefoon
-            </label>
-            <input
-              className={styles.form.input()}
-              name="phone"
-              placeholder="+32..."
-              required
-            />
-            <SubmitButton
-              formAction={toggleAddress()}
-              className={styles.form.submit()}
-              pendingText="Volgende"
-            >
-              Volgende
-            </SubmitButton>
-          </> */}
-          <SignupSteps />
-          {/* <>
-              <p>{showAddress}</p>
-              <p>tezst</p>
-
-              <label className="text-md" htmlFor="address">
-                Adres
-              </label>
-              <div className={styles.form.adres()}>
-                <input
-                  className={styles.form.input()}
-                  name="address"
-                  placeholder="Straatnaam"
-                  required
-                />
-                <input
-                  className={styles.form.input()}
-                  name="address"
-                  placeholder="Nr."
-                  required
-                />
-              </div>
-              <input
-                className={styles.form.input()}
-                name="address"
-                placeholder="Postcode"
-                required
-              />
-              <SubmitButton
-                formAction={signUp}
-                className={styles.form.submit()}
-                pendingText="Signing Up..."
-              >
-                Registreren
-              </SubmitButton>
-            </> */}
-
-          <p className={styles.form.text()}>
-            Heb je al een account?{' '}
-            <Link href="/login" className={styles.form.link()}>
-              Log in
-            </Link>
-          </p>
-          {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-              {searchParams.message}
-            </p>
-          )}
-        </form>
+        <SignupSteps signUp={signUp} />
       </div>
     </>
   )
