@@ -1,8 +1,8 @@
 "use server";
 
-import { createSupabaseForServerComponent } from "@/src/utils/supabase/createSupabaseForServerComponent";
+import { createSupabaseForServerComponent } from "@/utils/supabase/createSupabaseForServerComponent";
 import { User, careCenterRow } from "./User";
-import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
+import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
 
 const selectQuery = "*";
 

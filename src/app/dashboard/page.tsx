@@ -1,4 +1,4 @@
-import {fetchUser} from '@/src/lib/user/fetchUser'
+import {fetchUser} from '@/lib/user/fetchUser'
 import {redirect} from 'next/navigation'
 import AuthButton from '../../components/AuthButton'
 

@@ -1,7 +1,7 @@
 'use server'
 
-import {createSupabaseForServer} from '@/src/utils/supabase/createSupabaseForServer'
-import {supabaseAdmin} from '@/src/utils/supabase/supabaseAdmin'
+import {createSupabaseForServer} from '@/utils/supabase/createSupabaseForServer'
+import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 import {redirect} from 'next/navigation'
 
 export async function handleLogin(

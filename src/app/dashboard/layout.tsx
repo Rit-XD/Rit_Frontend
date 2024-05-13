@@ -1,4 +1,4 @@
-import {UserProvider} from '@/src/lib/user/useUser'
+import {UserProvider} from '@/lib/user/useUser'
 import {GeistSans} from 'geist/font/sans'
 import Link from 'next/link'
 import '../globals.css'
