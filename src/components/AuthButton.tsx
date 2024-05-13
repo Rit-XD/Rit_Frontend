@@ -1,21 +1,20 @@
-import { getUser } from "@/src/lib/getuser";
-import { fetchUser } from "@/src/lib/user/fetchUser";
-import { createClient } from "@/src/utils/supabase/server";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import {fetchUser} from '@/lib/user/fetchUser'
+import {createClient} from '@/utils/supabase/server'
+import Link from 'next/link'
+import {redirect} from 'next/navigation'
 
 export default async function AuthButton() {
-  const supabase = createClient();
-  const profile = await fetchUser();
-  const user = profile?.carecenter;
+  const supabase = createClient()
+  const profile = await fetchUser()
+  const user = profile?.carecenter
 
   const signOut = async () => {
-    "use server";
+    'use server'
 
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    return redirect('/login')
+  }
 
   return user ? (
     <div className="flex items-center gap-4">
@@ -46,5 +45,5 @@ export default async function AuthButton() {
     >
       Login
     </Link>
-  );
+  )
 }

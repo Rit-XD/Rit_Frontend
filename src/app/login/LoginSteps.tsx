@@ -1,6 +1,6 @@
 'use client'
 
-import {fromModule} from '@/src/utils/styler/Styler'
+import {fromModule} from '@/utils/styler/Styler'
 import Link from 'next/link'
 import React from 'react'
 import {useFormState} from 'react-dom'

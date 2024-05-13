@@ -1,36 +1,36 @@
-import DeployButton from "../components/DeployButton";
-import { createClient } from "@/src/utils/supabase/server";
-import ConnectSupabaseSteps from "@/src/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/src/components/tutorial/SignUpUserSteps";
-import Header from "@/src/components/Header";
-import AuthButton from "../components/AuthButton";
-import { redirect } from "next/navigation";
+import Header from '@/components/Header'
+import ConnectSupabaseSteps from '@/components/tutorial/ConnectSupabaseSteps'
+import SignUpUserSteps from '@/components/tutorial/SignUpUserSteps'
+import {createClient} from '@/utils/supabase/server'
+import {redirect} from 'next/navigation'
+import AuthButton from '../components/AuthButton'
+import DeployButton from '../components/DeployButton'
 
 export default async function Index() {
-  const supabase = createClient();
+  const supabase = createClient()
 
   //check if user is authenticated
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: {user}
+  } = await supabase.auth.getUser()
 
   //if user is not authenticated, redirect to login page
   if (!user) {
-    return redirect("/login");
+    return redirect('/login')
   }
 
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
     // Feel free to remove it once you have Supabase connected.
     try {
-      createClient();
-      return true;
+      createClient()
+      return true
     } catch (e) {
-      return false;
+      return false
     }
-  };
+  }
 
-  const isSupabaseConnected = canInitSupabaseClient();
+  const isSupabaseConnected = canInitSupabaseClient()
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -51,7 +51,7 @@ export default async function Index() {
 
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
         <p>
-          Powered by{" "}
+          Powered by{' '}
           <a
             href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
             target="_blank"
@@ -63,5 +63,5 @@ export default async function Index() {
         </p>
       </footer>
     </div>
-  );
+  )
 }

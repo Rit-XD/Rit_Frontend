@@ -1,4 +1,4 @@
-import { Database } from '@/src/types/database.type'
+import { Database } from '@/types/database.type'
 import {CookieOptions, createServerClient} from '@supabase/ssr'
 import {cookies} from 'next/headers'
 

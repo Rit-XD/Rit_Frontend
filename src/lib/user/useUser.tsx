@@ -1,62 +1,62 @@
-"use client";
+'use client'
 
-import { createSupabaseForBrowser } from "@/src/utils/supabase/createSupabaseForBrowser";
+import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
+import {usePathname} from 'next/navigation'
 import React, {
   PropsWithChildren,
   createContext,
   useContext,
   useEffect,
-  useState,
-} from "react";
-import { User } from "./User";
-import { fetchUser } from "./fetchUser";
-import { usePathname } from "next/navigation";
+  useState
+} from 'react'
+import {User} from './User'
+import {fetchUser} from './fetchUser'
 
 const Context = createContext<{
-  user: User | null;
-  setUser: (user: User) => void;
+  user: User | null
+  setUser: (user: User) => void
 }>({
   user: null,
-  setUser: () => {},
-});
+  setUser: () => {}
+})
 
 export const useUser = () => {
-  const supabase = createSupabaseForBrowser();
-  const { user, setUser } = useContext(Context);
-  return { user };
-};
+  const supabase = createSupabaseForBrowser()
+  const {user, setUser} = useContext(Context)
+  return {user}
+}
 
-export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const supabase = createSupabaseForBrowser();
-  const [user, setUser] = useState<User | null>(null);
-  const [fetching, setFetching] = useState(false);
-  const pathname = usePathname();
+export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
+  const supabase = createSupabaseForBrowser()
+  const [user, setUser] = useState<User | null>(null)
+  const [fetching, setFetching] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    if (fetching || user) return;
+    if (fetching || user) return
 
-    setFetching(true);
+    setFetching(true)
     const loadUser = async () => {
-      const timeBefore = Date.now();
+      const timeBefore = Date.now()
       supabase.auth.getUser().then(() => {
-        console.log(`session fetched in ${Date.now() - timeBefore}ms`);
-      });
-      const init = await fetchUser();
-      console.log(`User fetched in ${Date.now() - timeBefore}ms`);
-      setUser(init);
-      setFetching(false);
-    };
-    loadUser();
-  }, [pathname]);
+        console.log(`session fetched in ${Date.now() - timeBefore}ms`)
+      })
+      const init = await fetchUser()
+      console.log(`User fetched in ${Date.now() - timeBefore}ms`)
+      setUser(init)
+      setFetching(false)
+    }
+    loadUser()
+  }, [pathname])
 
   return (
     <Context.Provider
       value={{
         user,
-        setUser,
+        setUser
       }}
     >
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
