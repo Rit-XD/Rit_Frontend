@@ -1,6 +1,7 @@
 import {supabaseAdmin} from '@/src/utils/supabase/supabaseAdmin'
 
 export default async function handleSignup(
+  id: string,
   name: string,
   phone: string,
   street: string,
@@ -15,6 +16,7 @@ export default async function handleSignup(
     .from('Carecenter')
     .insert([
       {
+        id: id,
         name: name,
         phone: phone,
         street: street,

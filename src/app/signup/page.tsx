@@ -33,6 +33,7 @@ export default function SignUp({
     }
 
     await handleSignup(
+      data?.user?.id as string,
       formData.get('name') as string,
       formData.get('phone') as string,
       formData.get('street') as string,
@@ -101,12 +102,26 @@ export default function SignUp({
         <label className="text-md" htmlFor="address">
           Adres
         </label>
-        <input
-          className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          name="address"
-          placeholder="Straatnaam 123"
-          required
-        />
+        <div className="adres">
+          <input
+            className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
+            name="address"
+            placeholder="Straatnaam"
+            required
+          />
+          <input
+            className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
+            name="address"
+            placeholder="Nr."
+            required
+          />
+          <input
+            className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
+            name="address"
+            placeholder="Postcode"
+            required
+          />
+        </div>
         <SubmitButton
           formAction={signUp}
           className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500"
