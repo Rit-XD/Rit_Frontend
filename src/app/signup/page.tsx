@@ -7,22 +7,20 @@ import Link from 'next/link'
 import {redirect} from 'next/navigation'
 import handleSignup from './HandleSignup'
 import css from './SignUpSteps.module.scss'
-import {SubmitButton} from './submit-button'
+import {SignupSteps} from './SignupSteps'
 
-const styles = fromModule(css);
-let showAddress = true;
-
+const styles = fromModule(css)
+let showAddress = false
 
 export default function SignUp({
   searchParams
 }: {
   searchParams: {message: string}
 }) {
-  const toggleAddress = () => {
-    showAddress = !showAddress;
-    return "";
-  }
-
+  // const toggleAddress = () => {
+  //   showAddress = !showAddress
+  //   return ''
+  // }
   const signUp = async (formData: FormData) => {
     'use server'
 
@@ -81,90 +79,90 @@ export default function SignUp({
         ></Image>
         <h1 className="self-center font-bold text-xl">Registreren</h1>
         <form className={styles.form()}>
-        {showAddress && (<>
-          <label className="text-md" htmlFor="name">
-            Naam
-          </label>
-          <input
-            className={styles.form.input()}
-            name="name"
-            placeholder="Naam"
-            required
-          />
-          <label className="text-md" htmlFor="email">
-            Email
-          </label>
-          <input
-            className={styles.form.input()}
-            name="email"
-            placeholder="you@example.com"
-            required
-          />
+          {/* <>
+            <label className="text-md" htmlFor="name">
+              Naam
+            </label>
+            <input
+              className={styles.form.input()}
+              name="name"
+              placeholder="Naam"
+              required
+            />
+            <label className="text-md" htmlFor="email">
+              Email
+            </label>
+            <input
+              className={styles.form.input()}
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
 
-          <label className="text-md" htmlFor="password">
-            Wachtwoord
-          </label>
-          <input
-            className={styles.form.input()}
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            required
-          />
+            <label className="text-md" htmlFor="password">
+              Wachtwoord
+            </label>
+            <input
+              className={styles.form.input()}
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              required
+            />
 
-          <label className="text-md" htmlFor="phone">
-            Telefoon
-          </label>
-          <input
-            className={styles.form.input()}
-            name="phone"
-            placeholder="+32..."
-            required
-          />
-          <SubmitButton
-            formAction={toggleAddress()}
-            className={styles.form.submit()}
-            pendingText="Volgende"
-          >
-            Volgende
-          </SubmitButton>
-        </>)}
-        {showAddress && (<>
-            <p>{showAddress}</p>
-            <p>tezst</p>
+            <label className="text-md" htmlFor="phone">
+              Telefoon
+            </label>
+            <input
+              className={styles.form.input()}
+              name="phone"
+              placeholder="+32..."
+              required
+            />
+            <SubmitButton
+              formAction={toggleAddress()}
+              className={styles.form.submit()}
+              pendingText="Volgende"
+            >
+              Volgende
+            </SubmitButton>
+          </> */}
+          <SignupSteps />
+          {/* <>
+              <p>{showAddress}</p>
+              <p>tezst</p>
 
-          <label className="text-md" htmlFor="address">
-            Adres
-          </label>
-          <div className={styles.form.adres()}>
-          <input
-            className={styles.form.input()}
-            name="address"
-            placeholder="Straatnaam"
-            required
-          />
-          <input
-            className={styles.form.input()}
-            name="address"
-            placeholder="Nr."
-            required
-          />
-          </div>
-          <input
-            className={styles.form.input()}
-            name="address"
-            placeholder="Postcode"
-            required
-          />
-          <SubmitButton
-            formAction={signUp}
-            className={styles.form.submit()}
-            pendingText="Signing Up..."
-          >
-            Registreren
-          </SubmitButton>
-        </>)}
-
+              <label className="text-md" htmlFor="address">
+                Adres
+              </label>
+              <div className={styles.form.adres()}>
+                <input
+                  className={styles.form.input()}
+                  name="address"
+                  placeholder="Straatnaam"
+                  required
+                />
+                <input
+                  className={styles.form.input()}
+                  name="address"
+                  placeholder="Nr."
+                  required
+                />
+              </div>
+              <input
+                className={styles.form.input()}
+                name="address"
+                placeholder="Postcode"
+                required
+              />
+              <SubmitButton
+                formAction={signUp}
+                className={styles.form.submit()}
+                pendingText="Signing Up..."
+              >
+                Registreren
+              </SubmitButton>
+            </> */}
 
           <p className={styles.form.text()}>
             Heb je al een account?{' '}
