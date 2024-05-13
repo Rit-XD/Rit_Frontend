@@ -1,10 +1,15 @@
+import background from '@/public/images/background-login.png'
+import {fromModule} from '@/src/utils/styler/Styler'
 import {createClient} from '@/src/utils/supabase/server'
 import {headers} from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import {redirect} from 'next/navigation'
 import handleSignup from './HandleSignup'
+import css from './SignUpSteps.module.scss'
 import {SubmitButton} from './submit-button'
+
+const styles = fromModule(css)
 
 export default function SignUp({
   searchParams
@@ -48,87 +53,95 @@ export default function SignUp({
   }
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl">
+    <>
       <Image
-        src="/images/logo-rit.png"
-        alt="Logo Rit"
-        width={64}
-        height={64}
-        className="self-center pb-5"
-      ></Image>
-      <h1 className="self-center font-bold text-xl">Registreren</h1>
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-background">
-        <label className="text-md" htmlFor="name">
-          Naam
-        </label>
-        <input
-          className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          name="name"
-          placeholder="Naam"
-          required
-        />
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
+        src={background}
+        fill
+        sizes="100vw"
+        style={{objectFit: 'cover'}}
+        alt="background login"
+      />
+      <span className={styles.overlay1()} />
+      <span className={styles.overlay2()} />
+      <div className={styles.container()}>
+        <Image
+          src="/images/logo-rit.png"
+          alt="Logo Rit"
+          width={64}
+          height={64}
+          className="self-center pb-5"
+        ></Image>
+        <h1 className="self-center font-bold text-xl">Registreren</h1>
+        <form className={styles.form()}>
+          <label className="text-md" htmlFor="name">
+            Naam
+          </label>
+          <input
+            className={styles.form.input()}
+            name="name"
+            placeholder="Naam"
+            required
+          />
+          <label className="text-md" htmlFor="email">
+            Email
+          </label>
+          <input
+            className={styles.form.input()}
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
 
-        <label className="text-md" htmlFor="password">
-          Wachtwoord
-        </label>
-        <input
-          className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
+          <label className="text-md" htmlFor="password">
+            Wachtwoord
+          </label>
+          <input
+            className={styles.form.input()}
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            required
+          />
 
-        <label className="text-md" htmlFor="phone">
-          Telefoon
-        </label>
-        <input
-          className="px-4 py-3 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          name="phone"
-          placeholder="+32..."
-          required
-        />
+          <label className="text-md" htmlFor="phone">
+            Telefoon
+          </label>
+          <input
+            className={styles.form.input()}
+            name="phone"
+            placeholder="+32..."
+            required
+          />
 
-        <label className="text-md" htmlFor="address">
-          Adres
-        </label>
-        <input
-          className="px-4 py-3 mb-6 bg-inherit border border-slate-200 rounded-full focus:outline-orange-500 focus:border-0 focus:outline-none"
-          name="address"
-          placeholder="Straatnaam 123"
-          required
-        />
-        <SubmitButton
-          formAction={signUp}
-          className="px-4 py-2 text-foreground mb-2 rounded-full bg-orange-500"
-          pendingText="Signing Up..."
-        >
-          Registreren
-        </SubmitButton>
-        <p className="px-4 py-2 text-background mb-2 self-center">
-          Heb je al een account?{' '}
-          <Link
-            href="/login"
-            className="border px-4 py-2 text-background mb-2 text-orange-500 hover:underline"
+          <label className="text-md" htmlFor="address">
+            Adres
+          </label>
+          <input
+            className={styles.form.input()}
+            name="address"
+            placeholder="Straatnaam 123"
+            required
+          />
+          <SubmitButton
+            formAction={signUp}
+            className={styles.form.submit()}
+            pendingText="Signing Up..."
           >
-            Log in
-          </Link>
-        </p>
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
+            Registreren
+          </SubmitButton>
+          <p className={styles.form.text()}>
+            Heb je al een account?{' '}
+            <Link href="/login" className={styles.form.link()}>
+              Log in
+            </Link>
           </p>
-        )}
-      </form>
-    </div>
+          {searchParams?.message && (
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+              {searchParams.message}
+            </p>
+          )}
+        </form>
+      </div>
+    </>
   )
 }
