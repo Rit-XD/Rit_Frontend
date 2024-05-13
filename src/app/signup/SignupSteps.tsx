@@ -13,10 +13,28 @@ export const SignupSteps: React.FC<{
   signUp: (formData: FormData) => Promise<void>
 }> = ({signUp}) => {
   const [showAddress, setShowAddress] = useState(false)
-  const [formData, setFormData] = useState({} as FormData)
+  const [formData, setFormData] = useState<{[key: string]: string}>({})
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const formDataObj = new FormData()
+    for (const key in formData) {
+      formDataObj.append(key, formData[key])
+    }
+
+    await signUp(formDataObj)
+  }
 
   return (
-    <form className={styles.form()}>
+    <form className={styles.form()} onSubmit={handleSubmit}>
       {!showAddress && (
         <>
           <label className="text-md" htmlFor="name">
@@ -27,6 +45,7 @@ export const SignupSteps: React.FC<{
             name="name"
             placeholder="Naam"
             required
+            onChange={handleInputChange}
           />
           <label className="text-md" htmlFor="email">
             Email
@@ -36,6 +55,7 @@ export const SignupSteps: React.FC<{
             name="email"
             placeholder="you@example.com"
             required
+            onChange={handleInputChange}
           />
 
           <label className="text-md" htmlFor="password">
@@ -47,6 +67,7 @@ export const SignupSteps: React.FC<{
             name="password"
             placeholder="••••••••"
             required
+            onChange={handleInputChange}
           />
 
           <label className="text-md" htmlFor="phone">
@@ -57,11 +78,13 @@ export const SignupSteps: React.FC<{
             name="phone"
             placeholder="+32..."
             required
+            onChange={handleInputChange}
           />
           <SubmitButton
             className={styles.form.submit()}
             pendingText="Volgende"
-            formAction={() => setShowAddress(true)}
+            onClick={() => setShowAddress(true)}
+            type="button"
           >
             Volgende
           </SubmitButton>
@@ -84,12 +107,14 @@ export const SignupSteps: React.FC<{
               name="street"
               placeholder="Straatnaam"
               required
+              onChange={handleInputChange}
             />
             <input
               className={styles.form.input()}
               name="number"
               placeholder="Nr."
               required
+              onChange={handleInputChange}
             />
           </div>
           <div className={styles.form.adres()}>
@@ -98,6 +123,7 @@ export const SignupSteps: React.FC<{
               name="city"
               placeholder="Stad"
               required
+              onChange={handleInputChange}
             />
             <input
               className={styles.form.input()}
@@ -105,6 +131,7 @@ export const SignupSteps: React.FC<{
               placeholder="Postcode"
               required
               type="number"
+              onChange={handleInputChange}
             />
           </div>
           <SubmitButton
