@@ -1,5 +1,5 @@
 import {UserProvider} from '@/lib/user/useUser'
-import '@/src/styles/globals.scss'
+import '@/styles/globals.scss'
 import {GeistSans} from 'geist/font/sans'
 import './globals.css'
 
