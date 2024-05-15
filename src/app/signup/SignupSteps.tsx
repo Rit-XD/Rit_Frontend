@@ -70,16 +70,6 @@ export const SignupSteps: React.FC<{
             onChange={handleInputChange}
           />
 
-          <label className="text-md" htmlFor="phone">
-            Telefoon
-          </label>
-          <input
-            className={styles.form.input()}
-            name="phone"
-            placeholder="+32..."
-            required
-            onChange={handleInputChange}
-          />
           <SubmitButton
             className={styles.form.submit()}
             pendingText="Volgende"
@@ -98,6 +88,16 @@ export const SignupSteps: React.FC<{
       )}
       {showAddress && (
         <>
+          <label className="text-md" htmlFor="phone">
+            Telefoon
+          </label>
+          <input
+            className={styles.form.input()}
+            name="phone"
+            placeholder="+32..."
+            required
+            onChange={handleInputChange}
+          />
           <label className="text-md" htmlFor="address">
             Adres
           </label>

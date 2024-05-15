@@ -13,10 +13,6 @@
     padding: 14px 20px;
     background-color: black;
 
-    [data-theme='dark'] & {
-      background-color: var(--gray-800);
-    }
-
     // @include media($ipad-land) {
     //   display: none;
     // }
