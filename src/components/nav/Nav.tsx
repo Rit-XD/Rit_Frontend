@@ -13,27 +13,27 @@ export function Nav({mod}: {mod?: Variant<'mobile' | 'desktop'>}) {
   const nav = [
     {
       icon: 'home',
-      href: '/dashboard',
+      href: '/',
       title: 'Dashboard'
     },
     {
       icon: 'passengers',
-      href: '/dashboard/passengers',
+      href: '/passengers',
       title: 'Passagiers'
     },
     {
       icon: 'rides',
-      href: '/dashboard/rides',
+      href: '/rides',
       title: 'Ritten'
     },
     {
       icon: 'chat',
-      href: '/dashboard/chat',
+      href: '/chat',
       title: 'Chat'
     },
     {
       icon: 'settings',
-      href: '/dashboard/settings',
+      href: '/settings',
       title: 'Instellingen'
     }
   ]
@@ -65,8 +65,7 @@ function NavLink({
 }) {
   const pathname = usePathname()
   if (!href) return null
-  const isActive =
-    pathname === href || (pathname === '/' && href === '/dashboard')
+  const isActive = pathname === href || (pathname === '/' && href === '/')
   return (
     <Link
       href={href}

@@ -48,5 +48,5 @@ export async function handleLogin(
   //   .delete()
   //   .eq("email", email);
 
-  redirect('/dashboard')
+  redirect('/')
 }

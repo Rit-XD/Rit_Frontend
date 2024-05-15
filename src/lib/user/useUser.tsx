@@ -7,6 +7,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState
 } from 'react'
 import {User} from './User'
@@ -23,7 +24,15 @@ const Context = createContext<{
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
   const {user, setUser} = useContext(Context)
-  return {user}
+  const actions = useMemo(() => {
+    const setProfile = (update: Partial<User['carecenter']>) => {
+      if (!user) return
+      setUser({...user, carecenter: {...user.carecenter, ...update}})
+    }
+    return {setProfile}
+  }, [user])
+
+  return {user, setUser, actions}
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {

@@ -1,9 +1,9 @@
 'use server'
-import background from '@/public/images/background-login.png'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
 import Image from 'next/image'
 import {redirect} from 'next/navigation'
+import background from '../../../public/images/background-login.png'
 import {LoginSteps} from './LoginSteps'
 import css from './LoginSteps.module.scss'
 
@@ -18,7 +18,7 @@ export default async function Login({
 }) {
   const user = await fetchUser()
   if (user) {
-    return redirect('/dashboard')
+    return redirect('/')
   }
   // const signIn = async (formData: FormData) => {
   //   "use server";
@@ -38,7 +38,7 @@ export default async function Login({
   //   }
   //   // const user = await getUser(data.user.id);
 
-  //   return redirect("/dashboard");
+  //   return redirect("/");
   // };
 
   return (
