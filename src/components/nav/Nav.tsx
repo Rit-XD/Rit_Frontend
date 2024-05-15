@@ -18,17 +18,17 @@ export function Nav({mod}: {mod?: Variant<'mobile' | 'desktop'>}) {
     },
     {
       icon: 'passengers',
-      href: '/passengers',
+      href: '/dashboard/passengers',
       title: 'Passagiers'
     },
     {
       icon: 'rides',
-      href: '/rides',
+      href: '/dashboard/rides',
       title: 'Ritten'
     },
     {
       icon: 'chat',
-      href: '/chat',
+      href: '/dashboard/chat',
       title: 'Chat'
     },
     {
