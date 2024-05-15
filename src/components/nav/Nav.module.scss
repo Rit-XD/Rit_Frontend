@@ -1,0 +1,102 @@
+@import '@/style';
+
+.nav {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+
+  &.mod-mobile {
+    position: sticky;
+    z-index: 50;
+    bottom: 0;
+    left: 0;
+    padding: 14px 20px;
+    background-color: black;
+
+    [data-theme='dark'] & {
+      background-color: var(--gray-800);
+    }
+
+    // @include media($ipad-land) {
+    //   display: none;
+    // }
+  }
+
+  &.mod-desktop {
+    margin-top: 64px;
+  }
+
+  &-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    color: var(--primary);
+
+    gap: 64px;
+    flex-direction: column;
+  }
+}
+
+.link {
+  position: relative;
+  gap: 32px;
+  display: flex;
+  align-items: center;
+
+  .mod-mobile & {
+    top: -4px;
+  }
+
+  &-icon {
+    font-size: 24px;
+    color: inherit;
+
+    // .mod-mobile & {
+    //   width: 44px;
+    //   height: 44px;
+    //   display: flex;
+    //   align-items: center;
+    //   justify-content: center;
+    //   color: white;
+    // }
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 4px;
+    // height: 88px;
+    height: 55px;
+    background-color: white;
+    position: absolute;
+    opacity: 0;
+    transition: 0.3s ease-out;
+
+    @include media($ipad-land) {
+      right: -285%;
+      top: 50%;
+      background-color: currentColor;
+      transform: translate(-32px, -50%);
+    }
+  }
+
+  @include media($ipad-land) {
+    &:hover:after {
+      opacity: 1;
+      transform: translate(-16px, -50%);
+    }
+  }
+
+  &.is-active {
+    color: var(--primary);
+  }
+
+  &.is-active:after {
+    opacity: 1;
+    transform: translate(-50%, 4px);
+
+    @include media($ipad-land) {
+      transform: translate(-16px, -50%);
+    }
+  }
+}
