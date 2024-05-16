@@ -1,5 +1,13 @@
 @import '@/style.scss';
 
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .overlay1,
 .overlay2 {
   position: absolute;
@@ -32,6 +40,18 @@
   z-index: 10;
   @include media($tablet) {
     max-width: 448px;
+  }
+
+  &-image {
+    margin-bottom: 20px;
+    align-self: center;
+  }
+
+  &-title {
+    align-self: center;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
   }
 }
 
@@ -120,7 +140,7 @@
     justify-content: center;
     width: 100%;
     z-index: 10;
-    input{
+    input {
       width: 50%;
     }
   }

@@ -37,9 +37,7 @@ export const SignupSteps: React.FC<{
     <form className={styles.form()} onSubmit={handleSubmit}>
       {!showAddress && (
         <>
-          <label className="text-md" htmlFor="name">
-            Naam
-          </label>
+          <label htmlFor="name">Naam</label>
           <input
             className={styles.form.input()}
             name="name"
@@ -47,9 +45,7 @@ export const SignupSteps: React.FC<{
             required
             onChange={handleInputChange}
           />
-          <label className="text-md" htmlFor="email">
-            Email
-          </label>
+          <label htmlFor="email">Email</label>
           <input
             className={styles.form.input()}
             name="email"
@@ -58,9 +54,7 @@ export const SignupSteps: React.FC<{
             onChange={handleInputChange}
           />
 
-          <label className="text-md" htmlFor="password">
-            Wachtwoord
-          </label>
+          <label htmlFor="password">Wachtwoord</label>
           <input
             className={styles.form.input()}
             type="password"
@@ -88,9 +82,7 @@ export const SignupSteps: React.FC<{
       )}
       {showAddress && (
         <>
-          <label className="text-md" htmlFor="phone">
-            Telefoon
-          </label>
+          <label htmlFor="phone">Telefoon</label>
           <input
             className={styles.form.input()}
             name="phone"
@@ -98,9 +90,7 @@ export const SignupSteps: React.FC<{
             required
             onChange={handleInputChange}
           />
-          <label className="text-md" htmlFor="address">
-            Adres
-          </label>
+          <label htmlFor="address">Adres</label>
           <div className={styles.form.adres()}>
             <input
               className={styles.form.input()}

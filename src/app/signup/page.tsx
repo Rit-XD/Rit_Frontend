@@ -1,9 +1,9 @@
-import background from '@/public/images/background-login.png'
 import {fromModule} from '@/utils/styler/Styler'
 import {createClient} from '@/utils/supabase/server'
 import {headers} from 'next/headers'
 import Image from 'next/image'
 import {redirect} from 'next/navigation'
+import background from '../../../public/images/background-login.png'
 import handleSignup from './HandleSignup'
 import css from './SignUpSteps.module.scss'
 import {SignupSteps} from './SignupSteps'
@@ -71,9 +71,9 @@ export default function SignUp({}: // searchParams
           alt="Logo Rit"
           width={64}
           height={64}
-          className="self-center pb-5"
+          className={styles.container.image()}
         ></Image>
-        <h1 className="self-center font-bold text-xl">Registreren</h1>
+        <h1 className={styles.container.title()}>Registreren</h1>
         <SignupSteps signUp={signUp} />
       </div>
     </>

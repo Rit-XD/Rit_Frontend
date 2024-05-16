@@ -10,7 +10,7 @@ import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowse
 import {GeistSans} from 'geist/font/sans'
 import Image from 'next/image'
 import Link from 'next/link'
-import './globals.css'
+import '../styles/globals.scss'
 
 const styles = fromModule(css)
 
@@ -23,7 +23,7 @@ export default function DashboardLayout({
   const supabase = createSupabaseForBrowser()
   return (
     <html lang="nl" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
+      <body>
         <UserProvider>
           <div className={styles.layout()}>
             {user && (

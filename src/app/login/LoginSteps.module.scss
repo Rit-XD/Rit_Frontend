@@ -1,3 +1,13 @@
+@import '@/style';
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -5,6 +15,40 @@
   gap: 0.5rem;
   justify-content: center;
   width: 100%;
+
+  &-container {
+    position: relative;
+    display: flex;
+    z-index: 10;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    padding-left: 32px;
+    padding-right: 32px;
+    flex-direction: column;
+    flex: 1 1 0%;
+    gap: 0.5rem;
+    justify-content: center;
+    border-radius: 0.75rem;
+    width: 100%;
+    color: #000000;
+    background-color: #ffffff;
+
+    @include media($tablet) {
+      max-width: 448px;
+    }
+
+    &-image {
+      margin-bottom: 20px;
+      align-self: center;
+    }
+
+    &-title {
+      align-self: center;
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 700;
+    }
+  }
 
   &-overlay1,
   &-overlay2 {
