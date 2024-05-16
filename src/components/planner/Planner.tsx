@@ -25,6 +25,19 @@ export const Planner: React.FC = () => {
                 <input type="text" name="destination" id="input-destination" placeholder="Bestemming" className={styles.container.planner.inputs.input()}/>
                 <input type="datetime-local" name="date" id="input-date" placeholder="Tijdstip" className={styles.container.planner.inputs.input()}/>
             </div>
+            <div className={styles.container.planner.inputs()}>
+                <div>
+                    <div>
+                    <input type="radio" name="routetype" id="routetype-both" className={styles.container.planner.inputs.radio()}/>
+                    <label htmlFor="routetype-both">Heen- en terugrit</label>
+                    </div>
+                    <div>
+                    <input type="radio" name="routetype" id="routetype-single" className={styles.container.planner.inputs.radio()}/>
+                    <label htmlFor="routetype-single">Enkele rit</label>
+                    </div>
+                </div>
+                <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button>
+            </div>
         </div>
         <div className={styles.container.map()}>
             <Map/>
