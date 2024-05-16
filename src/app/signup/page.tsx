@@ -1,4 +1,4 @@
-import background from '@/public/images/background-login.png'
+import background from '@/../public/images/background-login.png'
 import {fromModule} from '@/utils/styler/Styler'
 import {createClient} from '@/utils/supabase/server'
 import {headers} from 'next/headers'
