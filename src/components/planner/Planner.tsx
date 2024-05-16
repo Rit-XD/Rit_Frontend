@@ -3,6 +3,7 @@
 import React from "react"
 import css from './Planner.module.scss'
 import { fromModule } from "@/utils/styler/Styler"
+import { Map } from "../map/Map";
 
 const styles = fromModule(css);
 
@@ -24,6 +25,9 @@ export const Planner: React.FC = () => {
                 <input type="text" name="destination" id="input-destination" placeholder="Bestemming" className={styles.container.planner.inputs.input()}/>
                 <input type="datetime-local" name="date" id="input-date" placeholder="Tijdstip" className={styles.container.planner.inputs.input()}/>
             </div>
+        </div>
+        <div className={styles.container.map()}>
+            <Map/>
         </div>
     </div>
     )
