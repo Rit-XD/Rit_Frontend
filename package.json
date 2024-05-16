@@ -9,6 +9,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "@vis.gl/react-google-maps": "^1.0.0",
     "autoprefixer": "10.4.17",
     "geist": "^1.2.1",
     "include-media": "^2.0.0",
