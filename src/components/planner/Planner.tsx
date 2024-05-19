@@ -1,11 +1,12 @@
-"use client"
+'use client'
 
-import React from "react"
+import Button from '@/ui/button/Button'
+import {fromModule} from '@/utils/styler/Styler'
+import React from 'react'
+import {Map} from '../map/Map'
 import css from './Planner.module.scss'
-import { fromModule } from "@/utils/styler/Styler"
-import { Map } from "../map/Map";
 
-const styles = fromModule(css);
+const styles = fromModule(css)
 
 export const Planner: React.FC = () => {
     const [passengers, setPassengers] = React.useState<string[]>([]);
@@ -61,5 +62,5 @@ export const Planner: React.FC = () => {
             {passengers}
         </div>
     </div>
-    )
+  )
 }
