@@ -1,3 +1,4 @@
+import {PassengerTable} from '@/components/passengertable/PassengerTable'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {redirect} from 'next/navigation'
 
@@ -7,8 +8,7 @@ export default async function Passengers() {
 
   return (
     <main>
-      Ik ben in de passengers
-      {/* we use serverside page and only import small client side component*/}
+      <PassengerTable />
     </main>
   )
 }
