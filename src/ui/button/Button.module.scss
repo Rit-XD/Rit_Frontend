@@ -1,0 +1,84 @@
+.button {
+  white-space: nowrap;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  background-color: var(--primary);
+  color: white;
+  word-break: break-word;
+  transition-property: background-color;
+  font-weight: bold;
+  text-align: center;
+  padding-block: 12px;
+  padding-inline: 16px;
+  border-radius: 40px;
+  border-width: 1px;
+  color: white;
+  border: 2px solid var(--primary);
+  transition: all 0.3s ease-out;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    background-color: var(--primary-lighten);
+    opacity: 0;
+    transform: scaleX(0.6);
+    transition: 0.3s ease-out;
+    transition-property: opacity, transform;
+    backface-visibility: hidden;
+  }
+
+  &-label {
+    position: relative;
+  }
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      background-color: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+  }
+
+  &.mod-notinline {
+    display: unset;
+  }
+
+  &.mod-outline {
+    color: var(--primary);
+    border-color: var(--primary);
+    border-style: solid;
+    background-color: transparent;
+
+    @media (hover: hover) {
+      &:hover,
+      &:focus-visible {
+        color: white;
+        background-color: var(--primary);
+      }
+    }
+  }
+
+  &.mod-invert {
+    background-color: white;
+    color: var(--primary);
+    border: 1px solid white;
+
+    @media (hover: hover) {
+      &:hover,
+      &:focus-visible {
+        border-color: var(--primary);
+        color: white;
+        background-color: var(--primary);
+      }
+    }
+  }
+}

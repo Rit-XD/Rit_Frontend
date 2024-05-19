@@ -22,13 +22,26 @@ export default function DashboardLayout({
     <UserProvider>
       <div className={styles.layout()}>
         <aside className={styles.layout.sidebar()}>
-          <Link href={`/dashboard`} title="Rit" className={styles.layout.sidebar.logo()}>
-            <Image src="/images/logo-rit.png" alt="Logo Rit" width={64} height={64}></Image>
+          <Link
+            href={`/dashboard`}
+            title="Rit"
+            className={styles.layout.sidebar.logo()}
+          >
+            <Image
+              src="/images/logo-rit.png"
+              alt="Logo Rit"
+              width={64}
+              height={64}
+            ></Image>
           </Link>
           <Nav />
           <div className={styles.layout.sidebar.signout()}>
             <hr className={styles.layout.sidebar.signout.hr()} />
-            <button onClick={() => supabase.auth.signOut().finally(() => location.reload())}>
+            <button
+              onClick={() =>
+                supabase.auth.signOut().finally(() => location.reload())
+              }
+            >
               <Icon icon="logout" />
             </button>
           </div>
