@@ -1,6 +1,7 @@
 'use client'
 
 import css from '@/app/dashboard/Layout.module.scss'
+import {Header} from '@/components/header/Header'
 import {Nav} from '@/components/nav/Nav'
 import {UserProvider} from '@/lib/user/useUser'
 import {Icon} from '@/ui/Icon'
@@ -46,7 +47,11 @@ export default function DashboardLayout({
             </button>
           </div>
         </aside>
-        <div className={styles.layout.content()}>{children}</div>
+        <div className={styles.layout.content()}>
+          <Header />
+
+          {children}
+        </div>
       </div>
     </UserProvider>
   )

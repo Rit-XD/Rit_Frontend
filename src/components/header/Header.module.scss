@@ -1,14 +1,21 @@
 .header {
-    display: flex;
-    align-items: center;
-    margin: 32px 64px;
-    &-logo {
-        width: 64px;
-        height: 64px;
-    }
-    &-title {
-        font-size: 21px;
-        margin-left: 16px;
-        font-weight: 400;
-    }
+  display: flex;
+  align-items: center;
+  margin: 32px 64px;
+  &-logo {
+    width: 64px;
+    height: 64px;
+  }
+  &-title {
+    font-size: 21px;
+    margin-left: 16px;
+    font-weight: 400;
+  }
+  &-hr {
+    margin-inline: 64px;
+    margin-right: 64px;
+    margin-bottom: 32px;
+    height: 1px;
+    background-color: #dfdfdf;
+  }
 }

@@ -10,7 +10,8 @@ const icons = {
   settings: {ratio: 24 / 25},
   settings_solid: {ratio: 24 / 25},
   logout: {ratio: 26 / 24},
-  plus: {ratio: 23 / 23}
+  plus: {ratio: 23 / 23},
+  search: {ratio: 22 / 22}
 }
 
 export type IconType = keyof typeof icons
