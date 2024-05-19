@@ -52,7 +52,8 @@ export const Planner: React.FC = () => {
                     <label htmlFor="routetype-single">Enkele rit</label>
                     </div>
                 </div>
-                <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button>
+                {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
+                <Button>Plaats deze rit</Button>
             </div>
         </div>
         <div className={styles.container.map()}>
