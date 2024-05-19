@@ -2,7 +2,7 @@
 
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import {Map} from '../map/Map'
 import css from './Planner.module.scss'
 
@@ -12,15 +12,15 @@ export const Planner: React.FC = () => {
     const [passengers, setPassengers] = React.useState<string[]>([]);
 
     const appendToArray = (nextElement: string) => {
-        if (nextElement !== ""){
+        if (!passengers.includes(nextElement)) {
             const next_arr = [...passengers, nextElement];
             setPassengers(next_arr);
         }
-      }
-      const removeIndexFromArray = (index: number) => {
+    }
+    const removeIndexFromArray = (index: number) => {
         const next_arr = [...passengers.slice(0, index), ...passengers.slice(index + 1)];
         setPassengers(next_arr);
-      }
+    }
 
     return (
     <div className={styles.container()}>
@@ -39,7 +39,10 @@ export const Planner: React.FC = () => {
             <div className={styles.container.planner.inputs()}>
                 <div>
                     {passengers.map((passenger, index) => 
+                    <div className={styles.container.planner.inputs.passenger()}>
                         <p>{passenger}</p>
+                        <div/>
+                    </div>
                     )}
                 </div>
                 <div>

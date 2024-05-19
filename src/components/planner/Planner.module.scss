@@ -24,9 +24,16 @@
                 border-radius: 10px;
                 padding: 16px;
                 outline: none;
+                appearance: none;
                 &::placeholder {
                     color: #00202F;
                     opacity: .5;
+                }
+            }
+            & select {
+                &::after {
+                    content: '▼';
+                    pointer-events: none;
                 }
             }
             &-radio {
@@ -38,6 +45,19 @@
                 color: white;
                 border-radius: 32px;
                 font-weight: bold;
+            }
+            &-passenger {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 0 8px;
+                div {
+                    // font-size: 1.5rem;
+                    background-color: var(--primary);
+                    width: 12px;
+                    height: 2px;
+                    
+                }
             }
         }
     }
