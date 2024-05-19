@@ -1,14 +1,15 @@
 .button {
   white-space: nowrap;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   vertical-align: top;
   background-color: var(--primary);
   color: white;
   word-break: break-word;
   transition-property: background-color;
-  font-weight: bold;
-  text-align: center;
   padding-block: 12px;
   padding-inline: 16px;
   border-radius: 40px;
@@ -81,4 +82,8 @@
       }
     }
   }
+}
+
+.icon {
+  flex: 0 0 auto;
 }

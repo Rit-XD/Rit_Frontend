@@ -9,7 +9,8 @@ const icons = {
   chat_solid: {ratio: 24 / 23},
   settings: {ratio: 24 / 25},
   settings_solid: {ratio: 24 / 25},
-  logout: {ratio: 26 / 24}
+  logout: {ratio: 26 / 24},
+  plus: {ratio: 23 / 23}
 }
 
 export type IconType = keyof typeof icons
