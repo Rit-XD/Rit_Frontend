@@ -24,6 +24,14 @@ export const PassengerTable: React.FC = async () => {
     const birthDate = new Date(dateofbirth)
     const today = new Date()
     let age = today.getFullYear() - birthDate.getFullYear()
+    const hasBirthdayPassed =
+      today.getMonth() > birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() &&
+        today.getDate() >= birthDate.getDate())
+
+    if (!hasBirthdayPassed) {
+      age-- // Subtract 1 from age if the birthday hasn't passed yet
+    }
     return age
   }
   return (
