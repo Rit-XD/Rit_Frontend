@@ -51,7 +51,9 @@ export const PassengerTable: React.FC = async () => {
             </td>
             <td>{calculateAge(passengers.dateofbirth || '')}</td>
             <td>
-              {passengers.emergency_contact} {passengers.emergency_relation}
+              {`${passengers.emergency_contact || '-'} ${
+                passengers.emergency_relation || ''
+              }`}
             </td>
           </tr>
         ))}
