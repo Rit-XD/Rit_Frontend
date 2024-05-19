@@ -5,28 +5,40 @@ import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
 import {Map} from '../map/Map'
 import css from './Planner.module.scss'
-import {fetchPassengers} from './Planner.server'
+import {fetchPassengers} from './FetchPlanner'
 
 const styles = fromModule(css)
 
-export const Planner: React.FC = () => {
-  const [passengers, setPassengers] = useState([])
-  useEffect(() => {
-    fetchPassengers().then(data => {
-      setPassengers(data)
-    })
-  }, [])
+export const Planner: React.FC<{
+    initial: {          
+        carecenter_id: string
+        dateofbirth: string | null
+        emergency_contact: string | null
+        emergency_relation: string | null
+        extra: string | null
+        firstname: string
+        id: string
+        lastname: string
+        wheelchair: boolean
+    }[]
+}> = ({initial}) => {
+    const [passengers, setPassengers] = useState<typeof initial>();
+    const [selectedPassengers, setSelectedPassengers] = useState<string[]>([]);
+    const loadPassengers = async () => {
+        if (passengers?.length) return;
+        setPassengers(await fetchPassengers());
+    }
+    const selectPassenger = (passenger: string) => {
+        if (selectedPassengers!.includes(passenger)) {
+            return;
+        }
+        setSelectedPassengers([...selectedPassengers!, passenger]);
+    }
+    useEffect(() => {
+        loadPassengers();
+        console.log("passengers", passengers);
+    }, [passengers]);
 
-  // const appendToArray = (nextElement: string) => {
-  //     if (!passengers.includes(nextElement)) {
-  //         const next_arr = [...passengers, nextElement];
-  //         setPassengers(next_arr);
-  //     }
-  // }
-  // const removeIndexFromArray = (index: number) => {
-  //     const next_arr = [...passengers.slice(0, index), ...passengers.slice(index + 1)];
-  //     setPassengers(next_arr);
-  // }
 
   return (
     <div className={styles.container()}>
@@ -34,18 +46,13 @@ export const Planner: React.FC = () => {
         <h3>Plan een rit</h3>
         <div className={styles.container.planner.inputs()}>
           {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
-          <select
-            name="passenger"
-            id="select-passenger"
-            className={styles.container.planner.inputs.input()}
-            defaultValue=""
-          >
+          <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} defaultValue="" onChange={(e) => selectPassenger(e.target.value)}>
             <option value="" selected disabled>
               Passagier toevoegen
             </option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            {passengers?.map((passengers, index) => (
+                <option value={`${passengers.firstname} ${passengers.lastname}`}>{passengers.firstname} {passengers.lastname}</option>
+            ))}
           </select>
           <input
             type="text"
@@ -64,13 +71,12 @@ export const Planner: React.FC = () => {
         </div>
         <div className={styles.container.planner.inputs()}>
           <div>
-            {passengers?.map((passengers, index) => (
-              <div className={styles.container.planner.inputs.passenger()}>
-                <p>
-                  {passengers.firstname} {passengers.lastname}
-                </p>
-                <div />
-              </div>
+            {/* TODO: */}
+            {selectedPassengers?.map((selectedPassengers, index) => (
+                <div className={styles.container.planner.inputs.passenger()}>
+                    <p>{selectedPassengers}</p>
+                    <div/>
+                </div>
             ))}
           </div>
           <div>
