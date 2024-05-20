@@ -1,0 +1,49 @@
+@import '@/style';
+
+.tokeninput {
+  max-width: 100%;
+  margin-inline: auto;
+
+  > div {
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  &-input {
+    width: 64px !important;
+    height: 64px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease-out;
+    font-weight: 600;
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none !important;
+      border-color: var(--primary);
+    }
+  }
+
+  &-resend {
+    display: block;
+    margin-block: 20px;
+    text-align: center;
+
+    &-link {
+      text-align: center;
+      color: var(--primary);
+      transition: all 0.3s ease-out;
+      border-bottom: 1px solid white;
+      font-weight: 400;
+      &:hover {
+        border-bottom: 1px solid var(--primary);
+      }
+    }
+  }
+}
