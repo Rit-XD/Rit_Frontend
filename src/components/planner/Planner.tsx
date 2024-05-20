@@ -8,10 +8,9 @@ import css from './Planner.module.scss'
 import {fetchPassengers} from './FetchPlanner'
 import { Icon } from '@/ui/Icon'
 import {postRide} from './PostRide'
-import { createSupabaseForBrowser } from '@/utils/supabase/createSupabaseForBrowser'
+import { Passenger } from '@/types/passenger.type'
 
 const styles = fromModule(css)
-const supabase = createSupabaseForBrowser();
 
 export const Planner: React.FC<{
     initial: {          
@@ -27,34 +26,38 @@ export const Planner: React.FC<{
     }[]
 }> = ({initial}) => {
     const [passengers, setPassengers] = useState<typeof initial>();
-    const [selectedPassengers, setSelectedPassengers] = useState<string[]>([]);
+    const [selectedPassengers, setSelectedPassengers] = useState<typeof initial>([]);
 
     const [desination, setDestination] = useState<string>("");
     const [dateTime, setDateTime] = useState<string>("");
 
+    //load all possible passengers
     const loadPassengers = async () => {
         if (passengers?.length) return;
         setPassengers(await fetchPassengers());
     }
-    const selectPassenger = (passenger: string) => {
-        if (selectedPassengers!.includes(passenger)) {
-            return;
-        }
-        setSelectedPassengers([...selectedPassengers!, passenger]);
-    }
-    const removeSelectedPassenger = (passenger: string) => {
-        setSelectedPassengers(selectedPassengers.filter((selectedPassenger) => selectedPassenger !== passenger));
-    }
-
     useEffect(() => {
-        loadPassengers();
-        // console.log("passengers", passengers);
-    }, []);
+      loadPassengers();
+  }, []);
 
-    const handleNew = async () => { 
+    //maintain selected passengers
+    const selectPassenger = (passengerId: string) => {
+      const p: Passenger = passengers!.find((p) => p.id === passengerId)!; 
+      if (selectedPassengers!.includes(p)) {
+        return;
+      }
+      setSelectedPassengers([...selectedPassengers!, p]);
+    }
+    const removeSelectedPassenger = (passengerId: string) => {
+      const p: Passenger = passengers!.find((p) => p.id === passengerId)!;
+        setSelectedPassengers(selectedPassengers.filter((selectedPassenger) => selectedPassenger !== p));
+    }
+
+    //handle submit
+    const handlesubmit = async () => { 
       console.log(dateTime);
-      postRide(desination, "205c6e75-c379-49cf-9937-daa93cfd110a", dateTime, "ec2c1229-f7eb-4262-9398-661715e31b27");
-     }
+      postRide(desination, "205c6e75-c379-49cf-9937-daa93cfd110a", dateTime, selectedPassengers[0].id, selectedPassengers[1]?.id);
+    }
 
 
   return (
@@ -69,11 +72,11 @@ export const Planner: React.FC<{
               <option value="" disabled>
                 Passagier toevoegen
               </option>
-              {passengers?.map((passengers, index) => (
+              {passengers?.map((passenger, index) => (
                   <option 
-                    value={`${passengers.firstname} ${passengers.lastname}`} 
-                    key={`${passengers.firstname} ${passengers.lastname}`}>
-                      {passengers.firstname} {passengers.lastname}
+                    value={passenger.id} 
+                    key={passenger.id}>
+                      {passenger.firstname} {passenger.lastname}
                   </option>
               ))}
             </select>
@@ -103,10 +106,10 @@ export const Planner: React.FC<{
         </div>
         <div className={styles.container.planner.inputs()}>
           <div>
-            {selectedPassengers?.map((selectedPassengers, index) => (
-                <div className={styles.container.planner.inputs.passenger()} key={selectedPassengers}>
-                    <p>{selectedPassengers}</p>
-                    <div onClick={() => removeSelectedPassenger(selectedPassengers)}>
+            {selectedPassengers.map((selectedPassenger, index) => (
+                <div className={styles.container.planner.inputs.passenger()} key={selectedPassenger.id}>
+                    <p>{selectedPassenger.firstname} {selectedPassenger.lastname}</p>
+                    <div onClick={() => removeSelectedPassenger(selectedPassenger.id)}>
                       <div/>
                     </div>
                 </div>
@@ -133,7 +136,7 @@ export const Planner: React.FC<{
             </div>
           </div>
           {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
-          <Button onClick={() => handleNew()}>Plaats deze rit</Button>
+          <Button onClick={handlesubmit}>Plaats deze rit</Button>
         </div>
       </div>
       <div className={styles.container.map()}>
