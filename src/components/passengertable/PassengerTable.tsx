@@ -47,14 +47,16 @@ export const PassengerTable: React.FC = async () => {
       <tbody>
         {passengers?.map((passengers, index) => (
           <tr key={index}>
-            <td>
+            <td className={styles.table.row()}>
               {passengers.firstname} {passengers.lastname}
             </td>
-            <td>{calculateAge(passengers.dateofbirth || '')}</td>
-            <td>
-              {`${passengers.emergency_contact || '-'} ${
+            <td className={styles.table.row()}>
+              {calculateAge(passengers.dateofbirth || '')}
+            </td>
+            <td className={styles.table.row()}>
+              {`${passengers.emergency_contact || '-'} (${
                 passengers.emergency_relation || ''
-              }`}
+              })` || '-'}
             </td>
           </tr>
         ))}

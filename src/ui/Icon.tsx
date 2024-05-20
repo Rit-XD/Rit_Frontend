@@ -14,6 +14,7 @@ const icons = {
   search: {ratio: 22 / 22},
   dropdown: {ratio: 14 / 8},
   calendar: {ratio: 16 / 16},
+  xmark: {ratio: 16 / 16}
 }
 
 export type IconType = keyof typeof icons

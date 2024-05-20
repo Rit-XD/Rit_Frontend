@@ -8,12 +8,12 @@ export const getUser = async () => {
   return user
 }
 export const getPassengers = async () => {
-  const user = await getUser();
+  const user = await getUser()
   const {data: passengers, error} = await supabaseAdmin
-  .from('Passengers')
-  .select('*')
-  .eq('carecenter_id', user!.carecenter.id)
-  return passengers || [];
+    .from('Passengers')
+    .select('*')
+    .eq('carecenter_id', user!.carecenter.id)
+  return passengers || []
 }
 
 export const handleAddPassenger = async (
