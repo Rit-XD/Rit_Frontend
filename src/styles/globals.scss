@@ -1,3 +1,5 @@
+@import url("https://use.typekit.net/lyq6zua.css");
+
 :root {
   --primary: #ed6a01;
 }
@@ -53,4 +55,13 @@ textarea {
   border: none;
   border-radius: 0;
   background: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "ff-cocon-pro", sans-serif;
 }
