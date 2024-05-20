@@ -71,14 +71,14 @@
       right: -285%;
       top: 50%;
       background-color: currentColor;
-      transform: translate(-32px, -50%);
+      transform: translate(-50px, -50%);
     }
   }
 
   @include media($ipad-land) {
     &:hover:after {
       opacity: 1;
-      transform: translate(-16px, -50%);
+      transform: translate(-43px, -50%);
     }
   }
 
@@ -91,7 +91,7 @@
     transform: translate(-50%, 4px);
 
     @include media($ipad-land) {
-      transform: translate(-16px, -50%);
+      transform: translate(-43px, -50%);
     }
   }
 }

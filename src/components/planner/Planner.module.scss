@@ -1,6 +1,10 @@
 .container {
     color: black;
     margin: 0 64px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
 
     &-planner {
         margin: 16px 0;
@@ -63,10 +67,13 @@
     }
     &-map {
         display: flex;
-        height: 490px;
+        // height: 490px;
+        // height: -webkit-fill-available;
+        flex-direction: column;
         margin: 16px 0;
         border-radius: 10px;
         overflow: hidden;
-
+        // flex-shrink: 1;
+        flex-grow: 1;
     }
 }

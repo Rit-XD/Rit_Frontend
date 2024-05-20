@@ -1,6 +1,6 @@
 'use client'
 
-import css from '@/app/dashboard/Layout.module.scss'
+import css from '@/app/dashboard/Dashboard.module.scss'
 import {Header} from '@/components/header/Header'
 import {Nav} from '@/components/nav/Nav'
 import {UserProvider} from '@/lib/user/useUser'

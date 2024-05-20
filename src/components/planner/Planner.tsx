@@ -36,8 +36,8 @@ export const Planner: React.FC<{
     }
     useEffect(() => {
         loadPassengers();
-        console.log("passengers", passengers);
-    }, [passengers]);
+        // console.log("passengers", passengers);
+    }, []);
 
 
   return (
@@ -46,12 +46,12 @@ export const Planner: React.FC<{
         <h3>Plan een rit</h3>
         <div className={styles.container.planner.inputs()}>
           {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
-          <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} defaultValue="" onChange={(e) => selectPassenger(e.target.value)}>
-            <option value="" selected disabled>
+          <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} defaultValue={""} onChange={(e) => selectPassenger(e.target.value)}>
+            <option value="" disabled>
               Passagier toevoegen
             </option>
             {passengers?.map((passengers, index) => (
-                <option value={`${passengers.firstname} ${passengers.lastname}`}>{passengers.firstname} {passengers.lastname}</option>
+                <option value={`${passengers.firstname} ${passengers.lastname}`} key={`${passengers.firstname} ${passengers.lastname}`}>{passengers.firstname} {passengers.lastname}</option>
             ))}
           </select>
           <input
@@ -71,7 +71,6 @@ export const Planner: React.FC<{
         </div>
         <div className={styles.container.planner.inputs()}>
           <div>
-            {/* TODO: */}
             {selectedPassengers?.map((selectedPassengers, index) => (
                 <div className={styles.container.planner.inputs.passenger()}>
                     <p>{selectedPassengers}</p>

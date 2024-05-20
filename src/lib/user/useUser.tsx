@@ -39,10 +39,10 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
     const loadUser = async () => {
       const timeBefore = Date.now()
       supabase.auth.getUser().then(() => {
-        console.log(`session fetched in ${Date.now() - timeBefore}ms`)
+        // console.log(`session fetched in ${Date.now() - timeBefore}ms`)
       })
       const init = await fetchUser()
-      console.log(`User fetched in ${Date.now() - timeBefore}ms`)
+      // console.log(`User fetched in ${Date.now() - timeBefore}ms`)
       setUser(init)
       setFetching(false)
     }

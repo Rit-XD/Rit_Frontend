@@ -1,10 +1,10 @@
 .header {
   display: flex;
   align-items: center;
-  margin: 32px 64px;
+  margin: 36px 64px 16px 64px;
   &-logo {
-    width: 64px;
-    height: 64px;
+    width: 46px;
+    height: auto;
   }
   &-title {
     font-size: 21px;

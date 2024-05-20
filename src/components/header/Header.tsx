@@ -13,12 +13,12 @@ export const Header: React.FC = () => {
   const loadUser = async () => {
     const user = await fetchUser()
     if (!user) return
-    setUser(user)
+    else setUser(user)
   }
 
   useEffect(() => {
     loadUser()
-  })
+  }, [])
 
   return (
     <div>
