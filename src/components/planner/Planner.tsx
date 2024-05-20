@@ -8,20 +8,9 @@ import css from './Planner.module.scss'
 import {fetchPassengers} from './FetchPlanner'
 import { Icon } from '@/ui/Icon'
 import {postRide} from './PostRide'
+import { Passenger } from '@/types/passenger.type'
 
 const styles = fromModule(css)
-type Passenger = {          
-  carecenter_id: string
-  dateofbirth: string | null
-  emergency_contact: string | null
-  emergency_relation: string | null
-  extra: string | null
-  firstname: string
-  id: string
-  lastname: string
-  wheelchair: boolean
-}
-
 
 export const Planner: React.FC<{
     initial: {          
