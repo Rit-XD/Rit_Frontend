@@ -7,8 +7,11 @@ import {Map} from '../map/Map'
 import css from './Planner.module.scss'
 import {fetchPassengers} from './FetchPlanner'
 import { Icon } from '@/ui/Icon'
+import {postRide} from './PostRide'
+import { createSupabaseForBrowser } from '@/utils/supabase/createSupabaseForBrowser'
 
 const styles = fromModule(css)
+const supabase = createSupabaseForBrowser();
 
 export const Planner: React.FC<{
     initial: {          
@@ -43,6 +46,11 @@ export const Planner: React.FC<{
         loadPassengers();
         // console.log("passengers", passengers);
     }, []);
+
+    const newRide = async () => { 
+      createSupabaseForBrowser();
+      postRide("desination", "auto", "now", "mark");
+     }
 
 
   return (
@@ -119,7 +127,7 @@ export const Planner: React.FC<{
             </div>
           </div>
           {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
-          <Button>Plaats deze rit</Button>
+          <Button onClick={newRide}>Plaats deze rit</Button>
         </div>
       </div>
       <div className={styles.container.map()}>

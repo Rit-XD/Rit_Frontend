@@ -1,9 +1,12 @@
+import { config } from '@/config'
 import {Database} from '@/types/database.type'
 import {createBrowserClient} from '@supabase/ssr'
 
 export function createSupabaseForBrowser() {
+  const url = config.supabaseUrl;
+  const serviceRole = config.supabaseServiceRole;
   return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    url!,
+    serviceRole!
   )
 }
