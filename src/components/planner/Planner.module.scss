@@ -56,11 +56,29 @@
                 align-items: center;
                 margin: 0 8px;
                 div {
-                    // font-size: 1.5rem;
-                    background-color: var(--primary);
                     width: 12px;
-                    height: 2px;
-                    
+                    height: 24px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    div {
+                        background-color: var(--primary);
+                        width: 12px;
+                        height: 2px;
+                    }                    
+                }
+            }
+            &-iconContainer {
+                display: flex;
+                align-items: center;
+                position: relative;
+                &-icon {
+                    position: absolute;
+                    right: 16px;
+                    font-size: 8px;
+                }
+                select, input {
+                    flex-grow: 1;
                 }
             }
         }

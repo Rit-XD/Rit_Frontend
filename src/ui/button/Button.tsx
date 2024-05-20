@@ -43,7 +43,7 @@ const Button: React.FC<ButtonType> = ({
 const ButtonIcon: React.FC<{icon: IconType}> = ({icon}) => (
   <span className={styles.icon.mod(icon)()}>
     <Icon icon={icon} mod="square" />
-  </span>
+</span>
 )
 
 export default Button

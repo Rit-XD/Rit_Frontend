@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react'
 import {Map} from '../map/Map'
 import css from './Planner.module.scss'
 import {fetchPassengers} from './FetchPlanner'
+import { Icon } from '@/ui/Icon'
 
 const styles = fromModule(css)
 
@@ -34,6 +35,10 @@ export const Planner: React.FC<{
         }
         setSelectedPassengers([...selectedPassengers!, passenger]);
     }
+    const removeSelectedPassenger = (passenger: string) => {
+        setSelectedPassengers(selectedPassengers.filter((selectedPassenger) => selectedPassenger !== passenger));
+    }
+
     useEffect(() => {
         loadPassengers();
         // console.log("passengers", passengers);
@@ -43,17 +48,26 @@ export const Planner: React.FC<{
   return (
     <div className={styles.container()}>
       <div className={styles.container.planner()}>
-        <h3>Plan een rit</h3>
+        <h3>Plan een rit</h3>          
+
         <div className={styles.container.planner.inputs()}>
           {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
-          <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} defaultValue={""} onChange={(e) => selectPassenger(e.target.value)}>
-            <option value="" disabled>
-              Passagier toevoegen
-            </option>
-            {passengers?.map((passengers, index) => (
-                <option value={`${passengers.firstname} ${passengers.lastname}`} key={`${passengers.firstname} ${passengers.lastname}`}>{passengers.firstname} {passengers.lastname}</option>
-            ))}
-          </select>
+          <div className={styles.container.planner.inputs.iconContainer()}>
+            <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} defaultValue={""} onChange={(e) => selectPassenger(e.target.value)}>
+              <option value="" disabled>
+                Passagier toevoegen
+              </option>
+              {passengers?.map((passengers, index) => (
+                  <option 
+                    value={`${passengers.firstname} ${passengers.lastname}`} 
+                    key={`${passengers.firstname} ${passengers.lastname}`}>
+                      {passengers.firstname} {passengers.lastname}
+                  </option>
+              ))}
+            </select>
+            <Icon icon="dropdown"  className={styles.container.planner.inputs.iconContainer.icon()}/>
+          </div>
+
           <input
             type="text"
             name="destination"
@@ -72,9 +86,11 @@ export const Planner: React.FC<{
         <div className={styles.container.planner.inputs()}>
           <div>
             {selectedPassengers?.map((selectedPassengers, index) => (
-                <div className={styles.container.planner.inputs.passenger()}>
+                <div className={styles.container.planner.inputs.passenger()} key={selectedPassengers}>
                     <p>{selectedPassengers}</p>
-                    <div/>
+                    <div onClick={() => removeSelectedPassenger(selectedPassengers)}>
+                      <div/>
+                    </div>
                 </div>
             ))}
           </div>
