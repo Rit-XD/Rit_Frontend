@@ -2,6 +2,7 @@
 
 import {fetchUser} from '@/lib/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
+import { publicDecrypt } from 'crypto'
 
 export const getUser = async () => {
   const user = await fetchUser()
@@ -17,20 +18,13 @@ export const postRide = async (
 ) => {
   const user = await getUser()
   if (!user) return []
-  console.log('kaka', process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE)
+  console.log("post");
   let query = supabaseAdmin
     .from('Rides')
     .insert([
       {
         carecenter: user?.carecenter.id,
-        origin:
-          user?.carecenter.street +
-          ' ' +
-          user?.carecenter.number +
-          ', ' +
-          user?.carecenter.postal +
-          ' ' +
-          user?.carecenter.city,
+        origin: user?.carecenter.street + ' ' + user?.carecenter.number + ', ' + user?.carecenter.postal + ' ' + user?.carecenter.city,
         destination: destination,
         driver: null,
         passenger_1: passenger_1,
@@ -39,7 +33,8 @@ export const postRide = async (
         timestamp: timestamp
       }
     ])
-    .select()
-  const {data: ride} = await query
-  return ride || []
+    .select();
+  const res = await query;
+  console.log("ride", res);
+  return res || []
 }

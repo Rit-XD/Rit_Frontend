@@ -47,9 +47,9 @@ export const Planner: React.FC<{
         // console.log("passengers", passengers);
     }, []);
 
-    const newRide = async () => { 
-      createSupabaseForBrowser();
-      postRide("desination", "auto", "now", "mark");
+    const handleNew = async () => { 
+      console.log("test");
+      postRide("desination", "205c6e75-c379-49cf-9937-daa93cfd110a", "now", "ec2c1229-f7eb-4262-9398-661715e31b27");
      }
 
 
@@ -127,7 +127,7 @@ export const Planner: React.FC<{
             </div>
           </div>
           {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
-          <Button onClick={newRide}>Plaats deze rit</Button>
+          <Button onClick={() => handleNew()}>Plaats deze rit</Button>
         </div>
       </div>
       <div className={styles.container.map()}>
