@@ -65,9 +65,10 @@
 
 .page {
   &-main {
-      display: flex;
-      flex-direction: column;
+      display: grid;
       height: 100%;
-      // padding: 16
+      grid-template-columns: 5fr 2fr;
+      margin: 32px 64px;
+      gap: 32px;
   }
 }

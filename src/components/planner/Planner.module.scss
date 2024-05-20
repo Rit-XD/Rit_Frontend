@@ -1,21 +1,21 @@
 .container {
     color: black;
-    margin: 0 64px;
+    margin: 0;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     height: 100%;
 
     &-planner {
-        margin: 16px 0;
-
+        margin: 0;
         background-color: white;
         border-radius: 5px;
         display: flex;
         box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.06);
         padding: 16px;
         flex-direction: column;
-        h3 {
+        &-title {
+            font-family: 'Inter', sans-serif;
             font-weight: bold;
         }
         &-inputs {
@@ -88,7 +88,7 @@
         // height: 490px;
         // height: -webkit-fill-available;
         flex-direction: column;
-        margin: 16px 0;
+        margin-top: 16px;
         border-radius: 10px;
         overflow: hidden;
         // flex-shrink: 1;

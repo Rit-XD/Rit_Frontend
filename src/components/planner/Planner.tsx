@@ -63,8 +63,7 @@ export const Planner: React.FC<{
   return (
     <div className={styles.container()}>
       <div className={styles.container.planner()}>
-        <h3>Plan een rit</h3>          
-
+        <h3 className={styles.container.planner.title()}>Plan een rit</h3>          
         <div className={styles.container.planner.inputs()}>
           {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
           <div className={styles.container.planner.inputs.iconContainer()}>

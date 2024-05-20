@@ -1,51 +1,59 @@
 'use client'
 
-import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
-import {Map} from '../map/Map'
 import css from './Upcoming.module.scss'
-import {fetchPassengers} from './FetchPlanner'
-import { Icon } from '@/ui/Icon'
+
+import { Passenger } from '@/types/passenger.type'
+import { Ride } from '@/types/ride.type'
+import { fetchPassengerById, fetchRides,  } from './Upcoming.server'
 
 const styles = fromModule(css)
 
+export const Upcoming: React.FC = () => {
+    const [rides, setRides] = useState<Ride[]>([]);
+    const [upcoming, setUpcoming]= useState<{r: Ride, p: Passenger}[]>([]);
 
 
-export const Planner: React.FC<{
-    initial: {          
-        carecenter_id: string
-        dateofbirth: string | null
-        emergency_contact: string | null
-        emergency_relation: string | null
-        extra: string | null
-        firstname: string
-        id: string
-        lastname: string
-        wheelchair: boolean
-    }[]
-}> = ({initial}) => {
-    const [passengers, setPassengers] = useState<typeof initial>();
-    const [selectedPassengers, setSelectedPassengers] = useState<typeof initial>([]);
-
-    const [desination, setDestination] = useState<string>("");
-    const [dateTime, setDateTime] = useState<string>("");
-
-    //load all possible passengers
-    const loadPassengers = async () => {
-        if (passengers?.length) return;
-        setPassengers(await fetchPassengers());
+    //load all possible rides
+    const loadRides = async () => {
+      if (rides?.length) return;
+      setRides(await fetchRides());
     }
     useEffect(() => {
-      loadPassengers();
+      loadRides();
     }, []);
 
+    //load all passengers
+    useEffect(() => {
+      const loadRidesAndPassengers = async () => {
+        const rides = await fetchRides();
+        const upcoming: {r: Ride, p: Passenger}[] = [];
 
+        for (const r of rides) {
+          const np = await fetchPassengerById(r.passenger_1);
+          if (!upcoming.some(u => u.r.id === r.id && u.p.id === np.id)) {
+            upcoming.push({r: r, p: np});
+          }
+        }
 
+        setRides(rides);
+        setUpcoming(upcoming);
+      };
 
-  return (
-    <div className={styles.container()}>
+      loadRidesAndPassengers();
+    }, []);
 
-    </div>
-  )
+    return (
+      <div className={styles.container()}>
+          <h3 className={styles.container.title()}>Aankomende ritten</h3>          
+          <div className={styles.container.rides()}>
+            {upcoming.map((u) => (
+              <div key={u.p.id + u.r.id}>
+                {u.p.firstname}
+              </div>
+            ))}   
+          </div>
+      </div>
+    )
 }
