@@ -34,12 +34,6 @@
                     opacity: .5;
                 }
             }
-            & select {
-                &::after {
-                    content: '▼';
-                    pointer-events: none;
-                }
-            }
             &-radio {
                 accent-color: var(--primary);
                 margin-right: 10px;
@@ -76,6 +70,12 @@
                     position: absolute;
                     right: 16px;
                     font-size: 8px;
+                    pointer-events: none;
+                    &-calendar {
+                        position: absolute;
+                        right: 16px;
+                        font-size: 16px;
+                    }
                 }
                 select, input {
                     flex-grow: 1;

@@ -75,13 +75,17 @@ export const Planner: React.FC<{
             placeholder="Bestemming"
             className={styles.container.planner.inputs.input()}
           />
-          <input
-            type="datetime-local"
-            name="date"
-            id="input-date"
-            placeholder="Tijdstip"
-            className={styles.container.planner.inputs.input()}
-          />
+          <div className={styles.container.planner.inputs.iconContainer()}>
+            <input
+              type="datetime-local"
+              name="date"
+              id="input-date"
+              placeholder="Tijdstip"
+              className={styles.container.planner.inputs.input()}
+            />
+            <Icon icon="calendar"  className={styles.container.planner.inputs.iconContainer.icon.calendar()}/>
+
+          </div>
         </div>
         <div className={styles.container.planner.inputs()}>
           <div>
