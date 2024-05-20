@@ -1,5 +1,6 @@
 'use server'
 import {fetchUser} from '@/lib/user/fetchUser'
+import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 import React from 'react'
@@ -47,14 +48,21 @@ export const PassengerTable: React.FC = async () => {
       <tbody>
         {passengers?.map((passengers, index) => (
           <tr key={index}>
-            <td>
-              {passengers.firstname} {passengers.lastname}
+            <td className={styles.table.row()}>
+              <div className={styles.table.flex()}>
+                {passengers.firstname} {passengers.lastname}
+                {passengers.wheelchair && (
+                  <Icon className={styles.table.icon()} icon="wheelchair" />
+                )}
+              </div>
             </td>
-            <td>{calculateAge(passengers.dateofbirth || '')}</td>
-            <td>
-              {`${passengers.emergency_contact || '-'} ${
+            <td className={styles.table.row()}>
+              {calculateAge(passengers.dateofbirth || '')}
+            </td>
+            <td className={styles.table.row()}>
+              {`${passengers.emergency_contact || '-'} (${
                 passengers.emergency_relation || ''
-              }`}
+              })` || '-'}
             </td>
           </tr>
         ))}

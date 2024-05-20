@@ -1,36 +1,35 @@
 'use client'
 
-import {PassengerTable} from '@/components/passengertable/PassengerTable'
+import {fetchPassengers} from '@/components/planner/FetchPlanner'
+import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import {use, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {AddPassenger} from './AddPassenger'
 import css from './Passengers.module.scss'
-import { Passenger } from '@/types/passenger.type'
-import { fetchPassengers } from '@/components/planner/FetchPlanner'
 
 const styles = fromModule(css)
 
 export const PassengersHeader: React.FC = () => {
-  const [isAddPassengerOpen, setAddPassengerOpen] = useState(false);
-  const [passengers, setPassengers] = useState<Passenger[]>();
+  const [isAddPassengerOpen, setAddPassengerOpen] = useState(false)
+  const [passengers, setPassengers] = useState<Passenger[]>()
 
   const closeAddPassenger = () => {
     setAddPassengerOpen(false)
   }
 
   //get all passengers
-  const getPassengers = async () => { 
-    const p: Passenger[] = await fetchPassengers();
-    console.log("p", p);
+  const getPassengers = async () => {
+    const p: Passenger[] = await fetchPassengers()
+    console.log('p', p)
     if (p) {
-      setPassengers(p);
+      setPassengers(p)
     }
   }
   useEffect(() => {
-    getPassengers();
-  }, []);
+    getPassengers()
+  }, [])
 
   return (
     <main>
@@ -42,16 +41,16 @@ export const PassengersHeader: React.FC = () => {
           <p>{`Archief (0)`}</p>
         </div>
         <div className={styles.container.rightside()}>
-          <input type="text" placeholder="Zoek naam" />
+          <input
+            className={styles.container.rightside.input()}
+            type="text"
+            placeholder="Zoek naam"
+          />
           <Icon className={styles.container.rightside.search()} icon="search" />
           <Button onClick={() => setAddPassengerOpen(true)} iconbefore="plus">
             Nieuwe Passagier
           </Button>
-          {isAddPassengerOpen && (
-            <AddPassenger
-            // onClose={closeAddPassenger}
-            />
-          )}
+          {isAddPassengerOpen && <AddPassenger onClose={closeAddPassenger} />}
         </div>
       </div>
     </main>

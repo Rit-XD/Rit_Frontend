@@ -7,13 +7,24 @@
   }
 
   tbody td {
-    padding: 0;
     line-height: 1rem;
   }
   th {
     padding: 0.75rem 0;
   }
-  td {
-    padding: 0.5rem 0;
+
+  &-row {
+    padding-block: 16px;
+  }
+
+  &-icon {
+    color: var(--primary);
+  }
+
+  &-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   }
 }
