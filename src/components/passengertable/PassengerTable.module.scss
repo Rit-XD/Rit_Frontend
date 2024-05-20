@@ -16,4 +16,15 @@
   &-row {
     padding-block: 16px;
   }
+
+  &-icon {
+    color: var(--primary);
+  }
+
+  &-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
 }

@@ -1,5 +1,6 @@
 'use server'
 import {fetchUser} from '@/lib/user/fetchUser'
+import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 import React from 'react'
@@ -48,7 +49,12 @@ export const PassengerTable: React.FC = async () => {
         {passengers?.map((passengers, index) => (
           <tr key={index}>
             <td className={styles.table.row()}>
-              {passengers.firstname} {passengers.lastname}
+              <div className={styles.table.flex()}>
+                {passengers.firstname} {passengers.lastname}
+                {passengers.wheelchair && (
+                  <Icon className={styles.table.icon()} icon="wheelchair" />
+                )}
+              </div>
             </td>
             <td className={styles.table.row()}>
               {calculateAge(passengers.dateofbirth || '')}
