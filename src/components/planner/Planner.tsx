@@ -28,6 +28,10 @@ export const Planner: React.FC<{
 }> = ({initial}) => {
     const [passengers, setPassengers] = useState<typeof initial>();
     const [selectedPassengers, setSelectedPassengers] = useState<string[]>([]);
+
+    const [desination, setDestination] = useState<string>("");
+    const [dateTime, setDateTime] = useState<string>("");
+
     const loadPassengers = async () => {
         if (passengers?.length) return;
         setPassengers(await fetchPassengers());
@@ -48,8 +52,8 @@ export const Planner: React.FC<{
     }, []);
 
     const handleNew = async () => { 
-      console.log("test");
-      postRide("desination", "205c6e75-c379-49cf-9937-daa93cfd110a", "now", "ec2c1229-f7eb-4262-9398-661715e31b27");
+      console.log(dateTime);
+      postRide(desination, "205c6e75-c379-49cf-9937-daa93cfd110a", dateTime, "ec2c1229-f7eb-4262-9398-661715e31b27");
      }
 
 
@@ -82,6 +86,7 @@ export const Planner: React.FC<{
             id="input-destination"
             placeholder="Bestemming"
             className={styles.container.planner.inputs.input()}
+            onChange={(e) => setDestination(e.target.value)}
           />
           <div className={styles.container.planner.inputs.iconContainer()}>
             <input
@@ -90,6 +95,7 @@ export const Planner: React.FC<{
               id="input-date"
               placeholder="Tijdstip"
               className={styles.container.planner.inputs.input()}
+              onChange={(e) => {setDateTime(e.target.value); console.log("e",e.target.value)}}
             />
             <Icon icon="calendar"  className={styles.container.planner.inputs.iconContainer.icon.calendar()}/>
 

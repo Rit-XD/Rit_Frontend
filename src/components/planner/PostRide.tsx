@@ -18,7 +18,7 @@ export const postRide = async (
 ) => {
   const user = await getUser()
   if (!user) return []
-  console.log("post");
+  console.log("timestamp", timestamp);
   let query = supabaseAdmin
     .from('Rides')
     .insert([
