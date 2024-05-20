@@ -64,7 +64,11 @@ export const RecoverSteps: React.FC = () => {
           )}
           {state.step === 'token' && (
             <>
-              <label>Token</label>
+              <p className={styles.form.text()}>
+                We hebben een e-mail gestuurd met een code. Voer deze hieronder
+                in.
+              </p>
+              <label>Code</label>
               <TokenInput name="otp" resendToken={resendToken} />
               <SubmitButton
                 type="submit"

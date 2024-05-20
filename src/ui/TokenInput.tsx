@@ -39,7 +39,7 @@ export const TokenInput: React.FC<{
           onClick={resendToken}
           className={styles.tokeninput.resend.link()}
         >
-          Stuur token opnieuw
+          Stuur code opnieuw
         </Link>
       </div>
     </div>
