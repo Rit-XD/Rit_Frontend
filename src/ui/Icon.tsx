@@ -11,7 +11,9 @@ const icons = {
   settings_solid: {ratio: 24 / 25},
   logout: {ratio: 26 / 24},
   plus: {ratio: 23 / 23},
-  search: {ratio: 22 / 22}
+  search: {ratio: 22 / 22},
+  dropdown: {ratio: 14 / 8},
+  calendar: {ratio: 16 / 16},
 }
 
 export type IconType = keyof typeof icons
