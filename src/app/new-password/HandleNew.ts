@@ -13,7 +13,7 @@ export const handlePasswordUpdate = async (newPassword: string) => {
     }
 
     if (data) {
-      alert('Password has been updated successfully!')
+      alert('Password updated successfully')
     }
   } catch (error) {
     alert(`Error updating password: ${(error as Error).message}`)

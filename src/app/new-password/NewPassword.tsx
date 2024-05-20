@@ -3,7 +3,7 @@
 import background from '@/../public/images/background-login.png'
 import {Link} from '@/ui/Link'
 import {fromModule} from '@/utils/styler/Styler'
-import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
+import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
 import Image from 'next/image'
 import {useEffect, useState} from 'react'
 import {SubmitButton} from '../login/submit-button'
@@ -16,6 +16,7 @@ export const NewPasswordSteps: React.FC = () => {
   const [accessToken, setAccessToken] = useState('')
   const [refreshToken, setRefreshToken] = useState('')
   const [password, setPassword] = useState('')
+  const supabase = createSupabaseForBrowser()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -29,7 +30,7 @@ export const NewPasswordSteps: React.FC = () => {
     // Authenticate the user using the access token and refresh token
     const getSessionWithTokens = async () => {
       if (accessToken && refreshToken) {
-        const {data, error} = await supabaseAdmin.auth.setSession({
+        const {data, error} = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken
         })
