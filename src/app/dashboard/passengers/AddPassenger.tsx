@@ -5,6 +5,7 @@ import {fromModule} from '@/utils/styler/Styler'
 import React from 'react'
 import css from './AddPassenger.module.scss'
 import {handleAddPassenger} from './HandleAddPassenger'
+import { Icon } from '@/ui/Icon'
 
 const styles = fromModule(css)
 
@@ -76,6 +77,8 @@ export const AddPassenger: React.FC = () => {
           </Button>
         </form>
       </div>
+      <Icon icon="dropdown" />
+
     </div>
   )
 }

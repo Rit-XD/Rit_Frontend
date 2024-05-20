@@ -4,24 +4,33 @@ import {PassengerTable} from '@/components/passengertable/PassengerTable'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import {useState} from 'react'
+import {use, useEffect, useState} from 'react'
 import {AddPassenger} from './AddPassenger'
 import css from './Passengers.module.scss'
+import { Passenger } from '@/types/passenger.type'
+import { fetchPassengers } from '@/components/planner/FetchPlanner'
 
-export const PassengersHeader: React.FC<{
-  passengers: any
-}> = ({passengers}) => {
-  const [isAddPassengerOpen, setAddPassengerOpen] = useState(false)
+const styles = fromModule(css)
 
-  const openAddPassenger = () => {
-    setAddPassengerOpen(true)
-  }
+export const PassengersHeader: React.FC = () => {
+  const [isAddPassengerOpen, setAddPassengerOpen] = useState(false);
+  const [passengers, setPassengers] = useState<Passenger[]>();
 
   const closeAddPassenger = () => {
     setAddPassengerOpen(false)
   }
 
-  const styles = fromModule(css)
+  //get all passengers
+  const getPassengers = async () => { 
+    const p: Passenger[] = await fetchPassengers();
+    console.log("p", p);
+    if (p) {
+      setPassengers(p);
+    }
+  }
+  useEffect(() => {
+    getPassengers();
+  }, []);
 
   return (
     <main>
@@ -35,7 +44,7 @@ export const PassengersHeader: React.FC<{
         <div className={styles.container.rightside()}>
           <input type="text" placeholder="Zoek naam" />
           <Icon className={styles.container.rightside.search()} icon="search" />
-          <Button onClick={openAddPassenger} iconbefore="plus">
+          <Button onClick={() => setAddPassengerOpen(true)} iconbefore="plus">
             Nieuwe Passagier
           </Button>
           {isAddPassengerOpen && (
@@ -45,7 +54,6 @@ export const PassengersHeader: React.FC<{
           )}
         </div>
       </div>
-      <PassengerTable />
     </main>
   )
 }

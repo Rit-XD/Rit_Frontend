@@ -38,7 +38,7 @@ export const Planner: React.FC<{
     }
     useEffect(() => {
       loadPassengers();
-  }, []);
+    }, []);
 
     //maintain selected passengers
     const selectPassenger = (passengerId: string) => {

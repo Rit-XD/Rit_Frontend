@@ -49,7 +49,6 @@ export default function DashboardLayout({
         </aside>
         <div className={styles.layout.content()}>
           <Header />
-
           {children}
         </div>
       </div>
