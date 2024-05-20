@@ -33,6 +33,14 @@ export const LoginSteps: React.FC = () => {
         placeholder="Wachtwoord"
         required
       />
+      <div className={styles.form.forgotcontainer()}>
+        <Link
+          className={styles.form.forgotcontainer.forgot()}
+          href="/forgot-password"
+        >
+          Wachtwoord vergeten?
+        </Link>
+      </div>
       {state.error && <p className={styles.form.error()}>{state.error}</p>}
       <SubmitButton
         type="submit"

@@ -52,15 +52,15 @@ export default async function Login({
       />
       <span className={styles.form.overlay1()} />
       <span className={styles.form.overlay2()} />
-      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 bg-white text-black py-8 rounded-xl z-10">
+      <div className={styles.formcontainer()}>
         <Image
           src="/images/logo-rit.png"
           alt="Logo Rit"
           width={64}
           height={64}
-          className="self-center pb-5"
+          className={styles.formcontainer.logo()}
         ></Image>
-        <h1 className="self-center font-bold text-xl">Log in</h1>
+        <h1 className={styles.formcontainer.title()}>Log in</h1>
         <LoginSteps />
       </div>
     </>
