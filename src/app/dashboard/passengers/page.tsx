@@ -5,9 +5,21 @@ import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 import {redirect} from 'next/navigation'
+import {useState} from 'react'
+import {AddPassenger} from './AddPassenger'
 import css from './Passengers.module.scss'
 
 export default async function Passengers() {
+  const [isAddPassengerOpen, setAddPassengerOpen] = useState(false)
+
+  const openAddPassenger = () => {
+    setAddPassengerOpen(true)
+  }
+
+  const closeAddPassenger = () => {
+    setAddPassengerOpen(false)
+  }
+
   const styles = fromModule(css)
 
   const user = await fetchUser()
@@ -30,7 +42,14 @@ export default async function Passengers() {
         <div className={styles.container.rightside()}>
           <input type="text" placeholder="Zoek naam" />
           <Icon className={styles.container.rightside.search()} icon="search" />
-          <Button iconbefore="plus">Nieuwe Passagier</Button>
+          <Button onClick={openAddPassenger} iconbefore="plus">
+            Nieuwe Passagier
+          </Button>
+          {isAddPassengerOpen && (
+            <AddPassenger
+            // onClose={closeAddPassenger}
+            />
+          )}
         </div>
       </div>
       <PassengerTable />
