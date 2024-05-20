@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 
 import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
@@ -8,7 +8,7 @@ import { Passenger } from '@/types/passenger.type'
 import { Ride } from '@/types/ride.type'
 import { fetchPassengerById, fetchRides,  } from './Upcoming.server'
 
-// const styles = fromModule(css)
+const styles = fromModule(css)
 
 export const Upcoming: React.FC = () => {
     const [rides, setRides] = useState<Ride[]>([]);
