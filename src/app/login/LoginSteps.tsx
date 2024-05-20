@@ -34,10 +34,7 @@ export const LoginSteps: React.FC = () => {
         required
       />
       <div className={styles.form.forgotcontainer()}>
-        <Link
-          className={styles.form.forgotcontainer.forgot()}
-          href="/forgot-password"
-        >
+        <Link className={styles.form.forgotcontainer.forgot()} href="/recover">
           Wachtwoord vergeten?
         </Link>
       </div>
