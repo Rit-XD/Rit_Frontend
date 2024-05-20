@@ -1,9 +1,9 @@
 'use client'
 
 import {Icon} from '@/ui/Icon'
-import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import React from 'react'
+import {useFormState} from 'react-dom'
 import css from './AddPassenger.module.scss'
 import {handleAddPassenger} from './HandleAddPassenger'
 
@@ -12,31 +12,18 @@ const styles = fromModule(css)
 export const AddPassenger: React.FC<{
   onClose: () => void
 }> = ({onClose}) => {
-  const firstname = document.getElementById('firstname') as HTMLInputElement
-  const lastname = document.getElementById('lastname') as HTMLInputElement
-  const dateofbirth = document.getElementById('dateofbirth') as HTMLInputElement
-  const emergency_contact = document.getElementById(
-    'emergency_contact'
-  ) as HTMLInputElement
-  const emergency_relation = document.getElementById(
-    'emergency_relation'
-  ) as HTMLInputElement
-  const wheelchair = document.getElementById('wheelchair') as HTMLInputElement
-  const extra = document.getElementById('extra') as HTMLInputElement
+  const [state, action] = useFormState(handleAddPassenger, {error: ''})
 
   const handleOverlayClick = (event: React.MouseEvent) => {
-    event.stopPropagation()
-    onClose()
-  }
-
-  const handleContainerClick = (event: React.MouseEvent) => {
-    event.stopPropagation()
+    if (event.target === event.currentTarget) {
+      onClose()
+    }
   }
 
   return (
     <div className={styles.overlay()} onClick={handleOverlayClick}>
-      <div className={styles.form_container()} onClick={handleContainerClick}>
-        <form className={styles.form()}>
+      <div className={styles.form_container()}>
+        <form className={styles.form()} action={action}>
           <h1 className={styles.form.title()}>Voeg een passagier toe</h1>
           <div className={styles.form.flexrow()}>
             <div className={styles.form.flexcol()}>
@@ -45,6 +32,7 @@ export const AddPassenger: React.FC<{
                 type="text"
                 id="firstname"
                 name="firstname"
+                placeholder="Voornaam"
                 required
                 className={styles.form.input()}
               />
@@ -55,6 +43,7 @@ export const AddPassenger: React.FC<{
                 type="text"
                 id="lastname"
                 name="lastname"
+                placeholder="Achternaam"
                 required
                 className={styles.form.input()}
               />
@@ -67,6 +56,7 @@ export const AddPassenger: React.FC<{
                 type="date"
                 id="dateofbirth"
                 name="dateofbirth"
+                placeholder="Geboortedatum"
                 required
                 className={styles.form.input()}
               />
@@ -77,6 +67,7 @@ export const AddPassenger: React.FC<{
                 type="text"
                 id="emergency_contact"
                 name="emergency_contact"
+                placeholder="Noodcontactnummer"
                 required
                 className={styles.form.input()}
               />
@@ -87,6 +78,7 @@ export const AddPassenger: React.FC<{
                 type="tel"
                 id="emergency_relation"
                 name="emergency_relation"
+                placeholder="Relatie noodcontact"
                 required
                 className={styles.form.input()}
               />
@@ -98,7 +90,6 @@ export const AddPassenger: React.FC<{
               type="checkbox"
               id="wheelchair"
               name="wheelchair"
-              required
               className={styles.form.input()}
             />
           </div>
@@ -108,27 +99,13 @@ export const AddPassenger: React.FC<{
             type="text"
             id="extra"
             name="extra"
-            required
+            placeholder="Extra"
             className={styles.form.input()}
           />
-
-          <Button
-            className={styles.form.submit()}
-            onClick={() =>
-              handleAddPassenger(
-                firstname.value,
-                lastname.value,
-                dateofbirth.value,
-                emergency_contact.value,
-                emergency_relation.value,
-                wheelchair.checked,
-                extra.value
-              )
-            }
-            type="submit"
-          >
+          {state.error && <p className={styles.form.error()}>{state.error}</p>}
+          <button type="submit" className={styles.form.submit()}>
             Bewoner Toevoegen
-          </Button>
+          </button>
           <div className={styles.form.close()}>
             <Close onClick={onClose} />
           </div>

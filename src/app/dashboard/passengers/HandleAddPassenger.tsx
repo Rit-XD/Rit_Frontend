@@ -16,17 +16,20 @@ export const getPassengers = async () => {
   return passengers || []
 }
 
-export const handleAddPassenger = async (
-  firstname: string,
-  lastname: string,
-  dateofbirth: string,
-  emergency_contact: string,
-  emergency_relation: string,
-  wheelchair: boolean,
-  extra: string
-) => {
+export async function handleAddPassenger(
+  state: {error: string},
+  formData: FormData
+): Promise<{error: string}> {
+  const firstname = String(formData.get('firstname'))
+  const lastname = String(formData.get('lastname'))
+  const dateofbirth = String(formData.get('dateofbirth'))
+  const emergency_contact = String(formData.get('emergency_contact'))
+  const emergency_relation = String(formData.get('emergency_relation'))
+  const wheelchair = Boolean(formData.get('wheelchair'))
+  const extra = String(formData.get('extra'))
   const user = await getUser()
-  if (!user) return []
+  if (!user) return {error: ''}
+
   let query = supabaseAdmin
     .from('Passengers')
     .insert([
@@ -43,5 +46,6 @@ export const handleAddPassenger = async (
     ])
     .select()
   const res = await query
-  return res || []
+  console.log(res)
+  return {error: '', ...res.data}
 }
