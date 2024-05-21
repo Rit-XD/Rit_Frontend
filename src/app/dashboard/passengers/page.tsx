@@ -2,10 +2,10 @@
 
 import {PassengerTable} from '@/components/passengertable/PassengerTable'
 import {Loader} from '@/ui/loader/Loader'
+import {fromModule} from '@/utils/styler/Styler'
 import {Suspense} from 'react'
-import {PassengersHeader} from './PassengersHeader'
 import css from './Passengers.module.scss'
-import { fromModule } from '@/utils/styler/Styler'
+import {PassengersHeader} from './PassengersHeader'
 
 const styles = fromModule(css)
 
@@ -15,10 +15,10 @@ export default async function Passengers() {
       <Suspense fallback={<Loader />}>
         <PassengersHeader />
       </Suspense>
-      {/* <Suspense fallback={<Loader />}> */}
+      <Suspense fallback={<Loader />}>
         <PassengerTable />
-      {/* </Suspense> */}
-      <div className={styles.passengers.filler()}/>
+      </Suspense>
+      <div className={styles.passengers.filler()} />
     </main>
   )
 }
