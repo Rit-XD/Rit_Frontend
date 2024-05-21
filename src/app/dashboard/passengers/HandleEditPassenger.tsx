@@ -32,18 +32,16 @@ export async function handleEditPassenger(
 
   let query = supabaseAdmin
     .from('Passengers')
-    .insert([
-      {
-        carecenter_id: user?.id,
-        firstname: firstname,
-        lastname: lastname,
-        dateofbirth: dateofbirth,
-        emergency_contact: emergency_contact,
-        emergency_relation: emergency_relation,
-        wheelchair: wheelchair,
-        extra: extra
-      }
-    ])
+    .update({
+      firstname,
+      lastname,
+      dateofbirth,
+      emergency_contact,
+      emergency_relation,
+      wheelchair,
+      extra
+    })
+    .eq('carecenter_id', user.id)
     .select()
   const res = await query
   return {error: '', ...res.data}

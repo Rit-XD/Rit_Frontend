@@ -1,9 +1,12 @@
 'use client'
 
+import {fetchPassengers} from '@/components/planner/FetchPlanner'
+import {useUser} from '@/lib/user/useUser'
+import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {useRouter} from 'next/navigation'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useFormState} from 'react-dom'
 import css from './EditPassenger.module.scss'
 import {handleEditPassenger} from './HandleEditPassenger'
@@ -11,10 +14,15 @@ import {handleEditPassenger} from './HandleEditPassenger'
 const styles = fromModule(css)
 
 export const EditPassenger: React.FC<{
+  id: string
   onClose: () => void
-}> = ({onClose}) => {
+}> = ({id, onClose}) => {
   const router = useRouter()
   const [state, action] = useFormState(handleEditPassenger, {error: ''})
+  const [passengers, setPassengers] = useState<Passenger[]>()
+  const [editingPassenger, setEditingPassenger] = useState(
+    null as Passenger | null
+  )
 
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
@@ -26,6 +34,30 @@ export const EditPassenger: React.FC<{
     onClose()
     router.replace('/dashboard/passengers')
   }
+
+  const {user} = useUser()
+  //load all possible passengers
+  const loadPassengers = async () => {
+    if (passengers?.length) return
+    setPassengers(await fetchPassengers(user!))
+  }
+
+  useEffect(() => {
+    loadPassengers()
+  }, [user])
+
+  useEffect(() => {
+    if (state.error) {
+      console.error(state.error)
+    }
+  }, [id])
+
+  useEffect(() => {
+    const passenger = passengers?.find(p => p.id === id)
+    if (passenger) {
+      setEditingPassenger(passenger)
+    }
+  }, [id, passengers])
 
   return (
     <div className={styles.overlay()} onClick={handleOverlayClick}>
@@ -42,6 +74,13 @@ export const EditPassenger: React.FC<{
                 placeholder="Voornaam"
                 required
                 className={styles.form.input()}
+                value={editingPassenger?.firstname || ''}
+                onChange={e => {
+                  setEditingPassenger({
+                    ...editingPassenger,
+                    firstname: e.target.value
+                  } as Passenger)
+                }}
               />
             </div>
             <div className={styles.form.flexcol()}>
@@ -53,6 +92,7 @@ export const EditPassenger: React.FC<{
                 placeholder="Achternaam"
                 required
                 className={styles.form.input()}
+                value={passengers?.find(p => p.id === id)?.lastname}
               />
             </div>
           </div>
@@ -64,8 +104,8 @@ export const EditPassenger: React.FC<{
                 id="dateofbirth"
                 name="dateofbirth"
                 placeholder="Geboortedatum"
-                required
                 className={styles.form.input()}
+                value={passengers?.find(p => p.id === id)?.dateofbirth || ''}
               />
             </div>
             <div className={styles.form.flexcol()}>
@@ -75,8 +115,10 @@ export const EditPassenger: React.FC<{
                 id="emergency_contact"
                 name="emergency_contact"
                 placeholder="Noodcontactnummer"
-                required
                 className={styles.form.input()}
+                value={
+                  passengers?.find(p => p.id === id)?.emergency_contact || ''
+                }
               />
             </div>
             <div className={styles.form.flexcol()}>
@@ -86,8 +128,10 @@ export const EditPassenger: React.FC<{
                 id="emergency_relation"
                 name="emergency_relation"
                 placeholder="Relatie noodcontact"
-                required
                 className={styles.form.input()}
+                value={
+                  passengers?.find(p => p.id === id)?.emergency_relation || ''
+                }
               />
             </div>
           </div>
@@ -98,6 +142,7 @@ export const EditPassenger: React.FC<{
               id="wheelchair"
               name="wheelchair"
               className={styles.form.input()}
+              checked={passengers?.find(p => p.id === id)?.wheelchair}
             />
           </div>
 
@@ -108,6 +153,7 @@ export const EditPassenger: React.FC<{
             name="extra"
             placeholder="Extra"
             className={styles.form.input()}
+            value={passengers?.find(p => p.id === id)?.extra || ''}
           />
           {state.error && <p className={styles.form.error()}>{state.error}</p>}
           <button type="submit" className={styles.form.submit()}>

@@ -25,9 +25,18 @@ export const PassengerTable: React.FC<{
 }> = ({initial}) => {
   const [passengers, setPassengers] = useState<typeof initial>()
   const [isEditPassengerOpen, setEditPassengerOpen] = useState(false)
+  const [selectedPassengerId, setSelectedPassengerId] = useState<string | null>(
+    null
+  )
 
   const closeEditPassenger = () => {
+    setSelectedPassengerId(null)
     setEditPassengerOpen(false)
+  }
+
+  const handleEdit = (id: string) => {
+    setSelectedPassengerId(id) // Set the selected passenger id when the edit button is clicked
+    setEditPassengerOpen(true)
   }
 
   function calculateAge(dateofbirth: string) {
@@ -66,8 +75,8 @@ export const PassengerTable: React.FC<{
           </tr>
         </thead>
         <tbody>
-          {passengers?.map((passengers, index) => (
-            <tr key={index}>
+          {passengers?.map(passengers => (
+            <tr key={passengers.id}>
               <td className={styles.table.row()}>
                 <div className={styles.table.flex()}>
                   {passengers.firstname} {passengers.lastname}
@@ -85,7 +94,7 @@ export const PassengerTable: React.FC<{
                 })` || '-'}
               </td>
               <td
-                onClick={() => setEditPassengerOpen(true)}
+                onClick={() => handleEdit(passengers.id)}
                 className={styles.table.row()}
               >
                 •••
@@ -94,7 +103,9 @@ export const PassengerTable: React.FC<{
           ))}
         </tbody>
       </table>
-      {isEditPassengerOpen && <EditPassenger onClose={closeEditPassenger} />}
+      {isEditPassengerOpen && selectedPassengerId && (
+        <EditPassenger id={selectedPassengerId} onClose={closeEditPassenger} />
+      )}
     </div>
   )
 }
