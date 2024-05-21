@@ -1,3 +1,22 @@
+.tableContainer {
+  max-height: 78vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    background-color: #fff;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 100px;
+  }
+}
+
 .table {
   background-color: white;
   width: 100%;

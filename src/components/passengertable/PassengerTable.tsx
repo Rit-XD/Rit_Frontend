@@ -37,36 +37,38 @@ export const PassengerTable: React.FC = async () => {
     return age
   }
   return (
-    <table className={styles.table()}>
-      <thead>
-        <tr>
-          <th>Naam</th>
-          <th>Leeftijd</th>
-          <th>Noodcontact</th>
-        </tr>
-      </thead>
-      <tbody>
-        {passengers?.map((passengers, index) => (
-          <tr key={index}>
-            <td className={styles.table.row()}>
-              <div className={styles.table.flex()}>
-                {passengers.firstname} {passengers.lastname}
-                {passengers.wheelchair && (
-                  <Icon className={styles.table.icon()} icon="wheelchair" />
-                )}
-              </div>
-            </td>
-            <td className={styles.table.row()}>
-              {calculateAge(passengers.dateofbirth || '')}
-            </td>
-            <td className={styles.table.row()}>
-              {`${passengers.emergency_contact || '-'} (${
-                passengers.emergency_relation || ''
-              })` || '-'}
-            </td>
+    <div className={styles.tableContainer()}>
+      <table className={styles.table()}>
+        <thead>
+          <tr>
+            <th>Naam</th>
+            <th>Leeftijd</th>
+            <th>Noodcontact</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {passengers?.map((passengers, index) => (
+            <tr key={index}>
+              <td className={styles.table.row()}>
+                <div className={styles.table.flex()}>
+                  {passengers.firstname} {passengers.lastname}
+                  {passengers.wheelchair && (
+                    <Icon className={styles.table.icon()} icon="wheelchair" />
+                  )}
+                </div>
+              </td>
+              <td className={styles.table.row()}>
+                {calculateAge(passengers.dateofbirth || '')}
+              </td>
+              <td className={styles.table.row()}>
+                {`${passengers.emergency_contact || '-'} (${
+                  passengers.emergency_relation || ''
+                })` || '-'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
