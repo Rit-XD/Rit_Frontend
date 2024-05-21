@@ -192,6 +192,10 @@ export const EditPassenger: React.FC<{
           <button type="submit" className={styles.form.submit()}>
             Bewoner Wijzigen
           </button>
+
+          {/* <Button onClick={() => handleDeletePassenger(passenger_id)}>
+            Verwijderen
+          </Button> */}
           <div className={styles.form.close()}>
             <Close onClick={onClose} />
           </div>
