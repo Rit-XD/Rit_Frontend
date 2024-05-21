@@ -1,7 +1,7 @@
 'use client'
 
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useEffect, useState} from 'react'
+import React, {Suspense, useEffect, useState} from 'react'
 import css from './Upcoming.module.scss'
 
 import { Passenger } from '@/types/passenger.type'
@@ -46,7 +46,8 @@ export const Upcoming: React.FC = () => {
 
     return (
       <div className={styles.container()}>
-          <h3 className={styles.container.title()}>Aankomende ritten</h3>          
+          <h3 className={styles.container.title()}>Aankomende ritten</h3>  
+          <Suspense fallback={<p>loading...</p>}>
           <div className={styles.container.rides()}>
             {upcoming.map((u) => (
               <div key={u.p.id + u.r.id}>
@@ -54,6 +55,7 @@ export const Upcoming: React.FC = () => {
               </div>
             ))}   
           </div>
+            </Suspense>        
       </div>
     )
 }
