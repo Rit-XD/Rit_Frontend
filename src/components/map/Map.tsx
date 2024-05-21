@@ -29,7 +29,7 @@ export const Map: React.FC<MapProps> = ({zoom}) => {
   }, []);
 
   const setLocation = (position: GeolocationPosition) => {
-    setCenter({lat: position.coords.latitude-.0385, lng: position.coords.longitude+.0767});
+    setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
     console.log(center);
   }
 
@@ -48,7 +48,7 @@ export const Map: React.FC<MapProps> = ({zoom}) => {
             defaultCenter={center}
             scrollwheel={true}
           />
-          <Marker position={ center } />
+          {/* <Marker icon={{ url: '/custom_marker_pin.svg', anchor: new google.maps.Point(17, 46), scaledSize: new google.maps.Size(37, 37) }} position={ center } /> */}
         </div>
       </APIProvider>
     </>
