@@ -174,7 +174,7 @@ export const Planner: React.FC<{
       </div>
       <div className={styles.container.map()}>
         <Suspense fallback={<Loader />}>
-          <Map />
+          <Map zoom={15}/>
         </Suspense>
       </div>
     </div>

@@ -1,8 +1,8 @@
 'use client'
 
 import {fromModule} from '@/utils/styler/Styler'
-import {APIProvider, Map as GoogleMap} from '@vis.gl/react-google-maps'
-import React from 'react'
+import {APIProvider, Map as GoogleMap, Marker} from '@vis.gl/react-google-maps'
+import React, { useEffect, useState } from 'react'
 import css from './Map.module.scss'
 
 const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
@@ -15,9 +15,26 @@ export type MapProps = {
   center?: {lat: number; lng: number}
 }
 
-export const Map: React.FC<MapProps> = ({zoom, center}) => {
-  center = center || {lat: 50.85045, lng: 4.34878}
-  zoom = zoom || 8
+export const Map: React.FC<MapProps> = ({zoom}) => {
+  const [center, setCenter] = useState<{lat: number; lng: number}>({lat: 50.85045, lng: 4.34878})
+  zoom = zoom || 8;
+
+  function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(setLocation);
+    }
+  }
+  useEffect(() => {
+    getLocation()
+  }, []);
+
+  const setLocation = (position: GeolocationPosition) => {
+    setCenter({lat: position.coords.latitude-.0385, lng: position.coords.longitude+.0767});
+    console.log(center);
+  }
+
+
+
   return (
     <>
       <APIProvider apiKey={key}>
@@ -31,6 +48,7 @@ export const Map: React.FC<MapProps> = ({zoom, center}) => {
             defaultCenter={center}
             scrollwheel={true}
           />
+          <Marker position={ center } />
         </div>
       </APIProvider>
     </>
