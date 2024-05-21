@@ -18,7 +18,7 @@ export const EditPassenger: React.FC<{
   onClose: () => void
 }> = ({id, onClose}) => {
   const router = useRouter()
-  const {user} = useUser();
+  const {user} = useUser()
   const [state, action] = useFormState(handleEditPassenger, {error: ''})
   const [passengers, setPassengers] = useState<Passenger[]>()
   const [editingPassenger, setEditingPassenger] = useState(
@@ -31,7 +31,7 @@ export const EditPassenger: React.FC<{
     }
   }
   const submit = async (formdata: FormData) => {
-    formdata.append('passenger_id', editingPassenger!.id);
+    formdata.append('passenger_id', editingPassenger!.id)
     action(formdata)
     onClose()
     router.replace('/dashboard/passengers')
@@ -75,7 +75,7 @@ export const EditPassenger: React.FC<{
                 placeholder="Voornaam"
                 required
                 className={styles.form.input()}
-                value={editingPassenger?.firstname || ''}
+                value={editingPassenger?.firstname}
                 onChange={e => {
                   setEditingPassenger({
                     ...editingPassenger,
@@ -93,7 +93,13 @@ export const EditPassenger: React.FC<{
                 placeholder="Achternaam"
                 required
                 className={styles.form.input()}
-                value={passengers?.find(p => p.id === id)?.lastname}
+                value={editingPassenger?.lastname}
+                onChange={e => {
+                  setEditingPassenger({
+                    ...editingPassenger,
+                    lastname: e.target.value
+                  } as Passenger)
+                }}
               />
             </div>
           </div>
@@ -106,7 +112,13 @@ export const EditPassenger: React.FC<{
                 name="dateofbirth"
                 placeholder="Geboortedatum"
                 className={styles.form.input()}
-                value={passengers?.find(p => p.id === id)?.dateofbirth || ''}
+                value={editingPassenger?.dateofbirth || ''}
+                onChange={e => {
+                  setEditingPassenger({
+                    ...editingPassenger,
+                    dateofbirth: e.target.value
+                  } as Passenger)
+                }}
               />
             </div>
             <div className={styles.form.flexcol()}>
@@ -117,9 +129,13 @@ export const EditPassenger: React.FC<{
                 name="emergency_contact"
                 placeholder="Noodcontactnummer"
                 className={styles.form.input()}
-                value={
-                  passengers?.find(p => p.id === id)?.emergency_contact || ''
-                }
+                value={editingPassenger?.emergency_contact || ''}
+                onChange={e => {
+                  setEditingPassenger({
+                    ...editingPassenger,
+                    emergency_contact: e.target.value
+                  } as Passenger)
+                }}
               />
             </div>
             <div className={styles.form.flexcol()}>
@@ -130,9 +146,13 @@ export const EditPassenger: React.FC<{
                 name="emergency_relation"
                 placeholder="Relatie noodcontact"
                 className={styles.form.input()}
-                value={
-                  passengers?.find(p => p.id === id)?.emergency_relation || ''
-                }
+                value={editingPassenger?.emergency_relation || ''}
+                onChange={e => {
+                  setEditingPassenger({
+                    ...editingPassenger,
+                    emergency_relation: e.target.value
+                  } as Passenger)
+                }}
               />
             </div>
           </div>
@@ -143,7 +163,13 @@ export const EditPassenger: React.FC<{
               id="wheelchair"
               name="wheelchair"
               className={styles.form.input()}
-              checked={passengers?.find(p => p.id === id)?.wheelchair}
+              checked={editingPassenger?.wheelchair || false}
+              onChange={e => {
+                setEditingPassenger({
+                  ...editingPassenger,
+                  wheelchair: e.target.checked
+                } as Passenger)
+              }}
             />
           </div>
 
@@ -154,7 +180,13 @@ export const EditPassenger: React.FC<{
             name="extra"
             placeholder="Extra"
             className={styles.form.input()}
-            value={passengers?.find(p => p.id === id)?.extra || ''}
+            value={editingPassenger?.extra || ''}
+            onChange={e => {
+              setEditingPassenger({
+                ...editingPassenger,
+                extra: e.target.value
+              } as Passenger)
+            }}
           />
           {state.error && <p className={styles.form.error()}>{state.error}</p>}
           <button type="submit" className={styles.form.submit()}>
