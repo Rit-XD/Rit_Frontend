@@ -18,7 +18,7 @@ export const getPassengers = async () => {
 
 export async function handleEditPassenger(
   state: {error: string},
-  formData: FormData
+  formData: FormData,
 ): Promise<{error: string}> {
   const firstname = String(formData.get('firstname'))
   const lastname = String(formData.get('lastname'))
@@ -27,6 +27,7 @@ export async function handleEditPassenger(
   const emergency_relation = String(formData.get('emergency_relation'))
   const wheelchair = Boolean(formData.get('wheelchair'))
   const extra = String(formData.get('extra'))
+  const passenger_id = String(formData.get('passenger_id'))
   const user = await getUser()
   if (!user) return {error: ''}
 
@@ -41,7 +42,7 @@ export async function handleEditPassenger(
       wheelchair,
       extra
     })
-    .eq('carecenter_id', user.id)
+    .eq('id', passenger_id)
     .select()
   const res = await query
   return {error: '', ...res.data}

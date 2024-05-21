@@ -18,6 +18,7 @@ export const EditPassenger: React.FC<{
   onClose: () => void
 }> = ({id, onClose}) => {
   const router = useRouter()
+  const {user} = useUser();
   const [state, action] = useFormState(handleEditPassenger, {error: ''})
   const [passengers, setPassengers] = useState<Passenger[]>()
   const [editingPassenger, setEditingPassenger] = useState(
@@ -30,12 +31,12 @@ export const EditPassenger: React.FC<{
     }
   }
   const submit = async (formdata: FormData) => {
+    formdata.append('passenger_id', editingPassenger!.id);
     action(formdata)
     onClose()
     router.replace('/dashboard/passengers')
   }
 
-  const {user} = useUser()
   //load all possible passengers
   const loadPassengers = async () => {
     if (passengers?.length) return
