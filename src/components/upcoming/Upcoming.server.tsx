@@ -16,7 +16,7 @@ export const fetchRides = async () => {
 
   let query = supabaseAdmin
     .from('Rides')
-    .select('id,carecenter_id,passenger_1')
+    .select('*')
     .eq('carecenter_id', user?._id)
   const {data: rides} = await query
   return rides || []
@@ -25,7 +25,7 @@ export const fetchRides = async () => {
 export const fetchPassengerById = async (id: string) => {
     const {data: passenger} = await supabaseAdmin
         .from('Passengers')
-        .select('id,firstname,lastname')
+        .select('*')
         .eq('id', id)
     return passenger?.[0] as Passenger;
 }

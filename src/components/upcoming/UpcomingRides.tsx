@@ -4,9 +4,9 @@ import { Ride } from "@/types/ride.type";
 import { useEffect, useState } from "react";
 import { fetchPassengerById, fetchRides } from "./Upcoming.server";
 
-export async function UpcomingRides() {
-    const [rides, setRides] = useState<{id: string, carecenter_id: string, passenger_1: string }[]>([]);
-    const [upcoming, setUpcoming]= useState<{r: {id: string, carecenter_id: string, passenger_1: string }, p: {id: string, firstname: string, lastname: string}}[]>([]);
+export const UpcomingRides: React.FC = () => {
+    const [rides, setRides] = useState<Ride[]>([]);
+    const [upcoming, setUpcoming]= useState<{r: Ride, p: Passenger}[]>([]);
 
 
     //load all possible rides
