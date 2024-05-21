@@ -5,16 +5,16 @@ import {fromModule} from '@/utils/styler/Styler'
 import {useRouter} from 'next/navigation'
 import React from 'react'
 import {useFormState} from 'react-dom'
-import css from './AddPassenger.module.scss'
-import {handleAddPassenger} from './HandleAddPassenger'
+import css from './EditPassenger.module.scss'
+import {handleEditPassenger} from './HandleEditPassenger'
 
 const styles = fromModule(css)
 
-export const AddPassenger: React.FC<{
+export const EditPassenger: React.FC<{
   onClose: () => void
 }> = ({onClose}) => {
   const router = useRouter()
-  const [state, action] = useFormState(handleAddPassenger, {error: ''})
+  const [state, action] = useFormState(handleEditPassenger, {error: ''})
 
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
@@ -31,7 +31,7 @@ export const AddPassenger: React.FC<{
     <div className={styles.overlay()} onClick={handleOverlayClick}>
       <div className={styles.form_container()}>
         <form className={styles.form()} action={submit}>
-          <h1 className={styles.form.title()}>Voeg een passagier toe</h1>
+          <h1 className={styles.form.title()}>Wijzig deze passagier</h1>
           <div className={styles.form.flexrow()}>
             <div className={styles.form.flexcol()}>
               <label>Voornaam:</label>
