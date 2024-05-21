@@ -1,26 +1,34 @@
-'use server'
-import {fetchUser} from '@/lib/user/fetchUser'
+'use client'
+
+import {EditPassenger} from '@/app/dashboard/passengers/EditPassenger'
+import {useUser} from '@/lib/user/useUser'
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
-import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
 
 const styles = fromModule(css)
 
-export const PassengerTable: React.FC = async () => {
-  const getUser = async () => {
-    const user = await fetchUser()
-    return user
+export const PassengerTable: React.FC<{
+  initial: {
+    carecenter_id: string
+    dateofbirth: string | null
+    emergency_contact: string | null
+    emergency_relation: string | null
+    extra: string | null
+    firstname: string
+    id: string
+    lastname: string
+    wheelchair: boolean
+  }[]
+}> = ({initial}) => {
+  const [passengers, setPassengers] = useState<typeof initial>()
+  const [isEditPassengerOpen, setEditPassengerOpen] = useState(false)
+
+  const closeEditPassenger = () => {
+    setEditPassengerOpen(false)
   }
-
-  const user = await getUser()
-  if (!user) return
-
-  const {data: passengers, error} = await supabaseAdmin
-    .from('Passengers')
-    .select('*')
-    .eq('carecenter_id', user.id)
 
   function calculateAge(dateofbirth: string) {
     const birthDate = new Date(dateofbirth)
@@ -36,6 +44,17 @@ export const PassengerTable: React.FC = async () => {
     }
     return age
   }
+
+  const {user} = useUser()
+  //load all possible passengers
+  const loadPassengers = async () => {
+    if (passengers?.length) return
+    setPassengers(await fetchPassengers(user!))
+  }
+  useEffect(() => {
+    loadPassengers()
+  }, [user])
+
   return (
     <div className={styles.tableContainer()}>
       <table className={styles.table()}>
@@ -65,10 +84,17 @@ export const PassengerTable: React.FC = async () => {
                   passengers.emergency_relation || ''
                 })` || '-'}
               </td>
+              <td
+                onClick={() => setEditPassengerOpen(true)}
+                className={styles.table.row()}
+              >
+                •••
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {isEditPassengerOpen && <EditPassenger onClose={closeEditPassenger} />}
     </div>
   )
 }

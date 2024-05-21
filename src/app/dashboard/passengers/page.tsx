@@ -16,7 +16,7 @@ export default async function Passengers() {
         <PassengersHeader />
       </Suspense>
       <Suspense fallback={<Loader />}>
-        <PassengerTable />
+        <PassengerTable initial={[]} />
       </Suspense>
       <div className={styles.passengers.filler()} />
     </main>
