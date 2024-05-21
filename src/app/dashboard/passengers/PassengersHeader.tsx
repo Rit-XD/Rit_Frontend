@@ -35,9 +35,13 @@ export const PassengersHeader: React.FC = () => {
     <main>
       <div className={styles.container()}>
         <div className={styles.container.leftside()}>
-          <p className={styles.container.leftside.tab()}>
-            {`Passagiers (${passengers?.length})`}
-          </p>
+          {passengers?.length === 0 ? (
+            <p>0</p>
+          ) : (
+            <p className={styles.container.leftside.tab()}>
+              {`Passagiers (${passengers?.length ?? 0})`}
+            </p>
+          )}
           <p>{`Archief (0)`}</p>
         </div>
         <div className={styles.container.rightside()}>
