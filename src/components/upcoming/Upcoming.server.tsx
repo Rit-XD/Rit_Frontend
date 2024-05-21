@@ -1,5 +1,6 @@
 'use server'
 
+import { User } from '@/lib/user/User'
 import {fetchUser} from '@/lib/user/fetchUser'
 import { Passenger } from '@/types/passenger.type'
 import { Ride } from '@/types/ride.type'
@@ -10,10 +11,7 @@ export const getUser = async () => {
   return user
 }
 
-export const fetchRides = async () => {
-  const user = await getUser()
-  if (!user) return []
-
+export const fetchRides = async (user: User) => {
   let query = supabaseAdmin
     .from('Rides')
     .select('*')
@@ -27,5 +25,6 @@ export const fetchPassengerById = async (id: string) => {
         .from('Passengers')
         .select('*')
         .eq('id', id)
+//TODO: add carecenterid filter
     return passenger?.[0] as Passenger;
 }

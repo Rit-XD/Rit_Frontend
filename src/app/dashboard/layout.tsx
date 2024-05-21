@@ -52,7 +52,7 @@ export default function DashboardLayout({
           </div>
         </aside>
         <div className={styles.layout.content()}>
-          {/* <Header /> */}
+          <Header />
           {children}
         </div>
       </div>

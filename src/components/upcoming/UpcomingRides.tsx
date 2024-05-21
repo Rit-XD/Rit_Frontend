@@ -1,27 +1,23 @@
 'use client'
+
 import { Passenger } from "@/types/passenger.type";
 import { Ride } from "@/types/ride.type";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { fetchPassengerById, fetchRides } from "./Upcoming.server";
+import { useUser } from "@/lib/user/useUser";
+import { Loader } from "@/ui/loader/Loader";
+
 
 export const UpcomingRides: React.FC = () => {
     const [rides, setRides] = useState<Ride[]>([]);
     const [upcoming, setUpcoming]= useState<{r: Ride, p: Passenger}[]>([]);
 
-
-    //load all possible rides
-    const loadRides = async () => {
-      if (rides?.length) return;
-      setRides(await fetchRides());
-    }
-    useEffect(() => {
-      loadRides();
-    }, []);
+    const {user} = useUser();
 
     //load all passengers
     useEffect(() => {
       const loadRidesAndPassengers = async () => {
-        const rides = await fetchRides();
+        const rides = await fetchRides(user!);
         const upcoming: {r: Ride, p: Passenger}[] = [];
 
         for (const r of rides) {
@@ -36,14 +32,16 @@ export const UpcomingRides: React.FC = () => {
       };
 
       loadRidesAndPassengers();
-    }, []);
+    }, [user]);
 
     return (
         <div>
+            <Suspense fallback={<Loader/>}>
             {upcoming.map((u) => (
-            <div key={u.p.id + u.r.id}>
+              <div key={u.p.id + u.r.id}>
               {u.p.firstname}
             </div>
             ))}
+            </Suspense>
         </div>
 )}

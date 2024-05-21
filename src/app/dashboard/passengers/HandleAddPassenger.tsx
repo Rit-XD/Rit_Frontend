@@ -1,10 +1,14 @@
 'use server'
 
-import { User } from '@/lib/user/User'
+import {fetchUser} from '@/lib/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
-
-export const getPassengers = async (user: User) => {
+export const getUser = async () => {
+  const user = await fetchUser()
+  return user
+}
+export const getPassengers = async () => {
+  const user = await getUser()
   const {data: passengers, error} = await supabaseAdmin
     .from('Passengers')
     .select('*')
@@ -14,8 +18,7 @@ export const getPassengers = async (user: User) => {
 
 export async function handleAddPassenger(
   state: {error: string},
-  formData: FormData,
-  user: User
+  formData: FormData
 ): Promise<{error: string}> {
   const firstname = String(formData.get('firstname'))
   const lastname = String(formData.get('lastname'))
@@ -24,7 +27,7 @@ export async function handleAddPassenger(
   const emergency_relation = String(formData.get('emergency_relation'))
   const wheelchair = Boolean(formData.get('wheelchair'))
   const extra = String(formData.get('extra'))
-
+  const user = await getUser()
   if (!user) return {error: ''}
 
   let query = supabaseAdmin

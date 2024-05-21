@@ -7,8 +7,6 @@ import {redirect} from 'next/navigation'
 import {LoginSteps} from './LoginSteps'
 import css from './LoginSteps.module.scss'
 
-//TODO: remove state
-
 const styles = fromModule(css)
 
 export default async function Login({
@@ -20,26 +18,6 @@ export default async function Login({
   if (user) {
     return redirect('/dashboard')
   }
-  // const signIn = async (formData: FormData) => {
-  //   "use server";
-
-  //   const email = formData.get("email") as string;
-  //   const password = formData.get("password") as string;
-  //   const supabase = createClient();
-
-  //   const { data, error } = await supabase.auth.signInWithPassword({
-  //     email,
-  //     password,
-  //   });
-
-  //   if (error) {
-  //     const path = "/login?message="+error.message;
-  //     return redirect(path);
-  //   }
-  //   // const user = await getUser(data.user.id);
-
-  //   return redirect("/dashboard");
-  // };
 
   return (
     <>

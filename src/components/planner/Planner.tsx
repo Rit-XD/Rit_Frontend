@@ -2,7 +2,7 @@
 
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useEffect, useState} from 'react'
+import React, {Suspense, useEffect, useState} from 'react'
 import {Map} from '../map/Map'
 import css from './Planner.module.scss'
 import {fetchPassengers} from './FetchPlanner'
@@ -10,6 +10,7 @@ import { Icon } from '@/ui/Icon'
 import {postRide} from './PostRide'
 import { Passenger } from '@/types/passenger.type'
 import { useUser } from '@/lib/user/useUser'
+import { Loader } from '@/ui/loader/Loader'
 
 const styles = fromModule(css)
 
@@ -29,7 +30,7 @@ export const Planner: React.FC<{
     const [passengers, setPassengers] = useState<typeof initial>();
     const [selectedPassengers, setSelectedPassengers] = useState<typeof initial>([]);
 
-    const [desination, setDestination] = useState<string>("");
+    const [destination, setDestination] = useState<string>("");
     const [dateTime, setDateTime] = useState<string>("");
 
     const {user} = useUser();
@@ -57,7 +58,9 @@ export const Planner: React.FC<{
 
     //handle submit
     const handlesubmit = async () => { 
-      postRide(desination, "205c6e75-c379-49cf-9937-daa93cfd110a", dateTime, selectedPassengers[0].id, selectedPassengers[1]?.id);
+      let origin = user!.street + ' ' + user!.number + ', ' + user!.postal + ' ' + user!.city;
+      postRide(user!.id, origin, destination, "ea2251ed-98f6-4d9c-bbb3-17c7ea2a71a7", dateTime, selectedPassengers[0].id, selectedPassengers[1]?.id).then((res) => {
+      });
     }
 
 

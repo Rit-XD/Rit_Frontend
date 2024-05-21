@@ -24,13 +24,14 @@ export const PassengersHeader: React.FC = () => {
   //get all passengers
   const getPassengers = async () => {
     const p: Passenger[] = await fetchPassengers(user!)
+    console.log(user);
     if (p) {
       setPassengers(p)
     }
   }
   useEffect(() => {
-    getPassengers()
-  }, [])
+    if (user) getPassengers()
+  }, [user])
 
   return (
       <div className={styles.container()}>

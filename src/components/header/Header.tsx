@@ -1,8 +1,5 @@
 'use client'
-import {User} from '@/lib/user/User'
-import {fetchUser} from '@/lib/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
-import {Suspense, use, useEffect, useState} from 'react'
 import css from './Header.module.scss'
 import { useUser } from '@/lib/user/useUser'
 

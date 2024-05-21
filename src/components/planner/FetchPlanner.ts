@@ -1,7 +1,6 @@
 'use server'
 
 import { User } from '@/lib/user/User'
-import {fetchUser} from '@/lib/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
 
