@@ -20,7 +20,7 @@ export const PassengerTable: React.FC = async () => {
   const {data: passengers, error} = await supabaseAdmin
     .from('Passengers')
     .select('*')
-    .eq('carecenter_id', user?._id)
+    .eq('carecenter_id', user.carecenter.id)
 
   function calculateAge(dateofbirth: string) {
     const birthDate = new Date(dateofbirth)

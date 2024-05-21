@@ -2,6 +2,7 @@ import {UserProvider} from '@/lib/user/useUser'
 import '@/styles/globals.scss'
 import {GeistSans} from 'geist/font/sans'
 import './globals.css'
+import { NextUIProvider } from '@nextui-org/react'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -17,7 +18,11 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
-        <UserProvider>{children}</UserProvider>
+      <NextUIProvider>
+        <UserProvider>
+          {children}
+        </UserProvider>
+      </NextUIProvider>
       </body>
     </html>
   )

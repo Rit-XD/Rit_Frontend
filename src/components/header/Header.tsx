@@ -2,7 +2,7 @@
 import {User} from '@/lib/user/User'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
-import {useEffect, useState} from 'react'
+import {Suspense, useEffect, useState} from 'react'
 import css from './Header.module.scss'
 
 const styles = fromModule(css)
@@ -30,9 +30,9 @@ export const Header: React.FC = () => {
             className={styles.header.logo()}
           />
         )}
-        <h1 className={styles.header.title()}>{user?.carecenter.name}</h1>
+        <h1 className={styles.header.title()}>{user?.carecenter.name || "Loading..."}</h1>
       </div>
       <hr className={styles.header.hr()} />
-    </div>
+      </div>
   )
 }

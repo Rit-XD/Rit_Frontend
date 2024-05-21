@@ -19,11 +19,15 @@ export const AddPassenger: React.FC<{
       onClose()
     }
   }
+  const submit = async (formdata: FormData) => {
+    action(formdata); 
+    onClose();
+  }
 
   return (
     <div className={styles.overlay()} onClick={handleOverlayClick}>
       <div className={styles.form_container()}>
-        <form className={styles.form()} action={action}>
+        <form className={styles.form()} action={submit}>
           <h1 className={styles.form.title()}>Voeg een passagier toe</h1>
           <div className={styles.form.flexrow()}>
             <div className={styles.form.flexcol()}>
