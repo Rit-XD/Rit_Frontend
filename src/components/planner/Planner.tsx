@@ -9,6 +9,7 @@ import {fetchPassengers} from './FetchPlanner'
 import { Icon } from '@/ui/Icon'
 import {postRide} from './PostRide'
 import { Passenger } from '@/types/passenger.type'
+import { useUser } from '@/lib/user/useUser'
 
 const styles = fromModule(css)
 
@@ -31,14 +32,15 @@ export const Planner: React.FC<{
     const [desination, setDestination] = useState<string>("");
     const [dateTime, setDateTime] = useState<string>("");
 
+    const {user} = useUser();
     //load all possible passengers
     const loadPassengers = async () => {
         if (passengers?.length) return;
-        setPassengers(await fetchPassengers());
+        setPassengers(await fetchPassengers(user!));
     }
     useEffect(() => {
       loadPassengers();
-    }, []);
+    }, [user]);
 
     //maintain selected passengers
     const selectPassenger = (passengerId: string) => {
@@ -55,7 +57,6 @@ export const Planner: React.FC<{
 
     //handle submit
     const handlesubmit = async () => { 
-      console.log(dateTime);
       postRide(desination, "205c6e75-c379-49cf-9937-daa93cfd110a", dateTime, selectedPassengers[0].id, selectedPassengers[1]?.id);
     }
 

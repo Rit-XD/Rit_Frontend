@@ -1,24 +1,21 @@
 'use server'
 
-import {fetchUser} from '@/lib/user/fetchUser'
+import { User } from '@/lib/user/User'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
-export const getUser = async () => {
-  const user = await fetchUser()
-  return user
-}
-export const getPassengers = async () => {
-  const user = await getUser()
+
+export const getPassengers = async (user: User) => {
   const {data: passengers, error} = await supabaseAdmin
     .from('Passengers')
     .select('*')
-    .eq('carecenter_id', user!.carecenter.id)
+    .eq('carecenter_id', user!.id)
   return passengers || []
 }
 
 export async function handleAddPassenger(
   state: {error: string},
-  formData: FormData
+  formData: FormData,
+  user: User
 ): Promise<{error: string}> {
   const firstname = String(formData.get('firstname'))
   const lastname = String(formData.get('lastname'))
@@ -27,14 +24,14 @@ export async function handleAddPassenger(
   const emergency_relation = String(formData.get('emergency_relation'))
   const wheelchair = Boolean(formData.get('wheelchair'))
   const extra = String(formData.get('extra'))
-  const user = await getUser()
+
   if (!user) return {error: ''}
 
   let query = supabaseAdmin
     .from('Passengers')
     .insert([
       {
-        carecenter_id: user?.carecenter.id,
+        carecenter_id: user?.id,
         firstname: firstname,
         lastname: lastname,
         dateofbirth: dateofbirth,
@@ -46,6 +43,5 @@ export async function handleAddPassenger(
     ])
     .select()
   const res = await query
-  console.log(res)
   return {error: '', ...res.data}
 }

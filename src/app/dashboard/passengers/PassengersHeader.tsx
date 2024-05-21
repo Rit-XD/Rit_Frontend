@@ -8,6 +8,7 @@ import {fromModule} from '@/utils/styler/Styler'
 import {useEffect, useState} from 'react'
 import {AddPassenger} from './AddPassenger'
 import css from './Passengers.module.scss'
+import { useUser } from '@/lib/user/useUser'
 
 const styles = fromModule(css)
 
@@ -19,10 +20,10 @@ export const PassengersHeader: React.FC = () => {
     setAddPassengerOpen(false)
   }
 
+  const {user} = useUser();
   //get all passengers
   const getPassengers = async () => {
-    const p: Passenger[] = await fetchPassengers()
-    console.log('p', p)
+    const p: Passenger[] = await fetchPassengers(user!)
     if (p) {
       setPassengers(p)
     }

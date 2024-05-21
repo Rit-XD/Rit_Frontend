@@ -25,7 +25,7 @@ export default async function Index() {
     }
   }
 
-  const isSupabaseConnected = canInitSupabaseClient()
+  canInitSupabaseClient()
 
   return redirect('/dashboard')
 }

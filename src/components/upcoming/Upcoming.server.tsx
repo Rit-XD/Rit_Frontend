@@ -17,7 +17,7 @@ export const fetchRides = async () => {
   let query = supabaseAdmin
     .from('Rides')
     .select('*')
-    .eq('carecenter_id', user?._id)
+    .eq('carecenter_id', user?.id)
   const {data: rides} = await query
   return rides || []
 }

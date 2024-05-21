@@ -4,9 +4,8 @@ import Link from 'next/link'
 import {redirect} from 'next/navigation'
 
 export default async function AuthButton() {
-  const supabase = createClient()
-  const profile = await fetchUser()
-  const user = profile?.carecenter
+  const supabase = createClient();
+  const user = await fetchUser();
 
   const signOut = async () => {
     'use server'

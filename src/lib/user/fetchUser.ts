@@ -1,7 +1,7 @@
 "use server";
 
 import { createSupabaseForServerComponent } from "@/utils/supabase/createSupabaseForServerComponent";
-import { User, careCenterRow } from "./User";
+import { User } from "./User";
 import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
 
 const selectQuery = "*";
@@ -21,12 +21,19 @@ export async function fetchUser(): Promise<User | null> {
     .maybeSingle()
     .throwOnError();
 
-  const carecenter = data as unknown as careCenterRow | undefined;
+  const carecenter = data as unknown as User | undefined;
   if (!carecenter) return null;
 
   return {
-    _id: user.id,
-    email: user.email!,
-    carecenter,
+    city: carecenter.city,
+    country: carecenter.country!,
+    email: carecenter.email!,
+    id: carecenter.id,
+    logo: carecenter.logo!,
+    name: carecenter.name!,
+    number: carecenter.number!,
+    phone: carecenter.phone!,
+    postal: 9,
+    street: carecenter.street!,
   };
 }

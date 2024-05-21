@@ -6,13 +6,16 @@ import React from 'react'
 import {useFormState} from 'react-dom'
 import css from './AddPassenger.module.scss'
 import {handleAddPassenger} from './HandleAddPassenger'
+import { useUser } from '@/lib/user/useUser'
 
 const styles = fromModule(css)
 
 export const AddPassenger: React.FC<{
   onClose: () => void
 }> = ({onClose}) => {
-  const [state, action] = useFormState(handleAddPassenger, {error: ''})
+  const {user} = useUser();
+
+  const [state, action] = useFormState(handleAddPassenger,{user: user}, {error: ''})
 
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {

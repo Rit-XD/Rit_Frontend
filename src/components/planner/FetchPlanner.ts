@@ -1,21 +1,16 @@
 'use server'
 
+import { User } from '@/lib/user/User'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
-export const getUser = async () => {
-  const user = await fetchUser()
-  return user
-}
 
-export const fetchPassengers = async () => {
-  const user = await getUser()
+export const fetchPassengers = async (user: User) => {
   if (!user) return []
-
   let query = supabaseAdmin
     .from('Passengers')
     .select('*')
-    .eq('carecenter_id', user?._id)
+    .eq('carecenter_id', user.id)
   const {data: passengers} = await query
   return passengers || []
 }

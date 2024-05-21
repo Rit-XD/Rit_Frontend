@@ -18,13 +18,12 @@ export const postRide = async (
 ) => {
   const user = await getUser()
   if (!user) return []
-  console.log("timestamp", timestamp);
   let query = supabaseAdmin
     .from('Rides')
     .insert([
       {
-        carecenter: user?.carecenter.id,
-        origin: user?.carecenter.street + ' ' + user?.carecenter.number + ', ' + user?.carecenter.postal + ' ' + user?.carecenter.city,
+        carecenter: user?.id,
+        origin: user?.street + ' ' + user?.number + ', ' + user?.postal + ' ' + user?.city,
         destination: destination,
         driver: null,
         passenger_1: passenger_1,
@@ -35,6 +34,5 @@ export const postRide = async (
     ])
     .select();
   const res = await query;
-  console.log("ride", res);
   return res || []
 }

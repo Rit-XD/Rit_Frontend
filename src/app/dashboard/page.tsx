@@ -15,12 +15,12 @@ export default async function Dashboard() {
 
   return (
     <main className={styles.page.main()}>
-      <Suspense fallback={<Loader />}>
+      {/* <Suspense fallback={<Loader />}>
         <Planner initial={[]} />
-      </Suspense>
-      <Suspense fallback={<Loader />}>
+      </Suspense> */}
+      {/* <Suspense fallback={<Loader />}>
         <Upcoming />
-      </Suspense>
+      </Suspense> */}
     </main>
   )
 }

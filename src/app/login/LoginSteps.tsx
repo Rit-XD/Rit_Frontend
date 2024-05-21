@@ -2,16 +2,26 @@
 
 import {fromModule} from '@/utils/styler/Styler'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useFormState} from 'react-dom'
 import {handleLogin} from './HandleLogin'
 import css from './LoginSteps.module.scss'
 import {SubmitButton} from './submit-button'
+import { useUser } from '@/lib/user/useUser'
+import { useRouter } from 'next/navigation'
 
 const styles = fromModule(css)
 
 export const LoginSteps: React.FC = () => {
+  const {user} = useUser();
   const [state, action] = useFormState(handleLogin, {error: ''})
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user]);
 
   return (
     <form className={styles.form()} action={action}>
