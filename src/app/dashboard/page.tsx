@@ -1,10 +1,11 @@
-import { Planner } from '@/components/planner/Planner'
-import { fetchUser } from '@/lib/user/fetchUser'
-import { fromModule, styler } from '@/utils/styler/Styler'
-import { redirect } from 'next/navigation'
 import css from '@/app/dashboard/Dashboard.module.scss'
-import { Upcoming } from '@/components/upcoming/Upcoming'
-
+import {Planner} from '@/components/planner/Planner'
+import {Upcoming} from '@/components/upcoming/Upcoming'
+import {fetchUser} from '@/lib/user/fetchUser'
+import {Loader} from '@/ui/Loader'
+import {fromModule} from '@/utils/styler/Styler'
+import {redirect} from 'next/navigation'
+import {Suspense} from 'react'
 
 const styles = fromModule(css)
 
@@ -14,8 +15,12 @@ export default async function Dashboard() {
 
   return (
     <main className={styles.page.main()}>
-      <Planner initial={[]} />
-      <Upcoming/>
+      <Suspense fallback={<Loader />}>
+        <Planner initial={[]} />
+      </Suspense>
+      <Suspense fallback={<Loader />}>
+        <Upcoming />
+      </Suspense>
     </main>
   )
 }

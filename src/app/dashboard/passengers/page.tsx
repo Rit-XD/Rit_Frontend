@@ -1,17 +1,20 @@
 'use server'
 
 import {PassengerTable} from '@/components/passengertable/PassengerTable'
-import {fromModule} from '@/utils/styler/Styler'
-import css from './Passengers.module.scss'
+import {Loader} from '@/ui/Loader'
+import {Suspense} from 'react'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {PassengersHeader} from './PassengersHeader'
 
 export default async function Passengers() {
-  const styles = fromModule(css)
-
   return (
     <main>
-      <PassengersHeader />
-      <PassengerTable />
+      <Suspense fallback={<Loader />}>
+        <PassengersHeader />
+      </Suspense>
+      <Suspense fallback={<Loader />}>
+        <PassengerTable />
+      </Suspense>
     </main>
   )
 }
