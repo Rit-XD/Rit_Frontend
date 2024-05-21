@@ -111,7 +111,7 @@ export const EditPassenger: React.FC<{
           />
           {state.error && <p className={styles.form.error()}>{state.error}</p>}
           <button type="submit" className={styles.form.submit()}>
-            Bewoner Toevoegen
+            Bewoner Wijzigen
           </button>
           <div className={styles.form.close()}>
             <Close onClick={onClose} />
