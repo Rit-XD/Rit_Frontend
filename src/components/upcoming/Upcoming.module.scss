@@ -52,9 +52,40 @@
         &-route {
             display: none;
             flex-direction: column;
+            &-divider {
+                width: 1px;
+                height: 32px;
+                background-color: black;
+                margin-top: -16px;
+                margin-bottom: 8px;
+                margin-left: 5px;
+                opacity: .2;
+            }
+            &-address {
+                display: flex;
+                flex-direction: row;
+                &-icon {
+                    margin-right: 8px;
+                    margin-top: 4px;
+                }
+                &-text {
+                    display: flex;
+                    flex-direction: column;
+ 
+                }
+            
+            }
         }
     }
 }
 .ride-container:first-child .ride-container-route {
     display: flex;
+    &-address {
+        &-text {
+            & span:last-child {
+                opacity: .5;
+                font-size: 14px;
+            }
+        }
+    }
 }

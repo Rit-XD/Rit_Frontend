@@ -7,10 +7,13 @@ import Button from '@/ui/button/Button'
 import {Loader} from '@/ui/loader/Loader'
 import {fromModule} from '@/utils/styler/Styler'
 import React, {Suspense, useEffect, useState} from 'react'
-import {Map} from '../map/Map'
+import {Map, MapProps} from '../map/Map'
 import {fetchPassengers} from './FetchPlanner'
 import css from './Planner.module.scss'
 import {postRide} from './PostRide'
+import { APIProvider } from '@vis.gl/react-google-maps'
+import { Autocomplete } from '../map/Autocomplete'
+import { MapHandler } from '../map/MapHandler'
 
 const styles = fromModule(css)
 
@@ -75,108 +78,134 @@ export const Planner: React.FC<{
     ).then(res => {})
   }
 
-  return (
-    <div className={styles.container()}>
-      <div className={styles.container.planner()}>
-        <h3 className={styles.container.planner.title()}>Plan een rit</h3>
-        <div className={styles.container.planner.inputs()}>
-          {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
-          <div className={styles.container.planner.inputs.iconContainer()}>
-            <select
-              name="passenger"
-              id="select-passenger"
-              className={styles.container.planner.inputs.input()}
-              defaultValue={''}
-              onChange={e => selectPassenger(e.target.value)}
-            >
-              <option value="" disabled>
-                Passagier toevoegen
-              </option>
-              {passengers?.map((passenger, index) => (
-                <option value={passenger.id} key={passenger.id}>
-                  {passenger.firstname} {passenger.lastname}
-                </option>
-              ))}
-            </select>
-            <Icon
-              icon="dropdown"
-              className={styles.container.planner.inputs.iconContainer.icon()}
-            />
-          </div>
+  const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
+  const [selectedPlace, setSelectedPlace] =
+  useState<google.maps.places.PlaceResult | null>(null)
 
-          <input
-            type="text"
-            name="destination"
-            id="input-destination"
-            placeholder="Bestemming"
-            className={styles.container.planner.inputs.input()}
-            onChange={e => setDestination(e.target.value)}
-          />
-          <div className={styles.container.planner.inputs.iconContainer()}>
-            <input
-              type="datetime-local"
-              name="date"
-              id="input-date"
-              placeholder="Tijdstip"
-              className={styles.container.planner.inputs.input()}
-              onChange={e => {
-                setDateTime(e.target.value)
-                console.log('e', e.target.value)
-              }}
-            />
-            <Icon
-              icon="calendar"
-              className={styles.container.planner.inputs.iconContainer.icon.calendar()}
-            />
-          </div>
-        </div>
-        <div className={styles.container.planner.inputs()}>
-          <div>
-            {selectedPassengers.map((selectedPassenger, index) => (
-              <div
-                className={styles.container.planner.inputs.passenger()}
-                key={selectedPassenger.id}
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+    setSelectedPlace(place)
+
+  }
+
+  useEffect(() => {
+    if (selectedPlace) handlePlaceSelect(selectedPlace)
+  }, [selectedPlace])
+
+  return (
+    <APIProvider apiKey={key}>
+      <div className={styles.container()}>
+        <div className={styles.container.planner()}>
+          <h3 className={styles.container.planner.title()}>Plan een rit</h3>
+          <div className={styles.container.planner.inputs()}>
+            {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
+            <div className={styles.container.planner.inputs.iconContainer()}>
+              <select
+                name="passenger"
+                id="select-passenger"
+                className={styles.container.planner.inputs.input()}
+                defaultValue={''}
+                onChange={e => selectPassenger(e.target.value)}
               >
-                <p>
-                  {selectedPassenger.firstname} {selectedPassenger.lastname}
-                </p>
-                <div
-                  onClick={() => removeSelectedPassenger(selectedPassenger.id)}
-                >
-                  <div />
-                </div>
+                <option value="" disabled>
+                  Passagier toevoegen
+                </option>
+                {passengers?.map((passenger, index) => (
+                  <option value={passenger.id} key={passenger.id}>
+                    {passenger.firstname} {passenger.lastname}
+                  </option>
+                ))}
+              </select>
+              <Icon
+                icon="dropdown"
+                className={styles.container.planner.inputs.iconContainer.icon()}
+              />
+            </div>
+
+            {/* <input
+              type="text"
+              name="destination"
+              id="input-destination"
+              placeholder="Bestemming"
+              className={styles.container.planner.inputs.input()}
+              onChange={e => setDestination(e.target.value)}
+            /> */}
+            <div className={styles.container.planner.autocomplete()}>
+            <Autocomplete
+              onPlaceSelect={place => {
+                setSelectedPlace(place)
+                if (place) {
+                  handlePlaceSelect(place)
+                }
+              }}
+              />
               </div>
-            ))}
-          </div>
-          <div>
-            <div>
+            <div className={styles.container.planner.inputs.iconContainer()}>
               <input
-                type="radio"
-                name="routetype"
-                id="routetype-both"
-                className={styles.container.planner.inputs.radio()}
+                type="datetime-local"
+                name="date"
+                id="input-date"
+                placeholder="Tijdstip"
+                className={styles.container.planner.inputs.input()}
+                onChange={e => {
+                  setDateTime(e.target.value)
+                  console.log('e', e.target.value)
+                }}
               />
-              <label htmlFor="routetype-both">Heen- en terugrit</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="routetype"
-                id="routetype-single"
-                className={styles.container.planner.inputs.radio()}
+              <Icon
+                icon="calendar"
+                className={styles.container.planner.inputs.iconContainer.icon.calendar()}
               />
-              <label htmlFor="routetype-single">Enkele rit</label>
             </div>
           </div>
-          {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
-          <Button onClick={handlesubmit}>Plaats deze rit</Button>
+          <div className={styles.container.planner.inputs()}>
+            <div>
+              {selectedPassengers.map((selectedPassenger, index) => (
+                <div
+                  className={styles.container.planner.inputs.passenger()}
+                  key={selectedPassenger.id}
+                >
+                  <p>
+                    {selectedPassenger.firstname} {selectedPassenger.lastname}
+                  </p>
+                  <div
+                    onClick={() => removeSelectedPassenger(selectedPassenger.id)}
+                  >
+                    <div />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div>
+                <input
+                  type="radio"
+                  name="routetype"
+                  id="routetype-both"
+                  className={styles.container.planner.inputs.radio()}
+                />
+                <label htmlFor="routetype-both">Heen- en terugrit</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="routetype"
+                  id="routetype-single"
+                  className={styles.container.planner.inputs.radio()}
+                />
+                <label htmlFor="routetype-single">Enkele rit</label>
+              </div>
+            </div>
+            {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
+            <Button onClick={handlesubmit}>Plaats deze rit</Button>
+          </div>
+        </div>
+        <div className={styles.container.map()}>
+          <Suspense fallback={<Loader />}>
+            <Map zoom={15}/>
+        <MapHandler place={selectedPlace} />
+          </Suspense>
         </div>
       </div>
-      <div className={styles.container.map()}>
-        <Suspense fallback={<Loader />}>
-          <Map zoom={15}/>
-        </Suspense>
-      </div>
-    </div>
+    </APIProvider>
   )
 }

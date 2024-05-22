@@ -15,7 +15,9 @@ const icons = {
   dropdown: {ratio: 14 / 8},
   calendar: {ratio: 16 / 16},
   xmark: {ratio: 16 / 16},
-  wheelchair: {ratio: 16 / 21}
+  wheelchair: {ratio: 16 / 21},
+  finish: {ratio: 17 / 16},
+  pin: {ratio: 44 / 44},
 }
 
 export type IconType = keyof typeof icons
