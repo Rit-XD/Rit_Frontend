@@ -1,9 +1,18 @@
 @import '@/style';
 
-.formcontainer {
+.recover {
   display: flex;
-
   align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.formcontainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: auto;
   z-index: 10;
   padding-top: 2rem;
@@ -11,7 +20,7 @@
   padding-left: 2rem;
   padding-right: 2rem;
   flex-direction: column;
-  flex: 0 1 0%;
+  // flex: 0 1 0%;
   gap: 0.5rem;
   border-radius: 0.75rem;
   width: 100%;

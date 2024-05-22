@@ -5,5 +5,9 @@ import css from './RecoverSteps.module.scss'
 const styles = fromModule(css)
 
 export default function forgotPassword() {
-  return <RecoverSteps />
+  return (
+    <div className={styles.recover()}>
+      <RecoverSteps />
+    </div>
+  )
 }
