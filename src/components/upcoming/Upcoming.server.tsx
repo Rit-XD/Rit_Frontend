@@ -17,6 +17,7 @@ export const fetchRides = async (user: User) => {
     .select('*')
     .eq('carecenter_id', user?.id)
     .order('timestamp', {ascending: true})
+    .limit(6)
   const {data: rides} = await query
   return rides || []
 }

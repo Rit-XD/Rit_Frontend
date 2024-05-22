@@ -52,7 +52,7 @@ export const UpcomingRides: React.FC = () => {
             <img src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png" alt="passenger" />
             <div>
               <h3>{u.p.firstname} {u.p.lastname}</h3>
-              <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString('nl-BE', {day: '2-digit', month: 'long'})}</span>
+              <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString('nl-BE', {weekday: 'short', day: '2-digit', month: 'long', hour: 'numeric', minute:"numeric"})}</span>
             </div>
           </div>
           <div className={styles.ride.container.route()}>

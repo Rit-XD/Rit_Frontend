@@ -16,6 +16,38 @@
         display: flex;
         flex-direction: column;
     }
+    &-bottom {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        hr {
+            width: 100%;
+            color: #E5E5E5;
+            margin: 16px 0;
+        }
+        &-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            gap: 8px;
+            color: var(--primary);
+            transition: all 0.3s ease-out;
+            font-weight: 400;
+            width: 100%;
+            text-align: center;
+            &:hover {
+                scale: 1.05;
+            }
+            &-icon {
+                font-size: 12px;
+                stroke: var(--primary);
+            }
+        }
+    }
 }
 .ride { 
 

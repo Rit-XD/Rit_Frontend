@@ -1,22 +1,23 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
-import {Passenger} from '@/types/passenger.type'
-import {Icon} from '@/ui/Icon'
+import { useUser } from '@/lib/user/useUser'
+import { Passenger } from '@/types/passenger.type'
+import { Icon } from '@/ui/Icon'
 import Button from '@/ui/button/Button'
-import {Loader} from '@/ui/loader/Loader'
-import {fromModule} from '@/utils/styler/Styler'
-import React, {Suspense, useEffect, useState} from 'react'
-import {Map, MapProps} from '../map/Map'
-import {fetchPassengers} from './FetchPlanner'
+import { Loader } from '@/ui/loader/Loader'
+import { fromModule } from '@/utils/styler/Styler'
+import React, { Suspense, useEffect, useState } from 'react'
+import { Map } from '../map/Map'
+import { fetchPassengers } from './FetchPlanner'
 import css from './Planner.module.scss'
-import {postRide} from './PostRide'
+import { postRide } from './PostRide'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { Autocomplete } from '../map/Autocomplete'
 import { MapHandler } from '../map/MapHandler'
-import {DatePicker} from "@nextui-org/date-picker";
-import {now, getLocalTimeZone, today, parseAbsoluteToLocal} from "@internationalized/date";
-import { CircularProgress } from '@nextui-org/react'
+import { DatePicker } from "@nextui-org/date-picker"
+import { now, getLocalTimeZone, ZonedDateTime } from "@internationalized/date"
+import { set } from 'date-fns'
+import { Select, SelectItem } from '@nextui-org/react'
 
 
 const styles = fromModule(css)
@@ -102,7 +103,7 @@ export const Planner: React.FC<{
         <div className={styles.container.planner()}>
           <h3 className={styles.container.planner.title()}>Plan een rit</h3>
           <div className={styles.container.planner.inputs()}>
-            <div className={styles.container.planner.inputs.iconContainer()}>
+            {/* <div className={styles.container.planner.inputs.iconContainer()}>
               <select
                 name="passenger"
                 id="select-passenger"
@@ -124,8 +125,20 @@ export const Planner: React.FC<{
                 icon="dropdown"
                 className={styles.container.planner.inputs.iconContainer.icon()}
               />
-            </div>
-
+            </div> */}
+              <Select
+                items={passengers?.length? passengers : [{id: "1", firstname: "Passagiers aan het ", lastname: "inladen...", wheelchair: false, carecenter_id: "", dateofbirth: "", emergency_contact: "", emergency_relation: "", extra: ""}]}
+                aria-label="Passengers"
+                placeholder="Select a passenger"
+                className="max-w-xs"
+                onChange={(e) => {selectPassenger(e.target.value); console.log(e.target.value)}}
+                classNames={{
+                  base: styles.select(),
+                  listbox: styles.select.listbox(),
+                }}
+              >
+                {(passenger) => <SelectItem key={passenger.id} value={passenger.id}>{passenger.firstname} {passenger.lastname}</SelectItem>}
+              </Select>
             {/* <input
               type="text"
               name="destination"
@@ -158,9 +171,22 @@ export const Planner: React.FC<{
                   console.log('e', e.target.value)
                 }}
               /> */}
-              <DatePicker hourCycle={24}  hideTimeZone showMonthAndYearPickers defaultValue={now(getLocalTimeZone()).add({ hours: 2 })} onChange={(date) => {setDateTime(date.toString().split("[")[0])}} minValue={now(getLocalTimeZone()).add({ hours: 1 })}
-                classNames={{base: styles.base(), selectorIcon: styles.input.field(), calendar: styles.calendar()}}
+              <div suppressHydrationWarning={true}>
+              <DatePicker 
+                aria-label="timestamp"
+                hourCycle={24}  
+                hideTimeZone 
+                showMonthAndYearPickers 
+                defaultValue={now(getLocalTimeZone()).add({ hours: 2 })} 
+                onChange={(date) => {setDateTime(date.toString().split("[")[0])}} 
+                minValue={now(getLocalTimeZone()).add({ hours: 1 })}
+                classNames={{ 
+                  base: styles.base(), 
+                  selectorIcon: styles.input.field(), 
+                  calendar: styles.calendar(),
+                }}
               />
+              </div>
             {/* </div> */}
           </div>
           <div className={styles.container.planner.inputs()}>
