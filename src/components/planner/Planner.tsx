@@ -14,6 +14,10 @@ import {postRide} from './PostRide'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { Autocomplete } from '../map/Autocomplete'
 import { MapHandler } from '../map/MapHandler'
+import {DatePicker} from "@nextui-org/date-picker";
+import {now, getLocalTimeZone, today, parseAbsoluteToLocal} from "@internationalized/date";
+import { CircularProgress } from '@nextui-org/react'
+
 
 const styles = fromModule(css)
 
@@ -98,7 +102,6 @@ export const Planner: React.FC<{
         <div className={styles.container.planner()}>
           <h3 className={styles.container.planner.title()}>Plan een rit</h3>
           <div className={styles.container.planner.inputs()}>
-            {/* <select name="passenger" id="select-passenger" className={styles.container.planner.inputs.input()} onChange={(e)=>appendToArray(e.target.value)}> */}
             <div className={styles.container.planner.inputs.iconContainer()}>
               <select
                 name="passenger"
@@ -106,6 +109,7 @@ export const Planner: React.FC<{
                 className={styles.container.planner.inputs.input()}
                 defaultValue={''}
                 onChange={e => selectPassenger(e.target.value)}
+                disabled={selectedPassengers.length >= 2}
               >
                 <option value="" disabled>
                   Passagier toevoegen
@@ -136,12 +140,14 @@ export const Planner: React.FC<{
                 setSelectedPlace(place)
                 if (place) {
                   handlePlaceSelect(place)
+                  setDestination(place.formatted_address!)
                 }
               }}
+              
               />
               </div>
-            <div className={styles.container.planner.inputs.iconContainer()}>
-              <input
+            {/* <div className={styles.container.planner.inputs.iconContainer()}> */}
+              {/* <input
                 type="datetime-local"
                 name="date"
                 id="input-date"
@@ -151,12 +157,11 @@ export const Planner: React.FC<{
                   setDateTime(e.target.value)
                   console.log('e', e.target.value)
                 }}
+              /> */}
+              <DatePicker hourCycle={24}  hideTimeZone showMonthAndYearPickers defaultValue={now(getLocalTimeZone()).add({ hours: 2 })} onChange={(date) => {setDateTime(date.toString().split("[")[0])}} minValue={now(getLocalTimeZone()).add({ hours: 1 })}
+                classNames={{base: styles.base(), selectorIcon: styles.input.field(), calendar: styles.calendar()}}
               />
-              <Icon
-                icon="calendar"
-                className={styles.container.planner.inputs.iconContainer.icon.calendar()}
-              />
-            </div>
+            {/* </div> */}
           </div>
           <div className={styles.container.planner.inputs()}>
             <div>
@@ -166,7 +171,9 @@ export const Planner: React.FC<{
                   key={selectedPassenger.id}
                 >
                   <p>
-                    {selectedPassenger.firstname} {selectedPassenger.lastname}
+                    {selectedPassenger.firstname} {selectedPassenger.lastname}  {selectedPassenger.wheelchair && (
+                    <Icon className={styles.container.planner.inputs.passenger.icon()} icon="wheelchair" />
+                  )}
                   </p>
                   <div
                     onClick={() => removeSelectedPassenger(selectedPassenger.id)}
@@ -202,7 +209,7 @@ export const Planner: React.FC<{
         </div>
         <div className={styles.container.map()}>
           <Suspense fallback={<Loader />}>
-            <Map zoom={15}/>
+            <Map zoom={15} destination={destination}/>
         <MapHandler place={selectedPlace} />
           </Suspense>
         </div>

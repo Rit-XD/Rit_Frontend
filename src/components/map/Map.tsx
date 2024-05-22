@@ -1,13 +1,13 @@
 'use client'
 
-import {fromModule} from '@/utils/styler/Styler'
-import {APIProvider, AdvancedMarker, Map as GoogleMap} from '@vis.gl/react-google-maps'
-import React, {useEffect, useState} from 'react'
+import { fromModule } from '@/utils/styler/Styler'
+import { AdvancedMarker, Map as GoogleMap } from '@vis.gl/react-google-maps'
+import React, { useEffect, useState } from 'react'
 import css from './Map.module.scss'
-import Logo from '../../../public/pinpoint.svg'
 import { Pinpoint } from './Pinpoint'
-import { Autocomplete } from './Autocomplete'
-import { MapHandler } from './MapHandler'
+import { setKey, setLanguage, setRegion, fromAddress, } from "react-geocode";
+
+
 
 // const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
 const mapId = process.env.NEXT_PUBLIC_MAP_ID
@@ -18,22 +18,30 @@ export type MapProps = {
   zoom?: number
   center?: {lat: number; lng: number}
   onPlaceSelect?: (place: google.maps.places.PlaceResult | null) => void
+  destination?: string
 }
 
-
-export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect}) => {
-  const [center, setCenter] = useState<{lat: number; lng: number}>({
-    lat: 50.85045,
-    lng: 4.34878
-  })
-  // const [selectedPlace, setSelectedPlace] =
-  // useState<google.maps.places.PlaceResult | null>(null)
+export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination}) => {
   const [zoomLevel, setZoomLevel] = useState<number>(zoom || 8)
+  const [center, setCenter] = useState<{lat: number; lng: number} | null>(null)
+  const defaultCenter = {lat: 51.02735567847175, lng: 4.478807550388861}
 
-  // const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
-  //   setSelectedPlace(place)
+  setKey(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string);
+  setLanguage("nl");
+  setRegion("be");
 
-  // }
+  useEffect(() => {
+    if (!destination) return;
+    fromAddress(destination!).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }, [destination])
 
 
   function getLocation() {
@@ -41,31 +49,37 @@ export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect}) => {
       navigator.geolocation.getCurrentPosition(setLocation)
     }
   }
+
   useEffect(() => {
     getLocation()
-  }, [])
+  }, [center])
 
   const setLocation = (position: GeolocationPosition) => {
     setCenter({lat: position.coords.latitude, lng: position.coords.longitude})
     setZoomLevel(15)
   }
 
-  // useEffect(() => {
-  //   if (selectedPlace) handlePlaceSelect(selectedPlace)
-  // }, [selectedPlace])
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCenter({lat: position.coords.latitude, lng: position.coords.longitude})
+        setZoomLevel(15)
+      }, () => {
+        setCenter({lat: defaultCenter.lat, lng: defaultCenter.lng})
+      })
+    } else {
+      setCenter({lat: defaultCenter.lat, lng: defaultCenter.lng})
+    }
+  }, [])
+
+  if (!center) {
+    return null
+  }
 
   return (
     <>
-      {/* <APIProvider apiKey={key}> */}
         <div className={styles.map()}>
-        {/* <Autocomplete
-                  onPlaceSelect={place => {
-                    setSelectedPlace(place)
-                    if (onPlaceSelect) {
-                      onPlaceSelect(place)
-                    }
-                  }}
-                /> */}
+
           <GoogleMap
             gestureHandling={'greedy'}
             streetViewControl={false}
@@ -76,12 +90,13 @@ export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect}) => {
             defaultCenter={center}
             scrollwheel={true}
           >
-            <AdvancedMarker position={center}>
-                <Pinpoint />
-            </AdvancedMarker>
+            {center.lat !== defaultCenter.lat && center.lng !== defaultCenter.lng && 
+              <AdvancedMarker position={center}>
+                  <Pinpoint />
+              </AdvancedMarker>
+            }
           </GoogleMap>
         </div>
-      {/* </APIProvider> */}
     </>
   )
 }

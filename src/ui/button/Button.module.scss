@@ -4,6 +4,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  align-self: flex-start;
+
   gap: 10px;
   vertical-align: top;
   background-color: var(--primary);

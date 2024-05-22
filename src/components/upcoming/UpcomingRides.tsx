@@ -52,13 +52,13 @@ export const UpcomingRides: React.FC = () => {
             <img src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png" alt="passenger" />
             <div>
               <h3>{u.p.firstname} {u.p.lastname}</h3>
-              <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString()}</span>
+              <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString('nl-BE', {day: '2-digit', month: 'long'})}</span>
             </div>
           </div>
           <div className={styles.ride.container.route()}>
             <div className={styles.ride.container.route.address()}>
               <div className={styles.ride.container.route.address.icon()}>
-                <Icon icon="rides_solid"/>
+                <Icon icon="rides"/>
               </div>
               <div className={styles.ride.container.route.address.text()}>
                 <span>{user?.name}</span>
@@ -68,11 +68,11 @@ export const UpcomingRides: React.FC = () => {
             <div className={styles.ride.container.route.divider()}/>
             <div className={styles.ride.container.route.address()}>
               <div className={styles.ride.container.route.address.icon()}>
-                <Icon icon="finish"/>
+                <Icon mod='square' icon="finish"/>
               </div>
               <div className={styles.ride.container.route.address.text()}>
                 <span>{u.r.destination.split(',')[0]}</span>
-                <span>{u.r.destination.split(' ')[u.r.destination.split(' ').length-1]}</span>
+                <span>{u.r.destination.split(' ')[u.r.destination.split(' ').length-2].split(',')[0]}</span>
               </div>
             </div>
           </div>
