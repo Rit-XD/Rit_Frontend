@@ -33,12 +33,14 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
     &-search {
       position: relative;
       left: -2.5rem;
       filter: grayscale(1);
       opacity: 0.25;
     }
+
     &-input {
       padding: 24px;
       padding-right: 48px;
@@ -47,6 +49,7 @@
       border: 1px solid #dfdfdf;
       background-color: white;
       border-radius: 32px;
+
       &:focus-visible,
       &:active {
         border-color: var(--primary);
@@ -55,11 +58,13 @@
     }
   }
 }
+
 .passengers {
   margin-top: 32px;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+
   &-filler {
     background-color: white;
     flex-grow: 1;
