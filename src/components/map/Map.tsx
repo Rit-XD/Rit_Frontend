@@ -15,6 +15,7 @@ export type MapProps = {
   center?: {lat: number; lng: number}
 }
 
+
 export const Map: React.FC<MapProps> = ({zoom}) => {
   const [center, setCenter] = useState<{lat: number; lng: number}>({
     lat: 50.85045,

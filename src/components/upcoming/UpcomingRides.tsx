@@ -8,6 +8,7 @@ import {useEffect, useState} from 'react'
 import {fetchPassengerById, fetchRides} from './Upcoming.server'
 import css from './Upcoming.module.scss'
 import { fromModule } from '@/utils/styler/Styler'
+import { Icon } from '@/ui/Icon'
 
 const styles = fromModule(css);
 
@@ -50,13 +51,30 @@ export const UpcomingRides: React.FC = () => {
           <div className={styles.ride.container.header()}>
             <img src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png" alt="passenger" />
             <div>
-            <h3>{u.p.firstname} {u.p.lastname}</h3>
-            <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString()}</span>
+              <h3>{u.p.firstname} {u.p.lastname}</h3>
+              <span className={styles.ride.container.date()}>{ u.date.toLocaleDateString()}</span>
             </div>
           </div>
           <div className={styles.ride.container.route()}>
-            <span>Van: {user?.name}</span>
-            <span>Naar: {u.r.destination.split(',')[0]}</span>
+            <div className={styles.ride.container.route.address()}>
+              <div className={styles.ride.container.route.address.icon()}>
+                <Icon icon="rides_solid"/>
+              </div>
+              <div className={styles.ride.container.route.address.text()}>
+                <span>{user?.name}</span>
+                <span>{user?.city}</span>
+              </div>
+            </div>
+            <div className={styles.ride.container.route.divider()}/>
+            <div className={styles.ride.container.route.address()}>
+              <div className={styles.ride.container.route.address.icon()}>
+                <Icon icon="finish"/>
+              </div>
+              <div className={styles.ride.container.route.address.text()}>
+                <span>{u.r.destination.split(',')[0]}</span>
+                <span>{u.r.destination.split(' ')[u.r.destination.split(' ').length-1]}</span>
+              </div>
+            </div>
           </div>
         </div>
       ))}
