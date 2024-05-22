@@ -56,6 +56,7 @@ export const Planner: React.FC<{
     }
     setSelectedPassengers([...selectedPassengers!, p])
   }
+  
   const removeSelectedPassenger = (passengerId: string) => {
     const p: Passenger = passengers!.find(p => p.id === passengerId)!
     setSelectedPassengers(
