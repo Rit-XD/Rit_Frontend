@@ -20,9 +20,12 @@
 .table {
   background-color: white;
   width: 100%;
+  border-radius: 0;
+  padding: 0;
 
   thead {
     border-bottom: 2px solid #e5e5e5;
+
   }
   tbody {
     text-align: center;
@@ -36,10 +39,14 @@
   }
 
   tbody td {
-    line-height: 1rem;
+    line-height: 16px;
+    padding: 16px 0;
+    font-size: 16px;
+
   }
   th {
     padding: 0.75rem 0;
+    text-align: center;
   }
 
   &-row {
@@ -68,4 +75,10 @@
     color: white;
     box-shadow: none;
   }
+}
+
+.tableWrapper {
+  border-radius: 0;
+  padding: 0 64px;
+  overflow-y: hidden;
 }

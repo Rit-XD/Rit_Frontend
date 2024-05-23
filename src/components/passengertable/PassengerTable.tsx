@@ -83,7 +83,7 @@ export const PassengerTable: React.FC<{
 
   const [isLoading, setIsLoading] = React.useState(true)
   const [page, setPage] = React.useState(1)
-  const rowsPerPage = 2
+  const rowsPerPage = 10;
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
   const items = React.useMemo(() => {
@@ -167,6 +167,7 @@ export const PassengerTable: React.FC<{
       </table> */}
 
       <Table
+      classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
         aria-label="Passenger-table"
         sortDescriptor={list.sortDescriptor}
         onSortChange={list.sort}
@@ -185,14 +186,13 @@ export const PassengerTable: React.FC<{
         }
       >
         <TableHeader>
-          <TableColumn key={'firstname'} allowsSorting>
-            Naam
-          </TableColumn>
-          <TableColumn key={'dateofbirth'}>Leeftijd</TableColumn>
-          <TableColumn key={'emergency_contact'}>Noodcontact</TableColumn>
-          <TableColumn key={'emergency_relation'}>Relatie</TableColumn>
-          <TableColumn key={'extra'}>Extra</TableColumn>
-          <TableColumn key={''}> </TableColumn>
+          <TableColumn key={'firstname'}  width={128} allowsSorting>Voornaam</TableColumn>
+          <TableColumn key={'lastname'}  width={128} allowsSorting>Achternaam</TableColumn>
+          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
+          <TableColumn key={'emergency_contact'}  width={256}>Noodcontact</TableColumn>
+          <TableColumn key={'emergency_relation'}  width={128}>Relatie</TableColumn>
+          <TableColumn key={'extra'}  width={256}>Extra</TableColumn>
+          <TableColumn key={''}  width={64}> </TableColumn>
         </TableHeader>
 
         <TableBody
@@ -204,16 +204,13 @@ export const PassengerTable: React.FC<{
           {passenger => (
             <TableRow key={passenger.id}>
               {/* {(columnKey) => <TableCell>{getKeyValue(passenger, columnKey)}</TableCell>} */}
-              <TableCell>
-                {passenger.firstname} {passenger.lastname}
-              </TableCell>
+              <TableCell>{passenger.firstname}</TableCell>
+              <TableCell>{passenger.lastname}</TableCell>
               <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
               <TableCell>{`${passenger.emergency_contact || '-'}`}</TableCell>
               <TableCell>{passenger.emergency_relation || '-'}</TableCell>
               <TableCell>{passenger.extra || '-'}</TableCell>
-              <TableCell onClick={() => handleEdit(passenger.id)}>
-                ...
-              </TableCell>
+              <TableCell onClick={() => handleEdit(passenger.id)}>...</TableCell>
             </TableRow>
           )}
         </TableBody>
