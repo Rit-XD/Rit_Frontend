@@ -9,6 +9,7 @@ import {fetchPassengerById, fetchRides} from './Upcoming.server'
 import css from './Upcoming.module.scss'
 import { fromModule } from '@/utils/styler/Styler'
 import { Icon } from '@/ui/Icon'
+import { set } from 'date-fns'
 
 const styles = fromModule(css);
 
@@ -16,6 +17,7 @@ export const UpcomingRides: React.FC = () => {
   const [rides, setRides] = useState<Ride[]>([])
   const [upcoming, setUpcoming] = useState<{r: Ride; p: Passenger, date: Date}[]>([])
   const [loading, setLoading] = useState(true)
+  const [l, setL] = useState(false)
 
   const {user} = useUser()
 
@@ -34,11 +36,14 @@ export const UpcomingRides: React.FC = () => {
 
       setRides(rides)
       setUpcoming(upcoming)
-      setLoading(false)
     }
 
     loadRidesAndPassengers()
   }, [user])
+
+  useEffect(() => {
+    if (upcoming.length) setLoading(false)
+  }, [upcoming])
 
   if (loading) {
     return <Loader />
@@ -80,6 +85,6 @@ export const UpcomingRides: React.FC = () => {
         </div>
       ))}
     </div>
-    ) : <p>Geen aankomende ritten</p>
+    ) : (loading ? <Loader /> : ( <p>Geen aankomende ritten</p>)
   )
-}
+)}
