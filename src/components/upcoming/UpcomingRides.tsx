@@ -19,7 +19,7 @@ export const UpcomingRides: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [l, setL] = useState(false)
 
-  const {user, rides} = useUser()
+  const {user, rides, isLoading} = useUser()
 
   //load all passengers
   useEffect(() => {
@@ -44,7 +44,7 @@ export const UpcomingRides: React.FC = () => {
     if (upcoming.length) setLoading(false)
   }, [upcoming])
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />
   }
 
@@ -84,6 +84,6 @@ export const UpcomingRides: React.FC = () => {
         </div>
       ))}
     </div>
-    ) : (loading ? <Loader /> : ( <p>Geen aankomende ritten</p>)
+    ) : ( <p>Geen aankomende ritten</p>
   )
 )}

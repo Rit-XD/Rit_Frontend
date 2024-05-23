@@ -1,14 +1,27 @@
 'use client'
-import {useUser} from '@/lib/user/useUser'
-import {fromModule} from '@/utils/styler/Styler'
+import { useUser } from '@/lib/user/useUser'
+import { fromModule } from '@/utils/styler/Styler'
 import Skeleton from 'react-loading-skeleton'
 import css from './Header.module.scss'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const styles = fromModule(css)
 
 export const Header: React.FC = () => {
-  const {user} = useUser()
+  const {user, isLoading} = useUser()
 
+  if (isLoading) return (
+    <div>
+      <div className={styles.header()}>
+        <div className={styles.header.title.skeleton()}>
+        <Skeleton width={46} height={46} />
+        <Skeleton width={224} />
+        </div>
+      </div>
+      <hr className={styles.header.hr()} />
+    </div>
+  )
+  
   return (
     <div>
       <div className={styles.header()}>
@@ -16,11 +29,7 @@ export const Header: React.FC = () => {
           <img src={user.logo} alt="" className={styles.header.logo()} />
         )}
         <h1 className={styles.header.title()}>
-          {user?.name || (
-            <div className={styles.header.title.skeleton()}>
-              <Skeleton width={46} height={46} /> <Skeleton width={224} />
-            </div>
-          )}
+          {user?.name}
         </h1>
       </div>
       <hr className={styles.header.hr()} />

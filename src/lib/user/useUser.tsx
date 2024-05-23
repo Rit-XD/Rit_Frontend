@@ -1,7 +1,7 @@
 'use client'
 
-import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
-import {usePathname} from 'next/navigation'
+import { createSupabaseForBrowser } from '@/utils/supabase/createSupabaseForBrowser'
+import { usePathname } from 'next/navigation'
 import React, {
   PropsWithChildren,
   createContext,
@@ -9,8 +9,8 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import {User} from './User'
-import {fetchUser} from './fetchUser'
+import { User } from './User'
+import { fetchUser } from './fetchUser'
 import { Ride } from '@/types/ride.type'
 import { fetchRides } from '@/components/upcoming/Upcoming.server'
 import { set } from 'date-fns'
@@ -20,17 +20,20 @@ const Context = createContext<{
   setUser: (user: User) => void
   rides: Ride[],
   addRide: (ride: Ride) => void
+  isLoading: boolean
 }>({
   user: null,
   setUser: () => {},
   rides: [],
-  addRide: () => {}
+  addRide: () => {},
+  isLoading: true
+
 })
 
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser, rides, addRide} = useContext(Context)
-  return {user, rides, setUser, addRide}
+  const {user, setUser, rides, addRide, isLoading} = useContext(Context)
+  return {user, rides, setUser, addRide, isLoading}
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
@@ -38,6 +41,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   const [user, setUser] = useState<User | null>(null)
   const [rides, setRides] = useState<Ride[]>([])
   const [fetching, setFetching] = useState(false)
+  const [isLoading, setIsloading] = useState(true)
   const pathname = usePathname()
 
   const loadUser = async () => {
@@ -62,8 +66,10 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
 
   useEffect(() => {
     if (fetching) return
+    setIsloading(true)
     if (user) getRides()
     if (!user) loadUser()
+    setIsloading(false)
   }, [pathname, user])
 
   return (
@@ -72,7 +78,8 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
         user,
         setUser,
         rides,
-        addRide
+        addRide,
+        isLoading
       }}
     >
       {children}

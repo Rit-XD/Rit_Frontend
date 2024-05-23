@@ -66,7 +66,7 @@ export const PassengerTable: React.FC<{
     return age
   }
 
-  const {user} = useUser()
+  const {user, isLoading} = useUser()
   //load all possible passengers
   const loadPassengers = async () => {
     if (passengers?.length) return
@@ -82,7 +82,6 @@ export const PassengerTable: React.FC<{
     )
   }
 
-  const [isLoading, setIsLoading] = React.useState(true)
   const [page, setPage] = React.useState(1)
   const rowsPerPage = 10
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
@@ -102,7 +101,6 @@ export const PassengerTable: React.FC<{
         signal
       })
       let json = await res.json()
-      setIsLoading(false)
 
       return {
         items: json.results
@@ -125,6 +123,60 @@ export const PassengerTable: React.FC<{
     }
   })
 
+  if(isLoading) {
+    return (
+      <div className={styles.tableContainer()}>
+
+        <Table
+        classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
+        aria-label="Passenger-table"
+        >
+        <TableHeader>
+          <TableColumn key={'firstname'} width={128} allowsSorting>Voornaam</TableColumn>
+          <TableColumn key={'lastname'} width={128} allowsSorting>Achternaam</TableColumn>
+          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
+          <TableColumn key={'emergency_contact'} width={256}>Noodcontact</TableColumn>
+          <TableColumn key={'emergency_relation'} width={128}>Relatie</TableColumn>
+          <TableColumn key={'extra'} width={256}>Extra</TableColumn>
+          <TableColumn key={''} width={64}>{' '}</TableColumn>
+        </TableHeader>
+
+        <TableBody
+          emptyContent={'Geen passagiers gevonden.'}
+          items={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]}
+        >
+          {item => (
+            <TableRow key={item.key}>
+              <TableCell>          
+                <Skeleton count={1} width={128} height={16} />
+              </TableCell>
+              <TableCell>
+                <Skeleton count={1} width={128} height={16} />
+              </TableCell>
+              <TableCell>
+                <Skeleton count={1} width={64} height={16} />
+              </TableCell>
+              <TableCell>
+                <Skeleton count={1} width={256} height={16} />
+              </TableCell>
+              <TableCell>
+                <Skeleton count={1} width={128} height={16} />
+              </TableCell>
+              <TableCell>
+                <Skeleton count={1} width={256} height={16} />
+              </TableCell>
+              <TableCell>...</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+        </Table>
+
+        {isEditPassengerOpen && selectedPassengerId && (
+        <EditPassenger id={selectedPassengerId} onClose={closeEditPassenger} />
+        )}
+      </div>
+    )
+  }
   return (
     <div className={styles.tableContainer()}>
       <Table
@@ -147,70 +199,28 @@ export const PassengerTable: React.FC<{
         }
       >
         <TableHeader>
-          <TableColumn key={'firstname'} width={128} allowsSorting>
-            Voornaam
-          </TableColumn>
-          <TableColumn key={'lastname'} width={128} allowsSorting>
-            Achternaam
-          </TableColumn>
-          <TableColumn key={'dateofbirth'} width={64}>
-            Leeftijd
-          </TableColumn>
-          <TableColumn key={'emergency_contact'} width={256}>
-            Noodcontact
-          </TableColumn>
-          <TableColumn key={'emergency_relation'} width={128}>
-            Relatie
-          </TableColumn>
-          <TableColumn key={'extra'} width={256}>
-            Extra
-          </TableColumn>
-          <TableColumn key={''} width={64}>
-            {' '}
-          </TableColumn>
+          <TableColumn key={'firstname'} width={128} allowsSorting>Voornaam</TableColumn>
+          <TableColumn key={'lastname'} width={128} allowsSorting>Achternaam</TableColumn>
+          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
+          <TableColumn key={'emergency_contact'} width={256}>Noodcontact</TableColumn>
+          <TableColumn key={'emergency_relation'} width={128}>Relatie</TableColumn>
+          <TableColumn key={'extra'} width={256}>Extra</TableColumn>
+          <TableColumn key={''} width={64}>{' '}</TableColumn>
         </TableHeader>
 
         <TableBody
           emptyContent={'Geen passagiers gevonden.'}
           items={items || []}
-          isLoading={isLoading}
-          loadingContent={<Skeleton />}
         >
           {passenger => (
             <TableRow key={passenger.id}>
-              <TableCell>
-                {isLoading ? <Skeleton width={128} /> : passenger.firstname}
-              </TableCell>
-              <TableCell>
-                {isLoading ? <Skeleton width={128} /> : passenger.lastname}
-              </TableCell>
-              <TableCell>
-                {isLoading ? (
-                  <Skeleton width={64} />
-                ) : (
-                  calculateAge(passenger.dateofbirth || '')
-                )}
-              </TableCell>
-              <TableCell>
-                {isLoading ? (
-                  <Skeleton width={256} />
-                ) : (
-                  passenger.emergency_contact
-                )}
-              </TableCell>
-              <TableCell>
-                {isLoading ? (
-                  <Skeleton width={128} />
-                ) : (
-                  passenger.emergency_relation
-                )}
-              </TableCell>
-              <TableCell>
-                {isLoading ? <Skeleton width={256} /> : passenger.extra}
-              </TableCell>
-              <TableCell onClick={() => handleEdit(passenger.id)}>
-                ...
-              </TableCell>
+              <TableCell>{passenger.firstname}</TableCell>
+              <TableCell>{passenger.lastname}</TableCell>
+              <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
+              <TableCell>{passenger.emergency_contact}</TableCell>
+              <TableCell>{passenger.emergency_relation}</TableCell>
+              <TableCell>{passenger.extra}</TableCell>
+              <TableCell onClick={() => handleEdit(passenger.id)}>...</TableCell>
             </TableRow>
           )}
         </TableBody>
