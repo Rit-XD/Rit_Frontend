@@ -1,8 +1,10 @@
 'use client'
 
+import {SearchContext} from '@/app/dashboard/passengers/CreateContext'
 import {EditPassenger} from '@/app/dashboard/passengers/EditPassenger'
 import {useUser} from '@/lib/user/useUser'
 import {Passenger} from '@/types/passenger.type'
+import {Link} from '@/ui/Link'
 import {fromModule} from '@/utils/styler/Styler'
 import {
   Pagination,
@@ -14,7 +16,13 @@ import {
   TableRow
 } from '@nextui-org/react'
 import {useAsyncList} from '@react-stately/data'
-import React, {useEffect, useState} from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {fetchPassengers} from '../planner/FetchPlanner'
@@ -40,6 +48,7 @@ export const PassengerTable: React.FC<{
   const [selectedPassengerId, setSelectedPassengerId] = useState<string | null>(
     null
   )
+  const [filterValue, setFilterValue] = useState('')
 
   const closeEditPassenger = () => {
     setSelectedPassengerId(null)
@@ -65,6 +74,7 @@ export const PassengerTable: React.FC<{
     }
     return age
   }
+  const {searchValue} = useContext(SearchContext)
 
   const {user, isLoading} = useUser()
   //load all possible passengers
@@ -82,7 +92,7 @@ export const PassengerTable: React.FC<{
     )
   }
 
-  const [page, setPage] = React.useState(1)
+  const [page, setPage] = useState(1)
   const rowsPerPage = 10
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
@@ -108,7 +118,7 @@ export const PassengerTable: React.FC<{
     },
     async sort({sortDescriptor}) {
       return {
-        items: items!.sort((a, b) => {
+        items: filteredItems!.sort((a, b) => {
           let first = String(a[sortDescriptor.column as keyof Passenger])
           let second = String(b[sortDescriptor.column as keyof Passenger])
           let cmp = first < second ? -1 : 1
@@ -123,56 +133,98 @@ export const PassengerTable: React.FC<{
     }
   })
 
-  if(isLoading) {
+  const onSearchChange = useCallback(
+    (value?: string) => {
+      if (value) {
+        setFilterValue(value)
+        setPage(1)
+      } else {
+        setFilterValue('')
+      }
+    },
+    [searchValue]
+  )
+
+  const filteredItems = useMemo(() => {
+    if (!searchValue) return passengers
+
+    return passengers?.filter(
+      passenger =>
+        passenger.firstname.toLowerCase().includes(searchValue.toLowerCase()) ||
+        passenger.lastname.toLowerCase().includes(searchValue.toLowerCase())
+    )
+  }, [passengers, searchValue])
+
+  useEffect(() => {
+    onSearchChange()
+  }, [onSearchChange])
+
+  if (isLoading) {
     return (
       <div className={styles.tableContainer()}>
-
         <Table
-        classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
-        aria-label="Passenger-table"
+          classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
+          aria-label="Passenger-table"
         >
-        <TableHeader>
-          <TableColumn key={'firstname'} width={128} allowsSorting>Voornaam</TableColumn>
-          <TableColumn key={'lastname'} width={128} allowsSorting>Achternaam</TableColumn>
-          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
-          <TableColumn key={'emergency_contact'} width={256}>Noodcontact</TableColumn>
-          <TableColumn key={'emergency_relation'} width={128}>Relatie</TableColumn>
-          <TableColumn key={'extra'} width={256}>Extra</TableColumn>
-          <TableColumn key={''} width={64}>{' '}</TableColumn>
-        </TableHeader>
+          <TableHeader>
+            <TableColumn key={'firstname'} width={128} allowsSorting>
+              Voornaam
+            </TableColumn>
+            <TableColumn key={'lastname'} width={128} allowsSorting>
+              Achternaam
+            </TableColumn>
+            <TableColumn key={'dateofbirth'} width={64}>
+              Leeftijd
+            </TableColumn>
+            <TableColumn key={'emergency_contact'} width={256}>
+              Noodcontact
+            </TableColumn>
+            <TableColumn key={'emergency_relation'} width={128}>
+              Relatie
+            </TableColumn>
+            <TableColumn key={'extra'} width={256}>
+              Extra
+            </TableColumn>
+            <TableColumn key={''} width={64}>
+              {' '}
+            </TableColumn>
+          </TableHeader>
 
-        <TableBody
-          emptyContent={'Geen passagiers gevonden.'}
-          items={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]}
-        >
-          {item => (
-            <TableRow key={item.key}>
-              <TableCell>          
-                <Skeleton count={1} width={128} height={16} />
-              </TableCell>
-              <TableCell>
-                <Skeleton count={1} width={128} height={16} />
-              </TableCell>
-              <TableCell>
-                <Skeleton count={1} width={64} height={16} />
-              </TableCell>
-              <TableCell>
-                <Skeleton count={1} width={256} height={16} />
-              </TableCell>
-              <TableCell>
-                <Skeleton count={1} width={128} height={16} />
-              </TableCell>
-              <TableCell>
-                <Skeleton count={1} width={256} height={16} />
-              </TableCell>
-              <TableCell>...</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
+          <TableBody
+            emptyContent={'Geen passagiers gevonden.'}
+            items={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]}
+          >
+            {item => (
+              <TableRow key={item.key}>
+                <TableCell>
+                  <Skeleton count={1} width={128} height={16} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton count={1} width={128} height={16} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton count={1} width={64} height={16} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton count={1} width={256} height={16} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton count={1} width={128} height={16} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton count={1} width={256} height={16} />
+                </TableCell>
+                <TableCell>...</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
         </Table>
 
         {isEditPassengerOpen && selectedPassengerId && (
-        <EditPassenger id={selectedPassengerId} onClose={closeEditPassenger} />
+          <EditPassenger
+            id={selectedPassengerId}
+            onClose={closeEditPassenger}
+          />
         )}
       </div>
     )
@@ -199,28 +251,49 @@ export const PassengerTable: React.FC<{
         }
       >
         <TableHeader>
-          <TableColumn key={'firstname'} width={128} allowsSorting>Voornaam</TableColumn>
-          <TableColumn key={'lastname'} width={128} allowsSorting>Achternaam</TableColumn>
-          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
-          <TableColumn key={'emergency_contact'} width={256}>Noodcontact</TableColumn>
-          <TableColumn key={'emergency_relation'} width={128}>Relatie</TableColumn>
-          <TableColumn key={'extra'} width={256}>Extra</TableColumn>
-          <TableColumn key={''} width={64}>{' '}</TableColumn>
+          <TableColumn key={'firstname'} width={128} allowsSorting>
+            Voornaam
+          </TableColumn>
+          <TableColumn key={'lastname'} width={128} allowsSorting>
+            Achternaam
+          </TableColumn>
+          <TableColumn key={'dateofbirth'} width={64}>
+            Leeftijd
+          </TableColumn>
+          <TableColumn key={'emergency_contact'} width={256}>
+            Noodcontact
+          </TableColumn>
+          <TableColumn key={'emergency_relation'} width={128}>
+            Relatie
+          </TableColumn>
+          <TableColumn key={'extra'} width={256}>
+            Extra
+          </TableColumn>
+          <TableColumn key={''} width={64}>
+            {' '}
+          </TableColumn>
         </TableHeader>
 
         <TableBody
           emptyContent={'Geen passagiers gevonden.'}
-          items={items || []}
+          items={filteredItems || []}
         >
           {passenger => (
             <TableRow key={passenger.id}>
               <TableCell>{passenger.firstname}</TableCell>
               <TableCell>{passenger.lastname}</TableCell>
               <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
-              <TableCell>{passenger.emergency_contact}</TableCell>
+              <TableCell>
+                {' '}
+                <Link href={`tel:${passenger.emergency_contact}`}>
+                  {passenger.emergency_contact}
+                </Link>
+              </TableCell>
               <TableCell>{passenger.emergency_relation}</TableCell>
               <TableCell>{passenger.extra}</TableCell>
-              <TableCell onClick={() => handleEdit(passenger.id)}>...</TableCell>
+              <TableCell onClick={() => handleEdit(passenger.id)}>
+                ...
+              </TableCell>
             </TableRow>
           )}
         </TableBody>

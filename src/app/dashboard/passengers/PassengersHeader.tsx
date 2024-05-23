@@ -6,8 +6,9 @@ import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import {useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {AddPassenger} from './AddPassenger'
+import {SearchContext} from './CreateContext'
 import css from './Passengers.module.scss'
 
 const styles = fromModule(css)
@@ -34,6 +35,12 @@ export const PassengersHeader: React.FC = () => {
     if (user) getPassengers()
   }, [user, refreshKey])
 
+  const {setSearchValue} = useContext(SearchContext)
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
+  }
+
   return (
     <div className={styles.container()}>
       <div className={styles.container.leftside()}>
@@ -46,7 +53,8 @@ export const PassengersHeader: React.FC = () => {
         <input
           className={styles.container.rightside.input()}
           type="text"
-          placeholder="Zoek naam"
+          placeholder="Zoek op naam"
+          onChange={handleSearchChange}
         />
         <Icon className={styles.container.rightside.search()} icon="search" />
         <Button onClick={() => setAddPassengerOpen(true)} iconbefore="plus">

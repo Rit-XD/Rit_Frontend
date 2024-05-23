@@ -1,11 +1,10 @@
 'use server'
 
-import {PassengerTable} from '@/components/passengertable/PassengerTable'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
 import css from './Passengers.module.scss'
-import {PassengersHeader} from './PassengersHeader'
+import {PassengersContext} from './PassengersContext'
 
 const styles = fromModule(css)
 
@@ -15,8 +14,7 @@ export default async function Passengers() {
 
   return (
     <main className={styles.passengers()}>
-      <PassengersHeader />
-      <PassengerTable initial={[]} />
+      <PassengersContext />
       <div className={styles.passengers.filler()} />
     </main>
   )
