@@ -4,21 +4,18 @@ import { useUser } from '@/lib/user/useUser'
 import { Passenger } from '@/types/passenger.type'
 import { Icon } from '@/ui/Icon'
 import Button from '@/ui/button/Button'
-import { Loader } from '@/ui/loader/Loader'
 import { fromModule } from '@/utils/styler/Styler'
-import React, { Suspense, useEffect, useState } from 'react'
-import { Map } from '../map/Map'
+import React, { useEffect, useState } from 'react'
 import { fetchPassengers } from './FetchPlanner'
 import css from './Planner.module.scss'
 import { postRide } from './PostRide'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { Autocomplete } from '../map/Autocomplete'
+import { Map } from '../map/Map'
 import { MapHandler } from '../map/MapHandler'
 import { DatePicker } from "@nextui-org/date-picker"
-import { now, getLocalTimeZone, ZonedDateTime } from "@internationalized/date"
-import { set } from 'date-fns'
+import { now, getLocalTimeZone } from "@internationalized/date"
 import { Select, SelectItem } from '@nextui-org/react'
-import { useRouter } from 'next/navigation'
 
 
 const styles = fromModule(css)
@@ -237,10 +234,8 @@ export const Planner: React.FC<{
           </div>
         </div>
         <div className={styles.container.map()}>
-          <Suspense fallback={<Loader />}>
-            <Map zoom={15} destination={destination}/>
-        <MapHandler place={selectedPlace} />
-          </Suspense>
+          <Map zoom={15} destination={destination}/>
+          <MapHandler place={selectedPlace} />
         </div>
       </div>
     </APIProvider>
