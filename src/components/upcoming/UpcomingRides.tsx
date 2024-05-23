@@ -14,17 +14,17 @@ import { set } from 'date-fns'
 const styles = fromModule(css);
 
 export const UpcomingRides: React.FC = () => {
-  const [rides, setRides] = useState<Ride[]>([])
+  // const [rides, setRides] = useState<Ride[]>([])
   const [upcoming, setUpcoming] = useState<{r: Ride; p: Passenger, date: Date}[]>([])
   const [loading, setLoading] = useState(true)
   const [l, setL] = useState(false)
 
-  const {user} = useUser()
+  const {user, rides} = useUser()
 
   //load all passengers
   useEffect(() => {
+    console.log("rides", rides)
     const loadRidesAndPassengers = async () => {
-      const rides = await fetchRides(user!)
       const upcoming: {r: Ride; p: Passenger, date: Date}[] = []
 
       for (const r of rides) {
@@ -34,12 +34,12 @@ export const UpcomingRides: React.FC = () => {
         }
       }
 
-      setRides(rides)
       setUpcoming(upcoming)
+      setLoading(false)
     }
 
     loadRidesAndPassengers()
-  }, [user])
+  }, [user, rides])
 
   useEffect(() => {
     if (upcoming.length) setLoading(false)

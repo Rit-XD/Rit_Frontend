@@ -1,10 +1,9 @@
 'use server'
 
 import { User } from '@/lib/user/User'
-import {fetchUser} from '@/lib/user/fetchUser'
+import { fetchUser } from '@/lib/user/fetchUser'
 import { Passenger } from '@/types/passenger.type'
-import { Ride } from '@/types/ride.type'
-import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin'
 
 export const getUser = async () => {
   const user = await fetchUser()

@@ -44,7 +44,7 @@ export const Planner: React.FC<{
   const [destination, setDestination] = useState<string>('')
   const [dateTime, setDateTime] = useState<string>('')
 
-  const {user} = useUser()
+  const {user, addRide} = useUser()
   //load all possible passengers
   const loadPassengers = async () => {
     if (passengers?.length) return
@@ -82,7 +82,9 @@ export const Planner: React.FC<{
       dateTime,
       selectedPassengers[0].id,
       selectedPassengers[1]?.id
-    ).then(res => {})
+    ).then(res => {
+      if (res?.status === 201) addRide(res!.data![0])
+    })
   }
 
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string

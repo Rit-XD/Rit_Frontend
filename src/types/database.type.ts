@@ -151,7 +151,7 @@ export type Database = {
       Rides: {
         Row: {
           car: string
-          carecenter: string
+          carecenter_id: string
           created_at: string
           destination: string
           driver: string | null
@@ -163,7 +163,7 @@ export type Database = {
         }
         Insert: {
           car?: string
-          carecenter?: string
+          carecenter_id?: string
           created_at?: string
           destination: string
           driver?: string | null
@@ -175,7 +175,7 @@ export type Database = {
         }
         Update: {
           car?: string
-          carecenter?: string
+          carecenter_id?: string
           created_at?: string
           destination?: string
           driver?: string | null
@@ -195,7 +195,7 @@ export type Database = {
           },
           {
             foreignKeyName: "Rides_carecenter_fkey"
-            columns: ["carecenter"]
+            columns: ["carecenter_id"]
             isOneToOne: false
             referencedRelation: "Carecenter"
             referencedColumns: ["id"]

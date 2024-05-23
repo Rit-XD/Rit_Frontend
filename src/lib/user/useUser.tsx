@@ -11,44 +11,68 @@ import React, {
 } from 'react'
 import {User} from './User'
 import {fetchUser} from './fetchUser'
+import { Ride } from '@/types/ride.type'
+import { fetchRides } from '@/components/upcoming/Upcoming.server'
+import { set } from 'date-fns'
 
 const Context = createContext<{
   user: User | null
   setUser: (user: User) => void
+  rides: Ride[],
+  addRide: (ride: Ride) => void
 }>({
   user: null,
-  setUser: () => {}
+  setUser: () => {},
+  rides: [],
+  addRide: () => {}
 })
 
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser} = useContext(Context)
-  return {user}
+  const {user, setUser, rides, addRide} = useContext(Context)
+  return {user, rides, setUser, addRide}
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   const supabase = createSupabaseForBrowser()
   const [user, setUser] = useState<User | null>(null)
+  const [rides, setRides] = useState<Ride[]>([])
   const [fetching, setFetching] = useState(false)
   const pathname = usePathname()
 
-  useEffect(() => {
-    if (fetching || user) return
-
+  const loadUser = async () => {
     setFetching(true)
-    const loadUser = async () => {
-      const init = await fetchUser()
-      setUser(init)
-      setFetching(false)
-    }
+
+    const init = await fetchUser()
+    setUser(init)
+
+    setFetching(false)
+  }
+  const getRides = async () => { 
+    setFetching(true)
+
+    const result = await fetchRides(user!)
+    setRides(result);
+
+    setFetching(false)
+  }
+  const addRide = (ride: Ride) => {
+    setRides([...rides, ride])
+  }
+
+  useEffect(() => {
+    if (fetching) return
+    if (user) getRides()
     if (!user) loadUser()
-  }, [pathname])
+  }, [pathname, user])
 
   return (
     <Context.Provider
       value={{
         user,
-        setUser
+        setUser,
+        rides,
+        addRide
       }}
     >
       {children}

@@ -1,7 +1,8 @@
 'use server'
 
+import { useUser } from '@/lib/user/useUser';
+import { Ride } from '@/types/ride.type';
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
-
 
 
 export const postRide = async (
@@ -13,20 +14,20 @@ export const postRide = async (
   passenger_1: string,
   passenger_2: string | null = null
 ) => {
+
+  const ride: Ride = {        
+    carecenter_id: carecenter_id,
+    origin: origin,
+    destination: destination,
+    driver: null,
+    passenger_1: passenger_1,
+    passenger_2: passenger_2,
+    car: car,
+    timestamp: timestamp
+  }
   let query = supabaseAdmin
     .from('Rides')
-    .insert([
-      {
-        carecenter_id: carecenter_id,
-        origin: origin,
-        destination: destination,
-        driver: null,
-        passenger_1: passenger_1,
-        passenger_2: passenger_2,
-        car: car,
-        timestamp: timestamp
-      }
-    ])
+    .insert([ride])
     .select();
   const res = await query;
   console.log(res);
