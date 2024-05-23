@@ -31,14 +31,14 @@ export const PassengersHeader: React.FC = () => {
     }
   }
   useEffect(() => {
-    if (user) getPassengers();
+    if (user) getPassengers()
   }, [user, refreshKey])
 
   return (
     <div className={styles.container()}>
       <div className={styles.container.leftside()}>
         <p className={styles.container.leftside.tab()}>
-         Passagiers ({passengers?.length || '0'})
+          Passagiers ({passengers?.length || '0'})
         </p>
         <p>Archief ({0})</p>
       </div>

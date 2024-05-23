@@ -2,16 +2,22 @@
 
 import {EditPassenger} from '@/app/dashboard/passengers/EditPassenger'
 import {useUser} from '@/lib/user/useUser'
-import {Icon} from '@/ui/Icon'
+import {Passenger} from '@/types/passenger.type'
+import {Loader} from '@/ui/loader/Loader'
 import {fromModule} from '@/utils/styler/Styler'
+import {
+  Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow
+} from '@nextui-org/react'
+import {useAsyncList} from '@react-stately/data'
 import React, {useEffect, useState} from 'react'
 import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
-import { useRouter } from 'next/navigation'
-import { Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKeyValue } from '@nextui-org/react'
-import { Loader } from '@/ui/loader/Loader'
-import { useAsyncList } from '@react-stately/data'
-import { Passenger } from '@/types/passenger.type'
 
 const styles = fromModule(css)
 
@@ -33,7 +39,6 @@ export const PassengerTable: React.FC<{
   const [selectedPassengerId, setSelectedPassengerId] = useState<string | null>(
     null
   )
-
 
   const closeEditPassenger = () => {
     setSelectedPassengerId(null)
@@ -71,51 +76,54 @@ export const PassengerTable: React.FC<{
   }, [user])
 
   const sort = (key: string) => {
-    setPassengers(passengers!.sort((a, b) => a.firstname.localeCompare(b.firstname)))
+    setPassengers(
+      passengers!.sort((a, b) => a.firstname.localeCompare(b.firstname))
+    )
   }
 
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [page, setPage] = React.useState(1);
-  const rowsPerPage = 2;
-  const pages = passengers? Math.ceil(passengers!.length / rowsPerPage) : 1;
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [page, setPage] = React.useState(1)
+  const rowsPerPage = 2
+  const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
 
-    return passengers?.length != undefined? passengers!.slice(start, end) : passengers;
-  }, [page, passengers]);
-
-
+    return passengers?.length != undefined
+      ? passengers!.slice(start, end)
+      : passengers
+  }, [page, passengers])
 
   let list = useAsyncList({
     async load({signal}) {
       let res = await fetch('https://swapi.py4e.com/api/people/?search', {
-        signal,
-      });
-      let json = await res.json();
-      setIsLoading(false);
+        signal
+      })
+      let json = await res.json()
+      setIsLoading(false)
 
       return {
-        items: json.results,
-      };
+        items: json.results
+      }
     },
     async sort({items, sortDescriptor}) {
       return {
         items: passengers!.sort((a, b) => {
-          let first = String(a[sortDescriptor.column as keyof Passenger]);
-          let second = String(b[sortDescriptor.column as keyof Passenger]);
-          let cmp = first < second ? -1 : 1;
+          let first = String(a[sortDescriptor.column as keyof Passenger])
+          let second = String(b[sortDescriptor.column as keyof Passenger])
+          let cmp = first < second ? -1 : 1
 
-          if (sortDescriptor.direction === "descending") {
-            cmp *= -1;
+          if (sortDescriptor.direction === 'descending') {
+            cmp *= -1
           }
 
-          return cmp;
-        }),
-      };
-    },
-  });
+          return cmp
+        })
+      }
+    }
+  })
+
   return (
     <div className={styles.tableContainer()}>
       {/* <table className={styles.table()}>
@@ -158,48 +166,58 @@ export const PassengerTable: React.FC<{
         </tbody>
       </table> */}
 
-    <Table 
-    aria-label="Passenger-table"
-    sortDescriptor={list.sortDescriptor}
-    onSortChange={list.sort}
-    bottomContent={
-      <div className="flex w-full justify-center">
-        <Pagination
-          isCompact
-          showControls
-          showShadow
-          color="secondary"
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
-    }
-    >
-      <TableHeader>
-        <TableColumn key={"firstname"} allowsSorting>Naam</TableColumn>
-        <TableColumn key={"dateofbirth"}>Leeftijd</TableColumn>
-        <TableColumn key={"emergency_contact"}>Noodcontact</TableColumn>
-        <TableColumn key={"emergency_relation"}>Relatie</TableColumn>
-        <TableColumn key={"extra"}>Extra</TableColumn>
-        <TableColumn key={""}> </TableColumn>
-      </TableHeader>
-      
-      <TableBody emptyContent={"Geen passagiers gevonden."} items={items || []} isLoading={isLoading}  loadingContent={<Loader/>}>
-        {(passenger) => (
-          <TableRow key={passenger.id}>
-            {/* {(columnKey) => <TableCell>{getKeyValue(passenger, columnKey)}</TableCell>} */}
-            <TableCell>{passenger.firstname} {passenger.lastname}</TableCell>
-            <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
-            <TableCell>{`${passenger.emergency_contact || '-'}`}</TableCell>
-            <TableCell>{passenger.emergency_relation || '-'}</TableCell>
-            <TableCell>{passenger.extra || '-'}</TableCell>
-            <TableCell onClick={() => handleEdit(passenger.id)}>...</TableCell>
-          </TableRow>
-          
-        )}
-      </TableBody>
-    </Table>
+      <Table
+        aria-label="Passenger-table"
+        sortDescriptor={list.sortDescriptor}
+        onSortChange={list.sort}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination
+              className={styles.pagination()}
+              isCompact
+              showControls
+              showShadow
+              page={page}
+              total={pages}
+              onChange={page => setPage(page)}
+            />
+          </div>
+        }
+      >
+        <TableHeader>
+          <TableColumn key={'firstname'} allowsSorting>
+            Naam
+          </TableColumn>
+          <TableColumn key={'dateofbirth'}>Leeftijd</TableColumn>
+          <TableColumn key={'emergency_contact'}>Noodcontact</TableColumn>
+          <TableColumn key={'emergency_relation'}>Relatie</TableColumn>
+          <TableColumn key={'extra'}>Extra</TableColumn>
+          <TableColumn key={''}> </TableColumn>
+        </TableHeader>
+
+        <TableBody
+          emptyContent={'Geen passagiers gevonden.'}
+          items={items || []}
+          isLoading={isLoading}
+          loadingContent={<Loader />}
+        >
+          {passenger => (
+            <TableRow key={passenger.id}>
+              {/* {(columnKey) => <TableCell>{getKeyValue(passenger, columnKey)}</TableCell>} */}
+              <TableCell>
+                {passenger.firstname} {passenger.lastname}
+              </TableCell>
+              <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
+              <TableCell>{`${passenger.emergency_contact || '-'}`}</TableCell>
+              <TableCell>{passenger.emergency_relation || '-'}</TableCell>
+              <TableCell>{passenger.extra || '-'}</TableCell>
+              <TableCell onClick={() => handleEdit(passenger.id)}>
+                ...
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
 
       {isEditPassengerOpen && selectedPassengerId && (
         <EditPassenger id={selectedPassengerId} onClose={closeEditPassenger} />
