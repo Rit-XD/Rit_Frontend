@@ -6,7 +6,7 @@ import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {AddPassenger} from './AddPassenger'
 import css from './Passengers.module.scss'
 
@@ -31,14 +31,17 @@ export const PassengersHeader: React.FC = () => {
       setPassengers(p)
     }
   }
+  useEffect(() => {
+    if (user) getPassengers();
+  }, [user, refreshKey])
 
   return (
     <div className={styles.container()}>
       <div className={styles.container.leftside()}>
         <p className={styles.container.leftside.tab()}>
-          {`Passagiers (${passengers?.length || '0'})`}
+         Passagiers ({passengers?.length || '0'})
         </p>
-        <p>{`Archief (0)`}</p>
+        <p>Archief ({0})</p>
       </div>
       <div className={styles.container.rightside()}>
         <input
