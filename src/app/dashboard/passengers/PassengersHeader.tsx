@@ -26,7 +26,6 @@ export const PassengersHeader: React.FC = () => {
   //get all passengers
   const getPassengers = async () => {
     const p: Passenger[] = await fetchPassengers(user!)
-    console.log(user)
     if (p) {
       setPassengers(p)
     }

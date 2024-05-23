@@ -21,11 +21,17 @@
   background-color: white;
   width: 100%;
 
+  thead {
+    border-bottom: 2px solid #E5E5E5;
+  }
   tbody {
     text-align: center;
 
     tr:nth-child(odd) {
       background-color: #f9fafb;
+    }
+    tr {
+      border-bottom: 1px solid #e5e5e550;
     }
   }
 

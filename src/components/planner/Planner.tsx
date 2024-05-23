@@ -131,7 +131,7 @@ export const Planner: React.FC<{
                 aria-label="Passengers"
                 placeholder="Select a passenger"
                 className="max-w-xs"
-                onChange={(e) => {selectPassenger(e.target.value); console.log(e.target.value)}}
+                onChange={(e) => selectPassenger(e.target.value)}
                 classNames={{
                   base: styles.select(),
                   listbox: styles.select.listbox(),

@@ -45,6 +45,7 @@ export const UpcomingRides: React.FC = () => {
   }
 
   return (
+    upcoming.length > 0 ? (
     <div className={styles.ride()}>
       {upcoming.map(u => (
         <div key={u.p.id + u.r.id} className={styles.ride.container()}>
@@ -79,5 +80,6 @@ export const UpcomingRides: React.FC = () => {
         </div>
       ))}
     </div>
+    ) : <p>Geen aankomende ritten</p>
   )
 }

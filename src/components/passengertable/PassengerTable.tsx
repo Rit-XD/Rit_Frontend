@@ -64,12 +64,18 @@ export const PassengerTable: React.FC<{
     loadPassengers()
   }, [user])
 
+  const sort = (key: string) => {
+    console.log(passengers)
+    setPassengers(passengers!.sort((a, b) => a.firstname.localeCompare(b.firstname)))
+    console.log(passengers)
+  }
+
   return (
     <div className={styles.tableContainer()}>
       <table className={styles.table()}>
         <thead>
           <tr>
-            <th>Naam</th>
+            <th onClick={() => sort("naam")}>Naam</th>
             <th>Leeftijd</th>
             <th>Noodcontact</th>
             <th>Relatie</th>
