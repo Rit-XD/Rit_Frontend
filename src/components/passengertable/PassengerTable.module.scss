@@ -45,8 +45,12 @@
 
   }
   th {
-    padding: 0.75rem 0;
+    padding: 20px 0 10px 0;
     text-align: center;
+    background-color: transparent;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
   }
 
   &-row {

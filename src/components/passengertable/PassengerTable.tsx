@@ -126,46 +126,6 @@ export const PassengerTable: React.FC<{
 
   return (
     <div className={styles.tableContainer()}>
-      {/* <table className={styles.table()}>
-        <thead>
-          <tr>
-            <th onClick={() => sort("naam")}>Naam</th>
-            <th>Leeftijd</th>
-            <th>Noodcontact</th>
-            <th>Relatie</th>
-            <th>Extra</th>
-          </tr>
-        </thead>
-        <tbody>
-          {passengers?.map(passengers => (
-            <tr key={passengers.id}>
-              <td className={styles.table.row()}>
-                <div className={styles.table.flex()}>
-                  {passengers.firstname} {passengers.lastname}
-                  {passengers.wheelchair && (
-                    <Icon className={styles.table.icon()} icon="wheelchair" />
-                  )}
-                </div>
-              </td>
-              <td className={styles.table.row()}>
-                {calculateAge(passengers.dateofbirth || '')}
-              </td>
-              <td className={styles.table.row()}>
-                {`${passengers.emergency_contact || '-'}`}
-              </td>
-              <td>{passengers.emergency_relation || '-'}</td>
-              <td>{passengers.extra || '-'}</td>
-              <td
-                onClick={() => handleEdit(passengers.id)}
-                className={styles.table.row()}
-              >
-                •••
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-
       <Table
       classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
         aria-label="Passenger-table"
@@ -203,7 +163,6 @@ export const PassengerTable: React.FC<{
         >
           {passenger => (
             <TableRow key={passenger.id}>
-              {/* {(columnKey) => <TableCell>{getKeyValue(passenger, columnKey)}</TableCell>} */}
               <TableCell>{passenger.firstname}</TableCell>
               <TableCell>{passenger.lastname}</TableCell>
               <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
