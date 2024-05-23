@@ -100,9 +100,9 @@ export const PassengerTable: React.FC<{
         items: json.results,
       };
     },
-    async sort({items, sortDescriptor}) {
+    async sort({sortDescriptor}) {
       return {
-        items: passengers!.sort((a, b) => {
+        items: items!.sort((a, b) => {
           let first = String(a[sortDescriptor.column as keyof Passenger]);
           let second = String(b[sortDescriptor.column as keyof Passenger]);
           let cmp = first < second ? -1 : 1;
