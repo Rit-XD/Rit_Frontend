@@ -26,7 +26,7 @@ export const EditPassenger: React.FC<{
   )
 
   const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === event.currentTarget) {
+    if (event.target === document.querySelector('[data-slot="overlay"]')) {
       onClose()
     }
   }
@@ -61,7 +61,7 @@ export const EditPassenger: React.FC<{
   }, [id, passengers])
 
   return (
-    <div className={styles.overlay()} onClick={handleOverlayClick}>
+    <div className={styles.overlay()} onMouseDown={handleOverlayClick} data-slot="overlay">
       <div className={styles.form_container()}>
         <form className={styles.form()} action={submit}>
           <h1 className={styles.form.title()}>Wijzig deze passagier</h1>
