@@ -27,6 +27,5 @@ export const fetchPassengerById = async (id: string) => {
         .from('Passengers')
         .select('*')
         .eq('id', id)
-//TODO: add carecenterid filter
     return passenger?.[0] as Passenger;
 }

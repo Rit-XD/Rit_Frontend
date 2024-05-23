@@ -37,13 +37,11 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
 
     setFetching(true)
     const loadUser = async () => {
-      supabase.auth.getUser().then(() => {
-      })
       const init = await fetchUser()
       setUser(init)
       setFetching(false)
     }
-    loadUser()
+    if (!user) loadUser()
   }, [pathname])
 
   return (

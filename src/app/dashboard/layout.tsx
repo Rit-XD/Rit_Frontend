@@ -3,7 +3,7 @@
 import css from '@/app/dashboard/Dashboard.module.scss'
 import {Header} from '@/components/header/Header'
 import {Nav} from '@/components/nav/Nav'
-import {UserProvider, useUser} from '@/lib/user/useUser'
+import {UserProvider} from '@/lib/user/useUser'
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
@@ -19,9 +19,6 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const supabase = createSupabaseForBrowser()
-
-  const {user} = useUser();
-
 
   return (
     <UserProvider>
