@@ -23,7 +23,6 @@ export const UpcomingRides: React.FC = () => {
 
   //load all passengers
   useEffect(() => {
-    console.log("rides", rides)
     const loadRidesAndPassengers = async () => {
       const upcoming: {r: Ride; p: Passenger, date: Date}[] = []
 

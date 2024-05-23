@@ -1,11 +1,13 @@
 'use client'
 
 import { fromModule } from '@/utils/styler/Styler'
-import { AdvancedMarker, Map as GoogleMap } from '@vis.gl/react-google-maps'
+import { AdvancedMarker, Map as GoogleMap, useMapsLibrary, useMap  } from '@vis.gl/react-google-maps'
 import React, { useEffect, useState } from 'react'
 import css from './Map.module.scss'
 import { Pinpoint } from './Pinpoint'
-import { setKey, setLanguage, setRegion, fromAddress, } from "react-geocode";
+import { setKey, setLanguage, setRegion, fromAddress, } from "react-geocode"
+import { user } from '@nextui-org/react'
+import { useUser } from '@/lib/user/useUser'
 
 
 
@@ -89,7 +91,8 @@ export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination}) => {
             defaultCenter={center}
             scrollwheel={true}
           >
-            {center.lat !== defaultCenter.lat && center.lng !== defaultCenter.lng && 
+            <Directions destination={destination}/>
+            {center.lat !== defaultCenter.lat && center.lng !== defaultCenter.lng && !destination &&
               <AdvancedMarker position={center}>
                   <Pinpoint />
               </AdvancedMarker>
@@ -98,4 +101,36 @@ export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination}) => {
         </div>
     </>
   )
+}
+function Directions({destination}: {destination?: string}) {
+  const { user, rides } = useUser();
+  const map = useMap();
+  const routesLibrary = useMapsLibrary("routes");
+  const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
+  const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
+
+  useEffect (() => {
+    if (!map || !routesLibrary) return;
+      setDirectionsService(new routesLibrary.DirectionsService());
+      setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
+  }, [routesLibrary, map]);
+
+  useEffect(() => {
+    if (!directionsService || !directionsRenderer) return;
+
+    if (destination)
+    directionsService.route({
+      origin: `${user?.street} ${user?.number}, ${user?.postal} ${user?.city}` || "",
+      destination: destination || "",
+      travelMode: google.maps.TravelMode.DRIVING,
+      provideRouteAlternatives: true,
+    }).then((response) => {
+      directionsRenderer.setOptions({ polylineOptions: { strokeColor: "#ED6A01", strokeWeight: 4 } });
+      directionsRenderer.setDirections(response);
+      setRoutes(response.routes);
+    })
+  }, [directionsService, directionsRenderer, destination])
+
+  return null;
 }
