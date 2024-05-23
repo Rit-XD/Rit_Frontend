@@ -11,6 +11,14 @@
     font-size: 21px;
     margin-left: 16px;
     font-weight: 400;
+    &-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: -16px;
+      padding: 0;
+      margin-top: -6px;
+    }
   }
   &-hr {
     margin-inline: 64px;

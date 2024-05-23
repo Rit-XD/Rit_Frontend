@@ -3,7 +3,6 @@
 import {EditPassenger} from '@/app/dashboard/passengers/EditPassenger'
 import {useUser} from '@/lib/user/useUser'
 import {Passenger} from '@/types/passenger.type'
-import {Loader} from '@/ui/loader/Loader'
 import {fromModule} from '@/utils/styler/Styler'
 import {
   Pagination,
@@ -16,6 +15,8 @@ import {
 } from '@nextui-org/react'
 import {useAsyncList} from '@react-stately/data'
 import React, {useEffect, useState} from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
 
@@ -83,7 +84,7 @@ export const PassengerTable: React.FC<{
 
   const [isLoading, setIsLoading] = React.useState(true)
   const [page, setPage] = React.useState(1)
-  const rowsPerPage = 10;
+  const rowsPerPage = 10
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
   const items = React.useMemo(() => {
@@ -110,9 +111,9 @@ export const PassengerTable: React.FC<{
     async sort({sortDescriptor}) {
       return {
         items: items!.sort((a, b) => {
-          let first = String(a[sortDescriptor.column as keyof Passenger]);
-          let second = String(b[sortDescriptor.column as keyof Passenger]);
-          let cmp = first < second ? -1 : 1;
+          let first = String(a[sortDescriptor.column as keyof Passenger])
+          let second = String(b[sortDescriptor.column as keyof Passenger])
+          let cmp = first < second ? -1 : 1
 
           if (sortDescriptor.direction === 'descending') {
             cmp *= -1
@@ -127,7 +128,7 @@ export const PassengerTable: React.FC<{
   return (
     <div className={styles.tableContainer()}>
       <Table
-      classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
+        classNames={{base: styles.table(), wrapper: styles.tableWrapper()}}
         aria-label="Passenger-table"
         sortDescriptor={list.sortDescriptor}
         onSortChange={list.sort}
@@ -146,30 +147,70 @@ export const PassengerTable: React.FC<{
         }
       >
         <TableHeader>
-          <TableColumn key={'firstname'}  width={128} allowsSorting>Voornaam</TableColumn>
-          <TableColumn key={'lastname'}  width={128} allowsSorting>Achternaam</TableColumn>
-          <TableColumn key={'dateofbirth'} width={64}>Leeftijd</TableColumn>
-          <TableColumn key={'emergency_contact'}  width={256}>Noodcontact</TableColumn>
-          <TableColumn key={'emergency_relation'}  width={128}>Relatie</TableColumn>
-          <TableColumn key={'extra'}  width={256}>Extra</TableColumn>
-          <TableColumn key={''}  width={64}> </TableColumn>
+          <TableColumn key={'firstname'} width={128} allowsSorting>
+            Voornaam
+          </TableColumn>
+          <TableColumn key={'lastname'} width={128} allowsSorting>
+            Achternaam
+          </TableColumn>
+          <TableColumn key={'dateofbirth'} width={64}>
+            Leeftijd
+          </TableColumn>
+          <TableColumn key={'emergency_contact'} width={256}>
+            Noodcontact
+          </TableColumn>
+          <TableColumn key={'emergency_relation'} width={128}>
+            Relatie
+          </TableColumn>
+          <TableColumn key={'extra'} width={256}>
+            Extra
+          </TableColumn>
+          <TableColumn key={''} width={64}>
+            {' '}
+          </TableColumn>
         </TableHeader>
 
         <TableBody
           emptyContent={'Geen passagiers gevonden.'}
           items={items || []}
           isLoading={isLoading}
-          loadingContent={<Loader />}
+          loadingContent={<Skeleton />}
         >
           {passenger => (
             <TableRow key={passenger.id}>
-              <TableCell>{passenger.firstname}</TableCell>
-              <TableCell>{passenger.lastname}</TableCell>
-              <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
-              <TableCell>{`${passenger.emergency_contact || '-'}`}</TableCell>
-              <TableCell>{passenger.emergency_relation || '-'}</TableCell>
-              <TableCell>{passenger.extra || '-'}</TableCell>
-              <TableCell onClick={() => handleEdit(passenger.id)}>...</TableCell>
+              <TableCell>
+                {isLoading ? <Skeleton width={128} /> : passenger.firstname}
+              </TableCell>
+              <TableCell>
+                {isLoading ? <Skeleton width={128} /> : passenger.lastname}
+              </TableCell>
+              <TableCell>
+                {isLoading ? (
+                  <Skeleton width={64} />
+                ) : (
+                  calculateAge(passenger.dateofbirth || '')
+                )}
+              </TableCell>
+              <TableCell>
+                {isLoading ? (
+                  <Skeleton width={256} />
+                ) : (
+                  passenger.emergency_contact
+                )}
+              </TableCell>
+              <TableCell>
+                {isLoading ? (
+                  <Skeleton width={128} />
+                ) : (
+                  passenger.emergency_relation
+                )}
+              </TableCell>
+              <TableCell>
+                {isLoading ? <Skeleton width={256} /> : passenger.extra}
+              </TableCell>
+              <TableCell onClick={() => handleEdit(passenger.id)}>
+                ...
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
