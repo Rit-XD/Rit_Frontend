@@ -23,6 +23,10 @@
 
   tbody {
     text-align: center;
+
+    tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
   }
 
   tbody td {

@@ -72,6 +72,8 @@ export const PassengerTable: React.FC<{
             <th>Naam</th>
             <th>Leeftijd</th>
             <th>Noodcontact</th>
+            <th>Relatie</th>
+            <th>Extra</th>
           </tr>
         </thead>
         <tbody>
@@ -89,10 +91,10 @@ export const PassengerTable: React.FC<{
                 {calculateAge(passengers.dateofbirth || '')}
               </td>
               <td className={styles.table.row()}>
-                {`${passengers.emergency_contact || '-'} (${
-                  passengers.emergency_relation || ''
-                })` || '-'}
+                {`${passengers.emergency_contact || '-'}`}
               </td>
+              <td>{passengers.emergency_relation || '-'}</td>
+              <td>{passengers.extra || '-'}</td>
               <td
                 onClick={() => handleEdit(passengers.id)}
                 className={styles.table.row()}
