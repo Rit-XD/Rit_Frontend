@@ -18,6 +18,9 @@ const icons = {
   wheelchair: {ratio: 16 / 21},
   finish: {ratio: 17 / 16},
   arrowRight: {ratio: 8 / 14},
+  profile: {ratio: 21 / 18},
+  key: {ratio: 21 / 18},
+  carCrash: {ratio: 24 / 16}
 }
 
 export type IconType = keyof typeof icons

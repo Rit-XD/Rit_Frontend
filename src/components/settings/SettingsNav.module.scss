@@ -1,0 +1,66 @@
+@import '@/style';
+
+.settings {
+  background-color: #f6f6f6;
+  max-width: 354.767px;
+  height: 80vh;
+  margin: 32px 64px;
+  padding: 50px 55px;
+  &-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  &-subtitle {
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  &-icon {
+    font-size: 16px;
+    stroke: #00202f;
+  }
+  &-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin-top: 16px;
+    margin-left: -16px;
+    gap: 16px;
+    &-item {
+      width: 354.767px - 60px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      &-active {
+        width: 354.767px - 60px;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+        background: rgba(237, 106, 1, 0.05);
+      }
+    }
+  }
+}
+
+.activeTab {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tab {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
