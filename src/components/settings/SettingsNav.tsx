@@ -2,14 +2,20 @@
 
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useState} from 'react'
+import React from 'react'
 import css from './SettingsNav.module.scss'
 
 const styles = fromModule(css)
 
-export const SettingsNav: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('gegevens')
+export type SettingsNavProps = {
+  activeTab: string
+  setActiveTab: (tab: string) => void
+}
 
+export const SettingsNav: React.FC<SettingsNavProps> = ({
+  activeTab,
+  setActiveTab
+}) => {
   return (
     <aside className={styles.settings()}>
       <h1 className={styles.settings.title()}>Instellingen</h1>

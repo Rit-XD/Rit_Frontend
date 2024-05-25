@@ -1,4 +1,4 @@
-import {SettingsNav} from '@/components/settings/SettingsNav'
+import {SettingsTab} from '@/components/settings/SettingsTab'
 import {fetchUser} from '@/lib/user/fetchUser'
 import {redirect} from 'next/navigation'
 
@@ -8,7 +8,7 @@ export default async function Settings() {
 
   return (
     <main>
-      <SettingsNav />
+      <SettingsTab />
     </main>
   )
 }
