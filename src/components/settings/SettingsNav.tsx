@@ -2,31 +2,37 @@
 
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useState} from 'react'
+import React from 'react'
 import css from './SettingsNav.module.scss'
 
 const styles = fromModule(css)
 
-export const SettingsNav: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('gegevens')
+export type SettingsNavProps = {
+  activeTab: string
+  setActiveTab: (tab: string) => void
+}
 
+export const SettingsNav: React.FC<SettingsNavProps> = ({
+  activeTab,
+  setActiveTab
+}) => {
   return (
     <aside className={styles.settings()}>
       <h1 className={styles.settings.title()}>Instellingen</h1>
       <p className={styles.settings.subtitle()}>Algemeen</p>
       <nav className={styles.settings.nav()}>
-        <div
+        <button
           className={
             activeTab === 'gegevens'
               ? styles.settings.nav.item.active()
               : styles.settings.nav.item()
           }
+          onClick={() => setActiveTab('gegevens')}
         >
-          <button
+          <p
             className={
               activeTab === 'gegevens' ? styles.activeTab() : styles.tab()
             }
-            onClick={() => setActiveTab('gegevens')}
           >
             <Icon
               className={styles.settings.icon()}
@@ -34,41 +40,41 @@ export const SettingsNav: React.FC = () => {
               icon="profile"
             />
             Gegevens
-          </button>
+          </p>
           <Icon className={styles.settings.icon()} icon="arrowRight" />
-        </div>
-        <div
+        </button>
+        <button
           className={
             activeTab === 'wijzig_wachtwoord'
               ? styles.settings.nav.item.active()
               : styles.settings.nav.item()
           }
+          onClick={() => setActiveTab('wijzig_wachtwoord')}
         >
-          <button
+          <p
             className={
               activeTab === 'wijzig_wachtwoord'
                 ? styles.activeTab()
                 : styles.tab()
             }
-            onClick={() => setActiveTab('wijzig_wachtwoord')}
           >
             <Icon className={styles.settings.icon()} mod="square" icon="key" />
             Wijzig Wachtwoord
-          </button>
+          </p>
           <Icon className={styles.settings.icon()} icon="arrowRight" />
-        </div>
-        <div
+        </button>
+        <button
           className={
             activeTab === 'meld_schade'
               ? styles.settings.nav.item.active()
               : styles.settings.nav.item()
           }
+          onClick={() => setActiveTab('meld_schade')}
         >
-          <button
+          <p
             className={
               activeTab === 'meld_schade' ? styles.activeTab() : styles.tab()
             }
-            onClick={() => setActiveTab('meld_schade')}
           >
             <Icon
               className={styles.settings.icon()}
@@ -76,9 +82,9 @@ export const SettingsNav: React.FC = () => {
               icon="carCrash"
             />
             Meld Schade
-          </button>
+          </p>
           <Icon className={styles.settings.icon()} icon="arrowRight" />
-        </div>
+        </button>
       </nav>
     </aside>
   )
