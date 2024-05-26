@@ -157,51 +157,51 @@ export const SettingsTab: React.FC = () => {
           {activeTab === 'wijzig_wachtwoord' && (
             <form action={submitPassword}>
               <div className={styles.form.item()}>
-                <label htmlFor="oldpassword">Huidig wachtwoord</label>
+                <label htmlFor="oldPassword">Huidig wachtwoord</label>
                 <input
-                  id="oldpassword"
-                  name="oldpassword"
+                  id="oldPassword"
+                  name="oldPassword"
                   type="password"
                   placeholder="Huidig wachtwoord"
                   className={styles.form.input()}
                   onChange={e => {
                     setEditingPassword({
                       ...editingPassword,
-                      oldpassword: e.target.value
+                      oldPassword: e.target.value
                     } as User)
                   }}
                 />
               </div>
               <div className={styles.form.item()}>
-                <label htmlFor="newpassword">Nieuw wachtwoord</label>
+                <label htmlFor="newPassword">Nieuw wachtwoord</label>
                 <input
-                  id="newpassword"
-                  name="newpassword"
+                  id="newPassword"
+                  name="newPassword"
                   type="password"
                   placeholder="Nieuw wachtwoord"
                   className={styles.form.input()}
                   onChange={e => {
                     setEditingPassword({
                       ...editingPassword,
-                      newpassword: e.target.value
+                      newPassword: e.target.value
                     } as User)
                   }}
                 />
               </div>
               <div className={styles.form.item()}>
-                <label htmlFor="confirmpassword">
+                <label htmlFor="confirmPassword">
                   Bevestig nieuw wachtwoord
                 </label>
                 <input
-                  id="confirmpassword"
-                  name="confirmpassword"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
                   placeholder="Bevestig nieuw wachtwoord"
                   className={styles.form.input()}
                   onChange={e => {
                     setEditingPassword({
                       ...editingPassword,
-                      confirmpassword: e.target.value
+                      confirmPassword: e.target.value
                     } as User)
                   }}
                 />
