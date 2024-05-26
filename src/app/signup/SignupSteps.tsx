@@ -53,7 +53,7 @@ export const SignupSteps: React.FC<{
           <input
             className={styles.form.input()}
             name="email"
-            placeholder="you@example.com"
+            placeholder="rit@care.be"
             required
             onChange={handleInputChange}
           />
