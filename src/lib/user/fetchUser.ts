@@ -1,28 +1,28 @@
-"use server";
+'use server'
 
-import { createSupabaseForServerComponent } from "@/utils/supabase/createSupabaseForServerComponent";
-import { User } from "./User";
-import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin";
+import {createSupabaseForServerComponent} from '@/utils/supabase/createSupabaseForServerComponent'
+import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
+import {User} from './User'
 
-const selectQuery = "*";
+const selectQuery = '*'
 
 export async function fetchUser(): Promise<User | null> {
-  const supabase = await createSupabaseForServerComponent();
+  const supabase = await createSupabaseForServerComponent()
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: {user}
+  } = await supabase.auth.getUser()
 
-  if (!user) return null;
+  if (!user) return null
 
-  const { data } = await supabaseAdmin
-    .from("Carecenter")
+  const {data} = await supabaseAdmin
+    .from('Carecenter')
     .select(selectQuery)
-    .eq("id", user.id)
+    .eq('id', user.id)
     .maybeSingle()
-    .throwOnError();
+    .throwOnError()
 
-  const carecenter = data as unknown as User | undefined;
-  if (!carecenter) return null;
+  const carecenter = data as unknown as User | undefined
+  if (!carecenter) return null
 
   return {
     city: carecenter.city,
@@ -33,7 +33,7 @@ export async function fetchUser(): Promise<User | null> {
     name: carecenter.name!,
     number: carecenter.number!,
     phone: carecenter.phone!,
-    postal: 9,
-    street: carecenter.street!,
-  };
+    postal: carecenter.postal!,
+    street: carecenter.street!
+  }
 }
