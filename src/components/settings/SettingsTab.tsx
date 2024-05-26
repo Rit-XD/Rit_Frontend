@@ -8,21 +8,22 @@ import {useFormState} from 'react-dom'
 import {handleEditUser} from './HandleEditUser'
 import {SettingsNav} from './SettingsNav'
 import css from './SettingsTab.module.scss'
+import Avatar from './Avatar'
 
 const styles = fromModule(css)
 
 export const SettingsTab: React.FC = () => {
-  const {user} = useUser()
-  const [activeTab, setActiveTab] = useState('gegevens')
-  const [state, action] = useFormState(handleEditUser, {error: ''})
-  const [editingUser, setEditingUser] = useState(null as User | null)
+  const {user} = useUser();
+  const [activeTab, setActiveTab] = useState('gegevens');
+  const [state, action] = useFormState(handleEditUser, {error: ''});
+  const [editingUser, setEditingUser] = useState(null as User | null);
 
   const submit = async (formdata: FormData) => {
     action(formdata)
   }
 
   useEffect(() => {
-    setEditingUser(user)
+    setEditingUser(user);
   }, [user])
 
   return (
@@ -30,6 +31,14 @@ export const SettingsTab: React.FC = () => {
       <SettingsNav activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className={styles.tabcontainer()}>
         <form className={styles.form()} action={submit}>
+        <Avatar
+          uid={user?.id ?? null}
+          url={user?.logo || ""}
+          size={150}
+          onUpload={() => {
+            console.log('uploaded')
+          }}
+        />
           {activeTab === 'gegevens' && (
             // <div>
             //   <input type="file" />
@@ -44,6 +53,7 @@ export const SettingsTab: React.FC = () => {
                   type="text"
                   value={editingUser?.name || ''}
                   className={styles.form.input()}
+                  disabled
                   //   onChange={e => {
                   //     setEditingUser({
                   //       ...editingUser,
@@ -140,6 +150,7 @@ export const SettingsTab: React.FC = () => {
                   }}
                 />
               </div>
+
               <button type="submit" className={styles.form.submit()}>
                 Opslaan
               </button>

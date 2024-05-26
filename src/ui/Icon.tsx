@@ -20,7 +20,8 @@ const icons = {
   arrowRight: {ratio: 8 / 14},
   profile: {ratio: 21 / 18},
   key: {ratio: 21 / 18},
-  carCrash: {ratio: 24 / 16}
+  carCrash: {ratio: 24 / 16},
+  edit : {ratio: 25 / 25},
 }
 
 export type IconType = keyof typeof icons

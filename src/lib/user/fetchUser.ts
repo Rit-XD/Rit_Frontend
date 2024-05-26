@@ -33,7 +33,7 @@ export async function fetchUser(): Promise<User | null> {
     name: carecenter.name!,
     number: carecenter.number!,
     phone: carecenter.phone!,
-    postal: 9,
+    postal: carecenter.postal!,
     street: carecenter.street!,
   };
 }
