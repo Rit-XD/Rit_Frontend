@@ -1,34 +1,53 @@
+@import '@/style';
+
 .container {
-    display: grid;
-    width: 100%;
-    flex-grow: 1;
-    grid-template-columns: 1fr 3fr;
-    max-height: calc(100vh - 99px);
-    height: 100%;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 5fr 2fr;
+  margin: 32px 64px;
+  gap: 32px;
 
-    &-left {
-        // background-color: red;
-        display: flex;
-        flex-direction: column;
-        padding:  32px 32px 32px 64px;
-        grid-gap: 16px;
-        height: 100%;
-
-
-
-
-        h1 {
-            color: var(--primary);
-            font-size: 24px;
-        }
-        &-new {
-            width: 100%;
-        }
-    }
-}
-
-.lists {
+  &-left {
     display: flex;
     flex-direction: column;
+    padding: 32px 32px 32px 64px;
+    grid-gap: 16px;
     height: 100%;
+    max-height: calc(100vh - 500px);
+
+    h1 {
+      color: var(--primary);
+      font-size: 24px;
+    }
+    &-new {
+      width: 100%;
+    }
+  }
+}
+
+.ridespage {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 32px 64px;
+  height: 100%;
+  &-rides {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+}
+
+.map {
+  display: flex;
+  width: 1280px;
+  height: 60vh;
+  // height: -webkit-fill-available;
+  flex-direction: column;
+  margin-top: 16px;
+  border-radius: 5px;
+  overflow: hidden;
+  // flex-shrink: 1;
+  flex-grow: 1;
 }

@@ -1,0 +1,16 @@
+.input {
+  padding-block: 12px;
+  padding-inline: 16px;
+  margin-bottom: 24px;
+  border-radius: 40px;
+  border-width: 1px;
+  background-color: white;
+  border: 2px solid rgb(226 232 240);
+  transition: all 0.3s ease-out;
+  &:hover,
+  &:focus {
+    outline: var(--primary);
+
+    border: 2px solid var(--primary);
+  }
+}

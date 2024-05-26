@@ -1,6 +1,7 @@
 'use server'
 
 import {fetchUser} from '@/lib/user/fetchUser'
+import {createSupabaseForServer} from '@/utils/supabase/createSupabaseForServer'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
 // export const getUser = async () => {
@@ -34,6 +35,44 @@ export async function handleEditUser(
     .eq('id', user!.id)
     .select()
   const res = await query
-  // console.log(res)
   return {error: '', ...res.data}
+}
+
+export async function handleEditPassword(
+  state: {error: string},
+  formData: FormData
+): Promise<{error: string}> {
+  const oldPassword = String(formData.get('oldPassword'))
+  const newPassword = String(formData.get('newPassword'))
+  const confirmPassword = String(formData.get('confirmPassword'))
+  const supabase = await createSupabaseForServer()
+
+  // Get the current user
+  const user = await fetchUser()
+
+  if (!user) {
+    return {error: 'No user is currently logged in.'}
+  }
+
+  // Update the user's password
+  const {error: updateError} = await supabase.auth.updateUser({
+    password: newPassword
+  })
+
+  if (newPassword.length < 8) {
+    return {error: 'Het nieuwe wachtwoord moet minimaal 8 karakters bevatten.'}
+  }
+
+  if (newPassword !== confirmPassword) {
+    return {
+      error:
+        'Het bevestigde wachtwoord komt niet overeen met het nieuwe wachtwoord.'
+    }
+  }
+
+  if (updateError) {
+    return {error: 'Uw huidig wachtwoord is onjuist.'}
+  }
+
+  return {error: ''}
 }
