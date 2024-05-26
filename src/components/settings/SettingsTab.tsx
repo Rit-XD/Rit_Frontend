@@ -209,6 +209,9 @@ export const SettingsTab: React.FC = () => {
               <button type="submit" className={styles.form.submit()}>
                 Opslaan
               </button>
+              {statePassword.error && (
+                <p className={styles.form.error()}>{statePassword.error}</p>
+              )}
             </form>
           )}
         </div>

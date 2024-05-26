@@ -45,10 +45,6 @@ export async function handleEditPassword(
   const confirmPassword = String(formData.get('confirmPassword'))
   const supabase = await createSupabaseForServer()
 
-  if (newPassword !== confirmPassword) {
-    return {error: 'New password and confirm password do not match.'}
-  }
-
   // Get the current user
   const user = await fetchUser()
 
@@ -56,23 +52,24 @@ export async function handleEditPassword(
     return {error: 'No user is currently logged in.'}
   }
 
-  // Re-authenticate the user
-  const {error: reAuthError} = await supabase.auth.signInWithPassword({
-    email: user.email as string,
-    password: oldPassword
-  })
-
-  if (reAuthError) {
-    return {error: 'Old password is incorrect.'}
-  }
-
   // Update the user's password
   const {error: updateError} = await supabase.auth.updateUser({
     password: newPassword
   })
 
+  if (newPassword.length < 8) {
+    return {error: 'Het nieuwe wachtwoord moet minimaal 8 karakters bevatten.'}
+  }
+
+  if (newPassword !== confirmPassword) {
+    return {
+      error:
+        'Het bevestigde wachtwoord komt niet overeen met het nieuwe wachtwoord.'
+    }
+  }
+
   if (updateError) {
-    return {error: 'Failed to update password.'}
+    return {error: 'Uw huidig wachtwoord is onjuist.'}
   }
 
   return {error: ''}

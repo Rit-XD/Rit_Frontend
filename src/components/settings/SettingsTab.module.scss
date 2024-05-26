@@ -67,4 +67,12 @@
       border: 2px solid var(--primary);
     }
   }
+
+  &-error {
+    color: red;
+    font-weight: 400;
+    margin-top: 24px;
+    max-width: 375px;
+    text-align: center;
+  }
 }
