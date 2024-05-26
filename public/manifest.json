@@ -4,7 +4,7 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/dashboard",
-    "name": "Rit business",
+    "name": "Rit Business",
     "short_name": "Rit",
     "description": "Revolution in Transport",
     "icons": [

@@ -129,6 +129,8 @@ function Directions({destination}: {destination?: string}) {
       directionsRenderer.setOptions({ polylineOptions: { strokeColor: "#ED6A01", strokeWeight: 4 } });
       directionsRenderer.setDirections(response);
       setRoutes(response.routes);
+      console.log(response);
+
     })
   }, [directionsService, directionsRenderer, destination])
 
