@@ -1,6 +1,7 @@
 'use server'
 
 import {fetchUser} from '@/lib/user/fetchUser'
+import {createSupabaseForServer} from '@/utils/supabase/createSupabaseForServer'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
 export const getUser = async () => {
@@ -32,6 +33,47 @@ export async function handleEditUser(
     .eq('id', (await getUser())!.id)
     .select()
   const res = await query
-  console.log(res)
   return {error: '', ...res.data}
+}
+
+export async function handleEditPassword(
+  state: {error: string},
+  formData: FormData
+): Promise<{error: string}> {
+  const oldPassword = String(formData.get('oldPassword'))
+  const newPassword = String(formData.get('newPassword'))
+  const confirmPassword = String(formData.get('confirmPassword'))
+  const supabase = await createSupabaseForServer()
+
+  if (newPassword !== confirmPassword) {
+    return {error: 'New password and confirm password do not match.'}
+  }
+
+  // Get the current user
+  const user = await fetchUser()
+
+  if (!user) {
+    return {error: 'No user is currently logged in.'}
+  }
+
+  // Re-authenticate the user
+  const {error: reAuthError} = await supabase.auth.signInWithPassword({
+    email: user.email as string,
+    password: oldPassword
+  })
+
+  if (reAuthError) {
+    return {error: 'Old password is incorrect.'}
+  }
+
+  // Update the user's password
+  const {error: updateError} = await supabase.auth.updateUser({
+    password: newPassword
+  })
+
+  if (updateError) {
+    return {error: 'Failed to update password.'}
+  }
+
+  return {error: ''}
 }
