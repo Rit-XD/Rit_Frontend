@@ -1,10 +1,9 @@
+import {Rides as RidesComponent} from '@/components/rides/Rides'
 import {fetchUser} from '@/lib/user/fetchUser'
+import Button from '@/ui/button/Button'
+import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
 import css from './Rides.module.scss'
-import { fromModule } from '@/utils/styler/Styler'
-import { Upcoming } from '@/components/upcoming/Upcoming'
-import { Rides as RidesComponent } from '@/components/rides/Rides'
-import Button from '@/ui/button/Button'
 
 const styles = fromModule(css)
 
@@ -16,12 +15,18 @@ export default async function Rides() {
     <main className={styles.container()}>
       <div className={styles.container.left()}>
         <h1>Ritten</h1>
-        <Button iconafter='plus' className={styles.container.left.new()} mod="outline">Nieuwe rit</Button>
-          <div className={styles.lists()}>
-          <RidesComponent/>
-          <RidesComponent old/>
-          </div>
+        <Button
+          iconafter="plus"
+          className={styles.container.left.new()}
+          mod="outline"
+        >
+          Nieuwe rit
+        </Button>
+        {/* <div className={styles.lists()}> */}
+        <RidesComponent />
+        <RidesComponent old />
       </div>
+      {/* </div> */}
     </main>
   )
 }
