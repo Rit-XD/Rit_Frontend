@@ -1,14 +1,16 @@
 'use client'
 
-import {User} from '@/lib/user/User'
-import {useUser} from '@/lib/user/useUser'
-import {fromModule} from '@/utils/styler/Styler'
-import React, {useEffect, useState} from 'react'
-import {useFormState} from 'react-dom'
-import {handleEditPassword, handleEditUser} from './HandleEditUser'
-import {SettingsNav} from './SettingsNav'
+import { User } from '@/lib/user/User'
+import { useUser } from '@/lib/user/useUser'
+import { fromModule } from '@/utils/styler/Styler'
+import React, { useEffect, useState } from 'react'
+import { useFormState } from 'react-dom'
+import { handleEditPassword, handleEditUser } from './HandleEditUser'
+import { SettingsNav } from './SettingsNav'
 import css from './SettingsTab.module.scss'
 import Avatar from './Avatar'
+import background from '@/../public/images/settingsBackground.png'
+import Image from 'next/image'
 
 const styles = fromModule(css)
 
@@ -40,20 +42,20 @@ export const SettingsTab: React.FC = () => {
       <SettingsNav activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className={styles.tabcontainer()}>
         <div className={styles.form()}>
-        <Avatar
-          uid={user?.id ?? null}
-          url={user?.logo || ""}
-          size={150}
-          onUpload={() => {
-            console.log('uploaded')
-          }}
-        />
           {activeTab === 'gegevens' && (
             // <div>
             //   <input type="file" />
             //   <img width={100} height={100} src={user?.logo || ''} alt="" />
             // </div>
             <form action={submit}>
+              <Avatar
+                uid={user?.id ?? null}
+                url={user?.logo || ""}
+                size={150}
+                onUpload={() => {
+                  console.log('uploaded')
+                }}
+              />
               <div className={styles.form.item()}>
                 <label htmlFor="name">Naam</label>
                 <input
@@ -71,15 +73,10 @@ export const SettingsTab: React.FC = () => {
                   //   }}
                 />
               </div>
+              <div className={styles.form.flexrow()}>
               <div className={styles.form.item()}>
                 <label htmlFor="street">Straat</label>
-                <input
-                  id="street"
-                  name="street"
-                  type="text"
-                  placeholder="Straatnaam"
-                  value={editingUser?.street || ''}
-                  className={styles.form.input()}
+                <input id="street" name="street" type="text" placeholder="Straatnaam" value={editingUser?.street || ''} className={styles.form.input()}
                   onChange={e => {
                     setEditingUser({
                       ...editingUser,
@@ -87,6 +84,25 @@ export const SettingsTab: React.FC = () => {
                     } as User)
                   }}
                 />
+              </div>
+              <div className={styles.form.item()}>
+                <label htmlFor="number">Huisnummer</label>
+                <input
+                  id="number"
+                  name="number"
+                  type="text"
+                  placeholder="Huisnummer"
+                  value={editingUser?.number || ''}
+                  className={styles.form.input()}
+                  style={{width: '120px'}}
+                  onChange={e => {
+                    setEditingUser({
+                      ...editingUser,
+                      number: e.target.value
+                    } as User)
+                  }}
+                />
+              </div>
               </div>
               <div className={styles.form.flexrow()}>
                 <div className={styles.form.item()}>
@@ -125,23 +141,7 @@ export const SettingsTab: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className={styles.form.item()}>
-                <label htmlFor="number">Huisnummer</label>
-                <input
-                  id="number"
-                  name="number"
-                  type="text"
-                  placeholder="Huisnummer"
-                  value={editingUser?.number || ''}
-                  className={styles.form.input()}
-                  onChange={e => {
-                    setEditingUser({
-                      ...editingUser,
-                      number: e.target.value
-                    } as User)
-                  }}
-                />
-              </div>
+
               <div className={styles.form.item()}>
                 <label htmlFor="phone">Telefoonnummer</label>
                 <input
@@ -227,6 +227,7 @@ export const SettingsTab: React.FC = () => {
           )}
         </div>
       </div>
+      <Image src={background} alt="knaker" className={styles.background()}/>
     </div>
   )
 }

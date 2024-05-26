@@ -3,17 +3,17 @@
 .container {
   display: grid;
   height: 100%;
-  grid-template-columns: 5fr 2fr;
+  grid-template-columns: 1fr 3fr;
   margin: 32px 64px;
   gap: 32px;
 
   &-left {
     display: flex;
     flex-direction: column;
-    padding: 32px 32px 32px 64px;
     grid-gap: 16px;
     height: 100%;
     max-height: calc(100vh - 500px);
+
 
     h1 {
       color: var(--primary);
@@ -22,32 +22,22 @@
     &-new {
       width: 100%;
     }
+    &-rides {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 16px;
+    }
   }
-}
-
-.ridespage {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  padding: 32px 64px;
-  height: 100%;
-  &-rides {
+  &-right {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex: 1;
   }
 }
-
 .map {
-  display: flex;
-  width: 1280px;
-  height: 60vh;
-  // height: -webkit-fill-available;
-  flex-direction: column;
-  margin-top: 16px;
-  border-radius: 5px;
-  overflow: hidden;
-  // flex-shrink: 1;
-  flex-grow: 1;
+  &-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+  }
 }

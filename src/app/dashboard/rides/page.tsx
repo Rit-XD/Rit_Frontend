@@ -2,8 +2,11 @@ import {fetchUser} from '@/lib/user/fetchUser'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
-import {RidesPage} from './Rides'
+import {RidesMap as Map} from './RidesMap'
 import css from './Rides.module.scss'
+import {Rides as RidesComponent} from '@/components/rides/Rides'
+import { Ride } from '@/types/ride.type'
+import { useUser } from '@nextui-org/react'
 
 const styles = fromModule(css)
 
@@ -22,11 +25,14 @@ export default async function Rides() {
         >
           Nieuwe rit
         </Button>
-        {/* <div className={styles.lists()}> */}
-        <RidesPage />
+        <div className={styles.container.left.rides()}>
+          <RidesComponent />
+          <RidesComponent old />
+        </div>
       </div>
-
-      {/* </div> */}
+      <div className={styles.container.right()}>
+        <Map/>
+      </div>
     </main>
   )
 }

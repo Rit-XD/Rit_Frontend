@@ -114,7 +114,7 @@ export const Planner: React.FC<{
                   Passagier toevoegen
                 </option>
                 {passengers?.map((passenger, index) => (
-                  <option value={passenger.id} key={passenger.id}>
+                  <option defaultValue={passenger.id} key={passenger.id}>
                     {passenger.firstname} {passenger.lastname}
                   </option>
                 ))}

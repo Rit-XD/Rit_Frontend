@@ -26,6 +26,7 @@ export type MapProps = {
 }
 
 export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination}) => {
+  const {user} = useUser();
   const [zoomLevel, setZoomLevel] = useState<number>(zoom || 8)
   const [center, setCenter] = useState<{lat: number; lng: number} | null>(null)
   const defaultCenter = {lat: 51.02735567847175, lng: 4.478807550388861}

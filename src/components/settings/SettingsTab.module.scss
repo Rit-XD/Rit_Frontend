@@ -76,3 +76,10 @@
     text-align: center;
   }
 }
+
+.background {
+  position: absolute;
+  right: 0;
+  height: calc(100vh - 99px);
+  width: auto;
+}

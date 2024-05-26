@@ -18,22 +18,26 @@ import { set } from 'date-fns'
 const Context = createContext<{
   user: User | null
   setUser: (user: User) => void
-  rides: Ride[],
+  rides: Ride[]
   addRide: (ride: Ride) => void
+  currentRide: Ride | null
+  selectRide: (rideId: string) => void
   isLoading: boolean
 }>({
   user: null,
   setUser: () => {},
   rides: [],
   addRide: () => {},
+  currentRide: null,
+  selectRide: () => {},
   isLoading: true
 
 })
 
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser, rides, addRide, isLoading} = useContext(Context)
-  return {user, rides, setUser, addRide, isLoading}
+  const {user, setUser, rides, addRide, isLoading, currentRide, selectRide} = useContext(Context)
+  return {user, rides, setUser, addRide, currentRide, selectRide, isLoading}
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {

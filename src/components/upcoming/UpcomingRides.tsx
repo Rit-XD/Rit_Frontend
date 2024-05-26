@@ -9,6 +9,7 @@ import {fromModule} from '@/utils/styler/Styler'
 import {useEffect, useState} from 'react'
 import css from './Upcoming.module.scss'
 import {fetchPassengerById} from './Upcoming.server'
+import { time } from 'console'
 
 const styles = fromModule(css)
 
@@ -25,15 +26,17 @@ export const UpcomingRides: React.FC = () => {
   //load all passengers
   useEffect(() => {
     const loadRidesAndPassengers = async () => {
-      const upcoming: {r: Ride; p: Passenger; date: Date}[] = []
-
+      const upcoming: {r: Ride, p: Passenger, date: Date}[] = []
       for (const r of rides) {
+        const timestamp = new Date(r.timestamp)
+        const now = new Date(Date.now())
+        console.log(timestamp, now)
         const np = await fetchPassengerById(r.passenger_1)
-        if (!upcoming.some(u => u.r.id === r.id && u.p.id === np.id)) {
+        if (!upcoming.some(u => u.r.id === r.id && u.p.id === np.id) && timestamp > now) {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-
+      console.log(upcoming);
       setUpcoming(upcoming)
       setLoading(false)
     }
