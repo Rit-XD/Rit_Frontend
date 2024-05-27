@@ -1,4 +1,5 @@
 import {fetchUser} from '@/lib/user/fetchUser'
+import Image from 'next/image'
 import {redirect} from 'next/navigation'
 
 export default async function Chat() {
@@ -7,8 +8,21 @@ export default async function Chat() {
 
   return (
     <main>
-      Ik ben in de chat
-      {/* we use serverside page and only import small client side component*/}
+      <div
+        style={{
+          height: '75vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Image
+          src="https://image.api.playstation.com/vulcan/ap/rnd/202204/2008/J8tdXQc59EDwrIgeHySj1yHf.png"
+          width={500}
+          height={500}
+          alt=""
+        />
+      </div>
     </main>
   )
 }
