@@ -28,6 +28,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
 import { viewport } from '@/app/layout'
+import { Icon } from '@/ui/Icon'
 
 const styles = fromModule(css)
 
@@ -168,6 +169,9 @@ export const PassengerTable: React.FC<{
           aria-label="Passenger-table"
         >
           <TableHeader>
+            <TableColumn key={'wheelchair'} width={16} allowsSorting>
+              {' '}
+            </TableColumn>
             <TableColumn key={'firstname'} width={128} allowsSorting>
               Voornaam
             </TableColumn>
@@ -186,7 +190,7 @@ export const PassengerTable: React.FC<{
             <TableColumn key={'extra'} width={256}>
               Extra
             </TableColumn>
-            <TableColumn key={''} width={64}>
+            <TableColumn key={'edit'} width={64}>
               {' '}
             </TableColumn>
           </TableHeader>
@@ -197,6 +201,9 @@ export const PassengerTable: React.FC<{
           >
             {item => (
               <TableRow key={item.key}>
+                <TableCell>
+                  <Skeleton count={1} width={16} height={16} />
+                </TableCell>
                 <TableCell>
                   <Skeleton count={1} width={128} height={16} />
                 </TableCell>
@@ -252,25 +259,28 @@ export const PassengerTable: React.FC<{
         }
       >
         <TableHeader>
+          <TableColumn key={'wheelchair'} width={16}>
+            {' '}
+          </TableColumn>
           <TableColumn key={'firstname'} width={128} allowsSorting>
             Voornaam
           </TableColumn>
           <TableColumn key={'lastname'} width={128} allowsSorting>
             Achternaam
           </TableColumn>
-          <TableColumn key={'dateofbirth'} width={64}>
+          <TableColumn key={'dateofbirth'} width={64} allowsSorting>
             Leeftijd
           </TableColumn>
-          <TableColumn key={'emergency_contact'} width={256}>
+          <TableColumn key={'emergency_contact'} width={256} allowsSorting>
             Noodcontact
           </TableColumn>
-          <TableColumn key={'emergency_relation'} width={128}>
+          <TableColumn key={'emergency_relation'} width={128} allowsSorting>
             Relatie
           </TableColumn>
-          <TableColumn key={'extra'} width={256}>
+          <TableColumn key={'extra'} width={256} allowsSorting>
             Extra
           </TableColumn>
-          <TableColumn key={''} width={64}>
+          <TableColumn key={'edit'} width={64}>
             {' '}
           </TableColumn>
         </TableHeader>
@@ -281,6 +291,7 @@ export const PassengerTable: React.FC<{
         >
           {passenger => (
             <TableRow key={passenger.id}>
+              <TableCell>{passenger.wheelchair? <Icon icon='wheelchair' className={styles.tableContainer.wheelchairIcon()}/> : " " }</TableCell>
               <TableCell>{passenger.firstname}</TableCell>
               <TableCell>{passenger.lastname}</TableCell>
               <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>
