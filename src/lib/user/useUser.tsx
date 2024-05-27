@@ -44,6 +44,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   const supabase = createSupabaseForBrowser()
   const [user, setUser] = useState<User | null>(null)
   const [rides, setRides] = useState<Ride[]>([])
+  const [currentRide, setCurrentRide] = useState<Ride | null>(null)
   const [fetching, setFetching] = useState(false)
   const [isLoading, setIsloading] = useState(true)
   const pathname = usePathname()
@@ -67,6 +68,10 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   const addRide = (ride: Ride) => {
     setRides([...rides, ride])
   }
+  const selectRide = (rideId: string) => {
+    const ride = rides.find((r) => r.id === rideId)
+    setCurrentRide(ride || null)
+  }
 
   useEffect(() => {
     if (fetching) return
@@ -83,6 +88,8 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
         setUser,
         rides,
         addRide,
+        currentRide,
+        selectRide,
         isLoading
       }}
     >
