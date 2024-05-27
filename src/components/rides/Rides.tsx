@@ -8,6 +8,8 @@ import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Rides.module.scss'
+import { now } from '@internationalized/date'
+import Skeleton from 'react-loading-skeleton'
 
 const styles = fromModule(css)
 
@@ -16,7 +18,10 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
     {r: Ride; p: Passenger; date: Date}[]
   >([])
   const [loading, setLoading] = useState(true)
-  const {user, rides, isLoading} = useUser()
+  const {user, rides, isLoading, currentRide, selectRide} = useUser()
+  const today = new Date()
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
 
   useEffect(() => {
     const loadRidesAndPassengers = async () => {
@@ -24,11 +29,15 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
 
       for (const r of rides) {
         const np = await fetchPassengerById(r.passenger_1)
-        if (!upcoming.some(u => u.r.id === r.id && u.p.id === np.id)) {
+        if (old && new Date(r.timestamp) < today) {
+          upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
+        }
+        if (!old && new Date(r.timestamp) > today) {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-
+      
+      if (!old && upcoming.length && upcoming[0].r.id && !currentRide) selectRide(upcoming[0].r.id) 
       setUpcoming(upcoming)
       setLoading(false)
     }
@@ -40,8 +49,17 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
     if (upcoming.length) setLoading(false)
   }, [upcoming])
 
-  if (isLoading) {
-    return <Loader />
+  if (upcoming.length === 0 && !isLoading) {
+    return (
+      <div className={styles.container()}>
+      <h3 className={styles.container.title()}>
+        {old ? 'Oude' : 'Aankomende'} ritten
+      </h3>
+        <Skeleton className={styles.skeleton.ride()}/>
+        <Skeleton className={styles.skeleton.ride()}/>
+        <Skeleton className={styles.skeleton.ride()}/>
+      </div>
+  )
   }
 
   return (
@@ -52,9 +70,6 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
       <div className={styles.container.rides()}>
         {upcoming.map(u => {
           const rideDate = new Date(u.date)
-          const today = new Date()
-          const tomorrow = new Date(today)
-          tomorrow.setDate(tomorrow.getDate() + 1)
           let displayDate
           if (rideDate.toDateString() === today.toDateString()) {
             displayDate = `Vandaag om ${rideDate.toLocaleTimeString('nl-BE', {
@@ -77,7 +92,7 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
           }
 
           return (
-            <div className={styles.container.ride()} key={u.p.id + u.r.id}>
+            <div className={((currentRide && currentRide.id === u.r.id)? styles.container.selectedRide() : styles.container.ride()) || styles.container.ride() } key={u.p.id + u.r.id} onClick={() => {if(u.r.id) selectRide(u.r.id)}}>
               <img
                 src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png"
                 alt="passenger"

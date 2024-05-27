@@ -19,7 +19,7 @@ export default async function Rides() {
       <div className={styles.container.left()}>
         <h1>Ritten</h1>
         <Button
-          iconafter="plus"
+          iconbefore="plus"
           className={styles.container.left.new()}
           mod="outline"
         >

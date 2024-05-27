@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   background-color: white;
-  padding: 16px;
+  padding: 16px 0;
   box-shadow: 0px 3px 10px 4px #0000000f;
   border-radius: 5px;
   min-width: 350px;
@@ -13,6 +13,9 @@
   &-title {
     font-family: 'Inter', sans-serif;
     font-weight: bold;
+    padding: 0 16px;
+    margin-bottom: 8px;
+
   }
   &-rides {
     display: flex;
@@ -30,8 +33,17 @@
   &-ride {
     display: flex;
     align-items: flex-start;
-    padding: 16px 0;
+    padding: 16px;
+    border: 1px solid white;
     border-bottom: 1px solid #e5e5e5;
+    transition: border 0.3s;
+
+    &:hover {
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      cursor: pointer;
+
+    }
 
     &-date {
       opacity: 0.5;
@@ -57,5 +69,46 @@
     p {
       font-weight: bold;
     }
+  }
+  &-selectedRide {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    border: 2px solid var(--primary);
+    border-radius: 5px;
+
+    &-date {
+      opacity: 0.5;
+      font-size: 14px;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 16px;
+    }
+    &-group {
+      display: flex;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+    }
+    p {
+      font-weight: bold;
+      color: var(--primary);
+    }
+  }
+}
+.skeleton {
+  &-ride {
+    width: calc(100% - 32px);
+    min-width: 318px;
+    height: 65px;
+    margin: 8px 16px;
   }
 }

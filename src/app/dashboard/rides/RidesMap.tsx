@@ -13,12 +13,12 @@ const styles = fromModule(css)
 
 export const RidesMap: React.FC = () => {
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-  const {rides} = useUser();
+  const {rides, currentRide} = useUser();
 
   return (
       <APIProvider apiKey={key}>
         <div className={styles.map.container()}>
-          <Map zoom={15} destination={rides[0]?.destination || ""}/>
+          <Map zoom={15} destination={currentRide?.destination || ""}/>
         </div>
       </APIProvider>
   )
