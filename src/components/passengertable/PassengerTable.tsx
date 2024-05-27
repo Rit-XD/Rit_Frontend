@@ -27,6 +27,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
+import { viewport } from '@/app/layout'
 
 const styles = fromModule(css)
 
@@ -93,7 +94,8 @@ export const PassengerTable: React.FC<{
   }
 
   const [page, setPage] = useState(1)
-  const rowsPerPage = 10
+
+  const rowsPerPage = ((window.innerHeight - 252) / 50) -2;
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
   const items = React.useMemo(() => {
@@ -146,14 +148,13 @@ export const PassengerTable: React.FC<{
   )
 
   const filteredItems = useMemo(() => {
-    if (!searchValue) return passengers
+    if (!searchValue) return items
 
     return passengers?.filter(
       passenger =>
-        passenger.firstname.toLowerCase().includes(searchValue.toLowerCase()) ||
-        passenger.lastname.toLowerCase().includes(searchValue.toLowerCase())
+        `${passenger.firstname.toLowerCase()} ${passenger.lastname.toLowerCase()}`.includes(searchValue.toLowerCase())
     )
-  }, [passengers, searchValue])
+  }, [items, searchValue])
 
   useEffect(() => {
     onSearchChange()
