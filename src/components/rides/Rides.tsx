@@ -3,13 +3,11 @@
 import {useUser} from '@/lib/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Ride} from '@/types/ride.type'
-import {Loader} from '@/ui/loader/Loader'
 import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
+import Skeleton from 'react-loading-skeleton'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Rides.module.scss'
-import { now } from '@internationalized/date'
-import Skeleton from 'react-loading-skeleton'
 
 const styles = fromModule(css)
 
@@ -22,6 +20,8 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
   const today = new Date()
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
 
   useEffect(() => {
     const loadRidesAndPassengers = async () => {
@@ -36,8 +36,9 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-      
-      if (!old && upcoming.length && upcoming[0].r.id && !currentRide) selectRide(upcoming[0].r.id) 
+
+      if (!old && upcoming.length && upcoming[0].r.id && !currentRide)
+        selectRide(upcoming[0].r.id)
       setUpcoming(upcoming)
       setLoading(false)
     }
@@ -52,14 +53,14 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
   if (upcoming.length === 0 && !isLoading) {
     return (
       <div className={styles.container()}>
-      <h3 className={styles.container.title()}>
-        {old ? 'Oude' : 'Aankomende'} ritten
-      </h3>
-        <Skeleton className={styles.skeleton.ride()}/>
-        <Skeleton className={styles.skeleton.ride()}/>
-        <Skeleton className={styles.skeleton.ride()}/>
+        <h3 className={styles.container.title()}>
+          {old ? 'Oude' : 'Aankomende'} ritten
+        </h3>
+        <Skeleton className={styles.skeleton.ride()} />
+        <Skeleton className={styles.skeleton.ride()} />
+        <Skeleton className={styles.skeleton.ride()} />
       </div>
-  )
+    )
   }
 
   return (
@@ -81,6 +82,11 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
               hour: 'numeric',
               minute: 'numeric'
             })}`
+          } else if (rideDate.toDateString() === yesterday.toDateString()) {
+            displayDate = `Gisteren om ${rideDate.toLocaleTimeString('nl-BE', {
+              hour: 'numeric',
+              minute: 'numeric'
+            })}`
           } else {
             displayDate = rideDate.toLocaleDateString('nl-BE', {
               weekday: 'short',
@@ -92,7 +98,17 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
           }
 
           return (
-            <div className={((currentRide && currentRide.id === u.r.id)? styles.container.selectedRide() : styles.container.ride()) || styles.container.ride() } key={u.p.id + u.r.id} onClick={() => {if(u.r.id) selectRide(u.r.id)}}>
+            <div
+              className={
+                (currentRide && currentRide.id === u.r.id
+                  ? styles.container.selectedRide()
+                  : styles.container.ride()) || styles.container.ride()
+              }
+              key={u.p.id + u.r.id}
+              onClick={() => {
+                if (u.r.id) selectRide(u.r.id)
+              }}
+            >
               <img
                 src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png"
                 alt="passenger"
