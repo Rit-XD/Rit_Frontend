@@ -21,8 +21,9 @@ const icons = {
   profile: {ratio: 21 / 18},
   key: {ratio: 21 / 18},
   carCrash: {ratio: 24 / 16},
-  edit : {ratio: 25 / 25},
+  edit: {ratio: 25 / 25},
   location: {ratio: 94 / 94},
+  clock: {ratio: 16 / 16}
 }
 
 export type IconType = keyof typeof icons
