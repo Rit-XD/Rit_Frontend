@@ -1,13 +1,12 @@
+import {DriverInfo} from '@/components/rides/DriverInfo'
+import {RideInfo} from '@/components/rides/RideInfo'
+import {Rides as RidesComponent} from '@/components/rides/Rides'
 import {fetchUser} from '@/lib/user/fetchUser'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
-import {RidesMap as Map} from './RidesMap'
 import css from './Rides.module.scss'
-import {Rides as RidesComponent} from '@/components/rides/Rides'
-import { Ride } from '@/types/ride.type'
-import { useUser } from '@nextui-org/react'
-import { RideInfo } from '@/components/rides/RideInfo'
+import {RidesMap as Map} from './RidesMap'
 
 const styles = fromModule(css)
 
@@ -33,9 +32,10 @@ export default async function Rides() {
       </div>
       <div className={styles.container.right()}>
         <div className={styles.container.right.info()}>
-          <RideInfo/>
+          <RideInfo />
+          <DriverInfo />
         </div>
-        <Map/>
+        <Map />
       </div>
     </main>
   )
