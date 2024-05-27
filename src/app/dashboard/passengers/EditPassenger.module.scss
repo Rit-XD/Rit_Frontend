@@ -11,6 +11,26 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.delete {
+  width: 100%;
+  background-color: red;
+  border-color: red;
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background-color: white;
+      color: red;
+      border: 2px solid red;
+    }
+  }
+}
+
+.orange {
+  color: var(--primary);
+  font-weight: bold;
+}
+
 .form_container {
   z-index: 2;
   background-color: white;
@@ -25,6 +45,12 @@
   display: flex;
   gap: 16px;
   flex-direction: column;
+
+  &-warning {
+    color: red;
+    font-weight: 400;
+    text-align: center;
+  }
 
   &-flexrow {
     display: flex;
