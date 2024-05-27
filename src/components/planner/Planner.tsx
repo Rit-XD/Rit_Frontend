@@ -37,8 +37,12 @@ export const Planner: React.FC<{
     []
   )
 
-  const [destination, setDestination] = useState<string>('')
+  const [destination, setDestination] = useState<string | undefined>()
+  const [result, setResult] = useState<google.maps.DirectionsResult | undefined>()
   const [dateTime, setDateTime] = useState<string>('')
+  useEffect(() => {
+    console.log("result",result)
+  }, [result]);
 
   const {user, addRide} = useUser()
   //load all possible passengers
@@ -73,10 +77,12 @@ export const Planner: React.FC<{
     postRide(
       user!.id,
       origin,
-      destination,
+      destination!,
+      result?.routes[0].legs[0].distance?.value ?? 0.1,
+      result?.routes[0].legs[0].duration?.value ?? 1,
       'ea2251ed-98f6-4d9c-bbb3-17c7ea2a71a7',
       dateTime,
-      selectedPassengers[0].id,
+      selectedPassengers[0]!.id,
       selectedPassengers[1]?.id
     ).then(res => {
       if (res?.status === 201) addRide(res!.data![0])
@@ -101,29 +107,6 @@ export const Planner: React.FC<{
         <div className={styles.container.planner()}>
           <h3 className={styles.container.planner.title()}>Plan een rit</h3>
           <div className={styles.container.planner.inputs()}>
-            {/* <div className={styles.container.planner.inputs.iconContainer()}>
-              <select
-                name="passenger"
-                id="select-passenger"
-                className={styles.container.planner.inputs.input()}
-                defaultValue={''}
-                onChange={e => selectPassenger(e.target.value)}
-                disabled={selectedPassengers.length >= 2}
-              >
-                <option value="" disabled>
-                  Passagier toevoegen
-                </option>
-                {passengers?.map((passenger, index) => (
-                  <option defaultValue={passenger.id} key={passenger.id}>
-                    {passenger.firstname} {passenger.lastname}
-                  </option>
-                ))}
-              </select>
-              <Icon
-                icon="dropdown"
-                className={styles.container.planner.inputs.iconContainer.icon()}
-              />
-            </div> */}
             <Select
               items={
                 passengers?.length
@@ -157,14 +140,6 @@ export const Planner: React.FC<{
                 </SelectItem>
               )}
             </Select>
-            {/* <input
-              type="text"
-              name="destination"
-              id="input-destination"
-              placeholder="Bestemming"
-              className={styles.container.planner.inputs.input()}
-              onChange={e => setDestination(e.target.value)}
-            /> */}
             <div className={styles.container.planner.autocomplete()}>
               <Autocomplete
                 onPlaceSelect={place => {
@@ -176,18 +151,6 @@ export const Planner: React.FC<{
                 }}
               />
             </div>
-            {/* <div className={styles.container.planner.inputs.iconContainer()}> */}
-            {/* <input
-                type="datetime-local"
-                name="date"
-                id="input-date"
-                placeholder="Tijdstip"
-                className={styles.container.planner.inputs.input()}
-                onChange={e => {
-                  setDateTime(e.target.value)
-                  console.log('e', e.target.value)
-                }}
-              /> */}
             <div suppressHydrationWarning={true}>
               <DatePicker
                 aria-label="timestamp"
@@ -206,7 +169,6 @@ export const Planner: React.FC<{
                 }}
               />
             </div>
-            {/* </div> */}
           </div>
           <div className={styles.container.planner.inputs()}>
             <div>
@@ -254,12 +216,11 @@ export const Planner: React.FC<{
                 <label htmlFor="routetype-single">Enkele rit</label>
               </div>
             </div>
-            {/* <button className={styles.container.planner.inputs.button()}>Plaats deze rit</button> */}
             <Button onClick={handlesubmit}>Plaats deze rit</Button>
           </div>
         </div>
         <div className={styles.container.map()}>
-          <Map zoom={15} destination={destination} />
+          <Map zoom={15} destination={destination} result={result} setResult={setResult}  />
           <MapHandler place={selectedPlace} />
         </div>
       </div>

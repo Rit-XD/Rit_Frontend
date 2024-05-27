@@ -1,19 +1,26 @@
 'use client'
-import {Map} from '@/components/map/Map'
-import {Rides as RidesComponent} from '@/components/rides/Rides'
-import {fromModule} from '@/utils/styler/Styler'
-import {APIProvider} from '@vis.gl/react-google-maps'
+import { Map } from '@/components/map/Map'
+import { fromModule } from '@/utils/styler/Styler'
+import { APIProvider } from '@vis.gl/react-google-maps'
 import React from 'react'
 import css from './Rides.module.scss'
-import { Ride } from '@/types/ride.type'
 import { useUser } from '@/lib/user/useUser'
+import Skeleton from 'react-loading-skeleton'
 
 const styles = fromModule(css)
 
 
 export const RidesMap: React.FC = () => {
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-  const {rides, currentRide} = useUser();
+  const {currentRide} = useUser();
+
+
+if (!currentRide?.destination) return (
+  <div className={styles.map.skeleton.container()}>
+    <Skeleton className={styles.map.skeleton()}/>
+  </div>
+  
+)
 
   return (
       <APIProvider apiKey={key}>

@@ -30,13 +30,11 @@ export const UpcomingRides: React.FC = () => {
       for (const r of rides) {
         const timestamp = new Date(r.timestamp)
         const now = new Date(Date.now())
-        console.log(timestamp, now)
         const np = await fetchPassengerById(r.passenger_1)
         if (!upcoming.some(u => u.r.id === r.id && u.p.id === np.id) && timestamp > now) {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-      console.log(upcoming);
       setUpcoming(upcoming)
       setLoading(false)
     }

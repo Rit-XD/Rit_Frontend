@@ -7,6 +7,7 @@ import css from './Rides.module.scss'
 import {Rides as RidesComponent} from '@/components/rides/Rides'
 import { Ride } from '@/types/ride.type'
 import { useUser } from '@nextui-org/react'
+import { RideInfo } from '@/components/rides/RideInfo'
 
 const styles = fromModule(css)
 
@@ -31,6 +32,9 @@ export default async function Rides() {
         </div>
       </div>
       <div className={styles.container.right()}>
+        <div className={styles.container.right.info()}>
+          <RideInfo/>
+        </div>
         <Map/>
       </div>
     </main>

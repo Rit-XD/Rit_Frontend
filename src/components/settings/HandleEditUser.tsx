@@ -20,7 +20,6 @@ export async function handleEditUser(
   const postal = Number(formData.get('postal'))
   const number = String(formData.get('number'))
   const phone = String(formData.get('phone'))
-  console.log(phone);
 
   let query = supabaseAdmin
     .from('Carecenter')

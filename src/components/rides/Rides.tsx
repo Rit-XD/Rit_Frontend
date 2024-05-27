@@ -38,7 +38,8 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
       }
       
       if (!old && upcoming.length && upcoming[0].r.id && !currentRide) selectRide(upcoming[0].r.id) 
-      setUpcoming(upcoming)
+      if (old) setUpcoming(upcoming.reverse())
+      else setUpcoming(upcoming)
       setLoading(false)
     }
 
@@ -102,7 +103,7 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
                   <p>
                     {u.p.firstname} {u.p.lastname}
                   </p>
-                  <p>17 km</p>
+                  <p>{u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km</p>
                 </div>
                 <span className={styles.container.ride.date()}>
                   {displayDate}

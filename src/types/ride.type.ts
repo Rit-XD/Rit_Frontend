@@ -9,4 +9,6 @@ export type Ride = {
     passenger_1: string
     passenger_2: string | null
     timestamp: string
+    duration: number | null
+    distance: number | null
   }
