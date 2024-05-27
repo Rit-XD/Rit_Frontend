@@ -47,7 +47,6 @@ export const PassengersHeader: React.FC = () => {
         <p className={styles.container.leftside.tab()}>
           Passagiers ({passengers?.length || '0'})
         </p>
-        <p>Archief ({0})</p>
       </div>
       <div className={styles.container.rightside()}>
         <input

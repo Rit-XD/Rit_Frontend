@@ -204,6 +204,7 @@ export const EditPassenger: React.FC<{
             </button>
 
             <Button
+              mod={'outline'}
               className={styles.delete()}
               onClick={() => {
                 setShowDeleteCheck(true)
