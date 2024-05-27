@@ -15,6 +15,9 @@
     background: var(--primary);
     border-radius: 100px;
   }
+  &-wheelchairIcon {
+    color: var(--primary);
+  }
 }
 
 .table {
@@ -27,7 +30,7 @@
     border-bottom: 2px solid #e5e5e5;
   }
   tbody {
-    text-align: center;
+    text-align: left;
 
     tr:nth-child(odd) {
       background-color: #f9fafb;
@@ -39,7 +42,7 @@
 
   tbody td {
     line-height: 16px;
-    padding: 16px 0;
+    padding: 16px ;
     font-size: 16px;
     &:last-child {
       cursor: pointer;
@@ -47,7 +50,7 @@
   }
   th {
     padding: 20px 0 10px 0;
-    text-align: center;
+    text-align: left;
     background-color: transparent;
     color: black;
     font-size: 14px;
