@@ -19,6 +19,8 @@ export const DriverInfo: React.FC = () => {
 
   useEffect(() => {
     const fetchDriverData = async () => {
+      setDriver(null)
+      setLoading(true)
       if (currentRide?.driver) {
         const driverData = await fetchDriver(currentRide.driver)
         setDriver(driverData)
@@ -32,7 +34,7 @@ export const DriverInfo: React.FC = () => {
   if (!currentRide && !isLoading) {
     return (
       <div className={styles.container.info()}>
-        <h3 className={styles.container.title()}>Gegevens chauffeur</h3>
+        <h3 className={styles.container.title()}>Gegevens bestuurder</h3>
         <div className={styles.skeleton.info.container()}>
           <Skeleton className={styles.skeleton.info()} />
           <Skeleton className={styles.skeleton.info()} />
@@ -47,21 +49,22 @@ export const DriverInfo: React.FC = () => {
 
   return (
     <div className={styles.container.info()}>
-      <h3 className={styles.container.title()}>Gegevens chauffeur</h3>
-      <div className={styles.container.info.grid()}>
-        <div className={styles.container.info.grid.item()}>
-          <div className={styles.container.info.grid.item.group()}>
-            <Icon
-              mod="square"
-              className={styles.container.info.grid.item.group.logo()}
-              icon="passengers"
-            />
-            <p className={styles.container.info.grid.item.group.title()}>
-              {driver?.firstname} {driver?.lastname}
-            </p>
-          </div>
-          <p className={styles.opacity()}>{driver?.phone}</p>
+      <h3 className={styles.container.title()}>Gegevens bestuurder</h3>
+      <div className={styles.container.info.grid.item()}>
+        <div className={styles.container.info.grid.item.group()}>
+          <Icon
+            mod="square"
+            className={styles.container.info.grid.item.group.logo()}
+            icon="passengers"
+          />
+          <p className={styles.container.info.grid.item.group.title()}>
+            {(driver?.firstname &&
+              driver?.lastname &&
+              `${driver?.firstname} ${driver?.lastname}`) ||
+              'Momenteel nog geen bestuurder'}
+          </p>
         </div>
+        <p className={styles.opacity()}>{driver?.phone || ''} </p>
       </div>
       <Button className={styles.button()} iconbefore="chat_solid">
         Stuur een bericht
