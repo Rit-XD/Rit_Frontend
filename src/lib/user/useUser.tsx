@@ -1,7 +1,9 @@
 'use client'
 
-import { createSupabaseForBrowser } from '@/utils/supabase/createSupabaseForBrowser'
-import { usePathname } from 'next/navigation'
+import {fetchRides} from '@/components/upcoming/Upcoming.server'
+import {Ride} from '@/types/ride.type'
+import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
+import {usePathname} from 'next/navigation'
 import React, {
   PropsWithChildren,
   createContext,
@@ -9,11 +11,8 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import { User } from './User'
-import { fetchUser } from './fetchUser'
-import { Ride } from '@/types/ride.type'
-import { fetchRides } from '@/components/upcoming/Upcoming.server'
-import { set } from 'date-fns'
+import {User} from './User'
+import {fetchUser} from './fetchUser'
 
 const Context = createContext<{
   user: User | null
@@ -31,13 +30,21 @@ const Context = createContext<{
   currentRide: null,
   selectRide: () => {},
   isLoading: true
-
 })
 
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser, rides, addRide, isLoading, currentRide, selectRide} = useContext(Context)
-  return {user, rides, setUser, addRide, currentRide, selectRide, isLoading}
+  const {user, setUser, rides, addRide, isLoading, currentRide, selectRide} =
+    useContext(Context)
+  return {
+    user,
+    rides,
+    setUser,
+    addRide,
+    currentRide,
+    selectRide,
+    isLoading
+  }
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
@@ -57,11 +64,11 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
 
     setFetching(false)
   }
-  const getRides = async () => { 
+  const getRides = async () => {
     setFetching(true)
 
     const result = await fetchRides(user!)
-    setRides(result);
+    setRides(result)
 
     setFetching(false)
   }
@@ -69,7 +76,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
     setRides([...rides, ride])
   }
   const selectRide = (rideId: string) => {
-    const ride = rides.find((r) => r.id === rideId)
+    const ride = rides.find(r => r.id === rideId)
     setCurrentRide(ride || null)
   }
 

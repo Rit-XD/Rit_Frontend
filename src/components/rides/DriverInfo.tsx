@@ -1,23 +1,33 @@
 'use client'
 
 import {useUser} from '@/lib/user/useUser'
-import {Passenger} from '@/types/passenger.type'
-import {Ride} from '@/types/ride.type'
+import {Driver} from '@/types/driver.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
+import {fetchDriver} from './DriverInfo.server'
 import css from './Rides.module.scss'
 
 const styles = fromModule(css)
 
 export const DriverInfo: React.FC = () => {
-  const [upcoming, setUpcoming] = useState<
-    {r: Ride; p: Passenger; date: Date}[]
-  >([])
   const [loading, setLoading] = useState(true)
-  const {user, rides, isLoading, currentRide, selectRide} = useUser()
+  const {isLoading, currentRide} = useUser()
+  const [driver, setDriver] = useState<Driver | null>(null)
+
+  useEffect(() => {
+    const fetchDriverData = async () => {
+      if (currentRide?.driver) {
+        const driverData = await fetchDriver(currentRide.driver)
+        setDriver(driverData)
+        setLoading(false)
+      }
+    }
+
+    fetchDriverData()
+  }, [currentRide])
 
   if (!currentRide && !isLoading) {
     return (
@@ -47,10 +57,10 @@ export const DriverInfo: React.FC = () => {
               icon="passengers"
             />
             <p className={styles.container.info.grid.item.group.title()}>
-              Steve Goossens
+              {driver?.firstname} {driver?.lastname}
             </p>
           </div>
-          <p className={styles.opacity()}>{user?.phone}</p>
+          <p className={styles.opacity()}>{driver?.phone}</p>
         </div>
       </div>
       <Button className={styles.button()} iconbefore="chat_solid">
