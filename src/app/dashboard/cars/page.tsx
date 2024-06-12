@@ -1,6 +1,6 @@
+import {Cars as CarsComponent} from '@/components/cars/Cars'
 import {DriverInfo} from '@/components/rides/DriverInfo'
 import {RideInfo} from '@/components/rides/RideInfo'
-import {Cars as CarsComponent} from '@/components/cars/Cars'
 import {fetchUser} from '@/lib/user/fetchUser'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
