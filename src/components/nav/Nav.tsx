@@ -27,6 +27,11 @@ export function Nav({mod}: {mod?: Variant<'mobile' | 'desktop'>}) {
       title: 'Ritten'
     },
     {
+      icon: 'car',
+      href: '/dashboard/cars',
+      title: 'Wagens'
+    },
+    {
       icon: 'chat',
       href: '/dashboard/chat',
       title: 'Chat'
