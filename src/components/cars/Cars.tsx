@@ -4,9 +4,8 @@ import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Ride} from '@/types/ride.type'
 import {fromModule} from '@/utils/styler/Styler'
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Skeleton from 'react-loading-skeleton'
-import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Cars.module.scss'
 import { useRides } from '@/providers/rides/useRides'
 
@@ -56,9 +55,9 @@ export const Cars: React.FC<{old?: boolean}> = ({old}) => {
   if (upcoming.length === 0 && !isLoading) {
     return (
       <div className={styles.container()}>
-        <h3 className={styles.container.title()}>
-          {old ? 'Oude' : 'Aankomende'} ritten
-        </h3>
+        <h3 className={styles.container.title()}>Wagens</h3>
+        <Skeleton className={styles.skeleton.ride()} />
+        <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
@@ -130,9 +129,9 @@ export const Cars: React.FC<{old?: boolean}> = ({old}) => {
                 </span>
               </div>
             </div>
-          )
-        })}
-      </div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

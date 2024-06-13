@@ -2,6 +2,42 @@
   opacity: 0.5;
 }
 
+.cars {
+  border-bottom: 1px solid #e5e5e5;
+  &:last-child {
+    border-bottom: none;
+  }
+  &-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 0;
+
+    &-title {
+      font-family: 'Inter', sans-serif;
+
+      font-weight: 600;
+    }
+    &-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+
+      img {
+        width: 150px;
+        height: 100%;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+    }
+    &-plate {
+      opacity: 0.5;
+      font-size: 14px;
+    }
+  }
+}
+
 .button {
   margin-top: auto;
   margin-left: 16px;
@@ -101,10 +137,10 @@
       flex-grow: 1;
     }
     img {
-      width: 48px;
-      height: 48px;
+      width: 150px;
+      height: 100%;
       border-radius: 50%;
-      margin-right: 16px;
+      margin-right: 8px;
     }
     &-group {
       display: flex;
@@ -115,14 +151,14 @@
       font-weight: bold;
     }
   }
-  &-selectedRide {
+  &-selectedCar {
     display: flex;
     align-items: flex-start;
     padding: 16px;
     border: 2px solid var(--primary);
     border-radius: 5px;
 
-    &-date {
+    &-plate {
       opacity: 0.5;
       font-size: 14px;
     }
@@ -134,7 +170,6 @@
     }
     img {
       width: 48px;
-      height: 48px;
       border-radius: 50%;
       margin-right: 16px;
     }

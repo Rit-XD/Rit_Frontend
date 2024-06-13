@@ -1,4 +1,5 @@
 import {Cars as CarsComponent} from '@/components/cars/Cars'
+import {Cars as CarsComponent} from '@/components/cars/Cars'
 import {DriverInfo} from '@/components/rides/DriverInfo'
 import {RideInfo} from '@/components/rides/RideInfo'
 import {fetchUser} from '@/providers/user/fetchUser'

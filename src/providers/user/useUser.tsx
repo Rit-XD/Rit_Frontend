@@ -1,6 +1,8 @@
 'use client'
 
+import {fetchCars} from '@/components/cars/Cars.server'
 import {fetchRides} from '@/components/upcoming/Upcoming.server'
+import {Car} from '@/types/car.type'
 import {Ride} from '@/types/ride.type'
 import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
 import {usePathname} from 'next/navigation'
@@ -37,6 +39,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   const [user, setUser] = useState<User | null>(null)
   const [fetching, setFetching] = useState(false)
   const [isLoading, setIsloading] = useState(true)
+  const [cars, setCars] = useState<Car[]>([])
   const pathname = usePathname()
 
   const loadUser = async () => {
