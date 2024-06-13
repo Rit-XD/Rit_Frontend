@@ -1,6 +1,6 @@
 'use server'
 
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
 export const getUser = async () => {

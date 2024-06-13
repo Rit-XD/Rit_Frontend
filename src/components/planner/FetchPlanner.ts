@@ -1,8 +1,7 @@
 'use server'
 
-import { User } from '@/lib/user/User'
+import {User} from '@/providers/user/User'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
-
 
 export const fetchPassengers = async (user: User) => {
   if (!user) return []

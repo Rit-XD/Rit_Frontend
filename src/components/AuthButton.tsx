@@ -1,11 +1,11 @@
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {createClient} from '@/utils/supabase/server'
 import Link from 'next/link'
 import {redirect} from 'next/navigation'
 
 export default async function AuthButton() {
-  const supabase = createClient();
-  const user = await fetchUser();
+  const supabase = createClient()
+  const user = await fetchUser()
 
   const signOut = async () => {
     'use server'

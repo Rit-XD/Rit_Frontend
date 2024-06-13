@@ -1,6 +1,6 @@
 'use server'
 
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
 export const getUser = async () => {
@@ -18,7 +18,7 @@ export const getPassengers = async () => {
 
 export async function handleEditPassenger(
   state: {error: string},
-  formData: FormData,
+  formData: FormData
 ): Promise<{error: string}> {
   const firstname = String(formData.get('firstname'))
   const lastname = String(formData.get('lastname'))

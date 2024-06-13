@@ -1,6 +1,6 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Ride} from '@/types/ride.type'
 import {Icon} from '@/ui/Icon'
@@ -9,6 +9,7 @@ import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Rides.module.scss'
+import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -17,7 +18,8 @@ export const RideInfo: React.FC = () => {
     {r: Ride; p: Passenger; date: Date}[]
   >([])
   const [loading, setLoading] = useState(true)
-  const {user, rides, isLoading, currentRide, selectRide} = useUser()
+  const {user} = useUser()
+  const { rides, currentRide, selectRide, isLoading } = useRides()
   const [passengers, setPassengers] = useState<Passenger[]>([])
   const [timestamp, setTimestamp] = useState<Date>(new Date())
 

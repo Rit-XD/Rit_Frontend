@@ -1,7 +1,7 @@
 import {DriverInfo} from '@/components/rides/DriverInfo'
 import {RideInfo} from '@/components/rides/RideInfo'
 import {Rides as RidesComponent} from '@/components/rides/Rides'
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
@@ -22,6 +22,7 @@ export default async function Rides() {
           iconbefore="plus"
           className={styles.container.left.new()}
           mod="outline"
+          onClick={() => redirect(`/dashboard/`)}
         >
           Nieuwe rit
         </Button>

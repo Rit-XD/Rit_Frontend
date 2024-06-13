@@ -1,18 +1,17 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
-import {fromModule} from '@/utils/styler/Styler'
+import { useUser } from '@/providers/user/useUser'
+import { Icon } from '@/ui/Icon'
+import { fromModule } from '@/utils/styler/Styler'
 import {
   AdvancedMarker,
   Map as GoogleMap,
   useMap,
   useMapsLibrary
 } from '@vis.gl/react-google-maps'
-import React, {useEffect, useState} from 'react'
-import {fromAddress, setKey, setLanguage, setRegion} from 'react-geocode'
+import React, { useEffect, useState } from 'react'
+import { fromAddress, setKey, setLanguage, setRegion } from 'react-geocode'
 import css from './Map.module.scss'
-import {Pinpoint} from './Pinpoint'
-import { Icon } from '@/ui/Icon'
 
 // const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
 const mapId = process.env.NEXT_PUBLIC_MAP_ID
@@ -30,9 +29,14 @@ export type MapProps = {
   setResult?: (result: google.maps.DirectionsResult) => void
 }
 
-
-export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination, result, setResult}) => {
-  const {user} = useUser();
+export const Map: React.FC<MapProps> = ({
+  zoom,
+  onPlaceSelect,
+  destination,
+  result,
+  setResult
+}) => {
+  const {user} = useUser()
   const [zoomLevel, setZoomLevel] = useState<number>(zoom || 8)
   const [center, setCenter] = useState<{lat: number; lng: number} | null>(null)
   const defaultCenter = {lat: 51.02735567847175, lng: 4.478807550388861}
@@ -104,12 +108,16 @@ export const Map: React.FC<MapProps> = ({zoom, onPlaceSelect, destination, resul
           defaultCenter={center}
           scrollwheel={true}
         >
-          <Directions destination={destination} result={result} setResult={setResult}/>
+          <Directions
+            destination={destination}
+            result={result}
+            setResult={setResult}
+          />
           {center.lat !== defaultCenter.lat &&
             center.lng !== defaultCenter.lng &&
             !destination && (
               <AdvancedMarker position={center}>
-                <Icon icon="location" className={styles.icon()}/>
+                <Icon icon="location" className={styles.icon()} />
               </AdvancedMarker>
             )}
         </GoogleMap>
@@ -123,8 +131,12 @@ export type DirectionsProps = {
   result?: google.maps.DirectionsResult
   setResult?: (result: google.maps.DirectionsResult) => void
 }
-const Directions:React.FC<DirectionsProps> = ({destination, result, setResult}) => {
-  const {user, rides} = useUser()
+const Directions: React.FC<DirectionsProps> = ({
+  destination,
+  result,
+  setResult
+}) => {
+  const {user} = useUser()
   const map = useMap()
   const routesLibrary = useMapsLibrary('routes')
   const [directionsService, setDirectionsService] =
@@ -140,7 +152,7 @@ const Directions:React.FC<DirectionsProps> = ({destination, result, setResult}) 
   }, [routesLibrary, map])
 
   useEffect(() => {
-    if (!directionsService || !directionsRenderer) return;
+    if (!directionsService || !directionsRenderer) return
 
     if (destination)
       directionsService
@@ -156,10 +168,10 @@ const Directions:React.FC<DirectionsProps> = ({destination, result, setResult}) 
           directionsRenderer.setOptions({
             polylineOptions: {strokeColor: '#ED6A01', strokeWeight: 4}
           })
-          directionsRenderer.setDirections(response);
-          setRoutes(response.routes);
-          
-          if (response === result) return;
+          directionsRenderer.setDirections(response)
+          setRoutes(response.routes)
+
+          if (response === result) return
           if (setResult) setResult(response)
         })
   }, [directionsService, directionsRenderer, destination])

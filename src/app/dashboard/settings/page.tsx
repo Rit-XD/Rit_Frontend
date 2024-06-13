@@ -1,5 +1,5 @@
 import {SettingsTab} from '@/components/settings/SettingsTab'
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {redirect} from 'next/navigation'
 
 export default async function Settings() {

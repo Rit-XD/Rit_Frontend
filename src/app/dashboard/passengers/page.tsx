@@ -1,6 +1,6 @@
 'use server'
 
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
 import {redirect} from 'next/navigation'
 import css from './Passengers.module.scss'

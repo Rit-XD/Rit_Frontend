@@ -1,6 +1,6 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Driver} from '@/types/driver.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
@@ -9,12 +9,14 @@ import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {fetchDriver} from './DriverInfo.server'
 import css from './Rides.module.scss'
+import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
 export const DriverInfo: React.FC = () => {
   const [loading, setLoading] = useState(true)
-  const {isLoading, currentRide} = useUser()
+  const {isLoading} = useUser()
+  const { currentRide } = useRides()
   const [driver, setDriver] = useState<Driver | null>(null)
 
   useEffect(() => {

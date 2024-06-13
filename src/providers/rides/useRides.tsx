@@ -1,6 +1,5 @@
 'use client'
 
-import {fetchRides} from '@/components/upcoming/Upcoming.server'
 import {Ride} from '@/types/ride.type'
 import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
 import {usePathname} from 'next/navigation'
@@ -11,20 +10,18 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import {User} from './User'
-import {fetchUser} from './fetchUser'
+import { useUser } from '../user/useUser'
+import { fetchRides } from './fetchRides'
 
-const Context = createContext<{
-  user: User | null
-  setUser: (user: User) => void
-  rides: Ride[]
-  addRide: (ride: Ride) => void
-  currentRide: Ride | null
-  selectRide: (rideId: string) => void
-  isLoading: boolean
-}>({
-  user: null,
-  setUser: () => {},
+type RidesType = {
+    rides: Ride[]
+    addRide: (ride: Ride) => void
+    currentRide: Ride | null
+    selectRide: (rideId: string) => void
+    isLoading: boolean
+}
+
+const Context = createContext<RidesType>({
   rides: [],
   addRide: () => {},
   currentRide: null,
@@ -32,43 +29,27 @@ const Context = createContext<{
   isLoading: true
 })
 
-export const useUser = () => {
+export const useRides = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser, rides, addRide, isLoading, currentRide, selectRide} =
-    useContext(Context)
-  return {
-    user,
-    rides,
-    setUser,
-    addRide,
-    currentRide,
-    selectRide,
-    isLoading
-  }
+  const { rides, addRide, isLoading, currentRide, selectRide } = useContext(Context)
+
+  return { rides, addRide, currentRide, selectRide, isLoading }
 }
 
-export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
+export const RidesProvider: React.FC<PropsWithChildren> = ({children}) => {
   const supabase = createSupabaseForBrowser()
-  const [user, setUser] = useState<User | null>(null)
+  const { user } = useUser();
   const [rides, setRides] = useState<Ride[]>([])
   const [currentRide, setCurrentRide] = useState<Ride | null>(null)
   const [fetching, setFetching] = useState(false)
   const [isLoading, setIsloading] = useState(true)
   const pathname = usePathname()
 
-  const loadUser = async () => {
-    setFetching(true)
-
-    const init = await fetchUser()
-    setUser(init)
-
-    setFetching(false)
-  }
   const getRides = async () => {
     setFetching(true)
 
     const result = await fetchRides(user!)
-    setRides(result)
+    setRides(result || [])
 
     setFetching(false)
   }
@@ -81,25 +62,14 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   }
 
   useEffect(() => {
-    if (fetching) return
+    if (fetching || !user) return;
     setIsloading(true)
-    if (user) getRides()
-    if (!user) loadUser()
+    getRides()
     setIsloading(false)
   }, [pathname, user])
 
   return (
-    <Context.Provider
-      value={{
-        user,
-        setUser,
-        rides,
-        addRide,
-        currentRide,
-        selectRide,
-        isLoading
-      }}
-    >
+    <Context.Provider value={{ rides, addRide, currentRide, selectRide, isLoading }}>
       {children}
     </Context.Provider>
   )

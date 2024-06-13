@@ -1,6 +1,6 @@
 'use server'
 
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {createSupabaseForServer} from '@/utils/supabase/createSupabaseForServer'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
@@ -13,7 +13,7 @@ export async function handleEditUser(
   state: {error: string},
   formData: FormData
 ): Promise<{error: string}> {
-  const user = await fetchUser();
+  const user = await fetchUser()
   const name = String(user!.name)
   const street = String(formData.get('street'))
   const city = String(formData.get('city'))

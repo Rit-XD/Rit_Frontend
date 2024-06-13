@@ -1,5 +1,5 @@
 'use client'
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {createClient} from '@/utils/supabase/client'

@@ -1,6 +1,6 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'
@@ -16,6 +16,7 @@ import {MapHandler} from '../map/MapHandler'
 import {fetchPassengers} from './FetchPlanner'
 import css from './Planner.module.scss'
 import {postRide} from './PostRide'
+import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -38,13 +39,16 @@ export const Planner: React.FC<{
   )
 
   const [destination, setDestination] = useState<string | undefined>()
-  const [result, setResult] = useState<google.maps.DirectionsResult | undefined>()
+  const [result, setResult] = useState<
+    google.maps.DirectionsResult | undefined
+  >()
   const [dateTime, setDateTime] = useState<string>('')
   useEffect(() => {
-    console.log("result",result)
-  }, [result]);
+    console.log('result', result)
+  }, [result])
 
-  const {user, addRide} = useUser()
+  const {user} = useUser()
+  const { addRide } = useRides()
   //load all possible passengers
   const loadPassengers = async () => {
     if (passengers?.length) return
@@ -220,7 +224,12 @@ export const Planner: React.FC<{
           </div>
         </div>
         <div className={styles.container.map()}>
-          <Map zoom={15} destination={destination} result={result} setResult={setResult}  />
+          <Map
+            zoom={15}
+            destination={destination}
+            result={result}
+            setResult={setResult}
+          />
           <MapHandler place={selectedPlace} />
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Ride} from '@/types/ride.type'
 import {fromModule} from '@/utils/styler/Styler'
@@ -8,6 +8,7 @@ import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Rides.module.scss'
+import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -16,7 +17,8 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
     {r: Ride; p: Passenger; date: Date}[]
   >([])
   const [loading, setLoading] = useState(true)
-  const {user, rides, isLoading, currentRide, selectRide} = useUser()
+  const { user } = useUser()
+  const { rides, currentRide, selectRide, isLoading } = useRides()
   const today = new Date()
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
@@ -36,8 +38,9 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-      
-      if (!old && upcoming.length && upcoming[0].r.id && !currentRide) selectRide(upcoming[0].r.id) 
+
+      if (!old && upcoming.length && upcoming[0].r.id && !currentRide)
+        selectRide(upcoming[0].r.id)
       if (old) setUpcoming(upcoming.reverse())
       else setUpcoming(upcoming)
       setLoading(false)
@@ -118,7 +121,9 @@ export const Rides: React.FC<{old?: boolean}> = ({old}) => {
                   <p>
                     {u.p.firstname} {u.p.lastname}
                   </p>
-                  <p>{u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km</p>
+                  <p>
+                    {u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km
+                  </p>
                 </div>
                 <span className={styles.container.ride.date()}>
                   {displayDate}

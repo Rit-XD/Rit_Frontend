@@ -1,27 +1,27 @@
 'use client'
 
+import {useUser} from '@/providers/user/useUser'
 import {fromModule} from '@/utils/styler/Styler'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import {useRouter} from 'next/navigation'
+import React, {useEffect} from 'react'
 import {useFormState} from 'react-dom'
 import {handleLogin} from './HandleLogin'
 import css from './LoginSteps.module.scss'
 import {SubmitButton} from './submit-button'
-import { useUser } from '@/lib/user/useUser'
-import { useRouter } from 'next/navigation'
 
 const styles = fromModule(css)
 
 export const LoginSteps: React.FC = () => {
-  const {user} = useUser();
+  const {user} = useUser()
   const [state, action] = useFormState(handleLogin, {error: ''})
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     if (user) {
-      router.push('/dashboard');
+      router.push('/dashboard')
     }
-  }, [user]);
+  }, [user])
 
   return (
     <form className={styles.form()} action={action}>

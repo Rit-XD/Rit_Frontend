@@ -1,6 +1,6 @@
 'use client'
 
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Ride} from '@/types/ride.type'
 import {Icon} from '@/ui/Icon'
@@ -9,6 +9,7 @@ import {fromModule} from '@/utils/styler/Styler'
 import {useEffect, useState} from 'react'
 import css from './Upcoming.module.scss'
 import {fetchPassengerById} from './Upcoming.server'
+import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -20,7 +21,8 @@ export const UpcomingRides: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [l, setL] = useState(false)
 
-  const {user, rides, isLoading} = useUser()
+  const { user } = useUser()
+  const { rides, isLoading } = useRides()
 
   //load all passengers
   useEffect(() => {

@@ -2,8 +2,9 @@
 
 import {SearchContext} from '@/app/dashboard/passengers/CreateContext'
 import {EditPassenger} from '@/app/dashboard/passengers/EditPassenger'
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
+import {Icon} from '@/ui/Icon'
 import {Link} from '@/ui/Link'
 import {fromModule} from '@/utils/styler/Styler'
 import {
@@ -27,8 +28,6 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {fetchPassengers} from '../planner/FetchPlanner'
 import css from './PassengerTable.module.scss'
-import { viewport } from '@/app/layout'
-import { Icon } from '@/ui/Icon'
 
 const styles = fromModule(css)
 
@@ -96,7 +95,7 @@ export const PassengerTable: React.FC<{
 
   const [page, setPage] = useState(1)
 
-  const rowsPerPage = ((window.innerHeight - 252) / 50) -2;
+  const rowsPerPage = (window.innerHeight - 252) / 50 - 2
   const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
 
   const items = React.useMemo(() => {
@@ -151,9 +150,10 @@ export const PassengerTable: React.FC<{
   const filteredItems = useMemo(() => {
     if (!searchValue) return items
 
-    return passengers?.filter(
-      passenger =>
-        `${passenger.firstname.toLowerCase()} ${passenger.lastname.toLowerCase()}`.includes(searchValue.toLowerCase())
+    return passengers?.filter(passenger =>
+      `${passenger.firstname.toLowerCase()} ${passenger.lastname.toLowerCase()}`.includes(
+        searchValue.toLowerCase()
+      )
     )
   }, [items, searchValue])
 
@@ -291,7 +291,16 @@ export const PassengerTable: React.FC<{
         >
           {passenger => (
             <TableRow key={passenger.id}>
-              <TableCell>{passenger.wheelchair? <Icon icon='wheelchair' className={styles.tableContainer.wheelchairIcon()}/> : " " }</TableCell>
+              <TableCell>
+                {passenger.wheelchair ? (
+                  <Icon
+                    icon="wheelchair"
+                    className={styles.tableContainer.wheelchairIcon()}
+                  />
+                ) : (
+                  ' '
+                )}
+              </TableCell>
               <TableCell>{passenger.firstname}</TableCell>
               <TableCell>{passenger.lastname}</TableCell>
               <TableCell>{calculateAge(passenger.dateofbirth || '')}</TableCell>

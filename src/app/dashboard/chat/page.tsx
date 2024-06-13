@@ -1,4 +1,4 @@
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import Image from 'next/image'
 import {redirect} from 'next/navigation'
 

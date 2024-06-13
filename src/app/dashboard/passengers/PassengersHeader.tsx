@@ -1,7 +1,7 @@
 'use client'
 
 import {fetchPassengers} from '@/components/planner/FetchPlanner'
-import {useUser} from '@/lib/user/useUser'
+import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
 import Button from '@/ui/button/Button'

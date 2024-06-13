@@ -1,6 +1,6 @@
 'use server'
 import background from '@/../public/images/background-login.png'
-import {fetchUser} from '@/lib/user/fetchUser'
+import {fetchUser} from '@/providers/user/fetchUser'
 import {fromModule} from '@/utils/styler/Styler'
 import Image from 'next/image'
 import {redirect} from 'next/navigation'
