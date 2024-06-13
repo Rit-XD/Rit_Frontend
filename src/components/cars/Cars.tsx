@@ -1,58 +1,19 @@
 'use client'
 
 import {useUser} from '@/providers/user/useUser'
-import {Passenger} from '@/types/passenger.type'
-import {Ride} from '@/types/ride.type'
 import {fromModule} from '@/utils/styler/Styler'
-import React from 'react'
+import React, { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import css from './Cars.module.scss'
-import { useRides } from '@/providers/rides/useRides'
+import { Car } from '@/types/car.type'
 
 const styles = fromModule(css)
 
-export const Cars: React.FC<{old?: boolean}> = ({old}) => {
-  const [upcoming, setUpcoming] = useState<
-    {r: Ride; p: Passenger; date: Date}[]
-  >([])
-  const [loading, setLoading] = useState(true)
-  const {user} = useUser()
-  const { rides, currentRide, selectRide, isLoading } = useRides()
-  const today = new Date()
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const yesterday = new Date()
-  yesterday.setDate(yesterday.getDate() - 1)
+export const Cars: React.FC = () => {
+  const {isLoading} = useUser()
+  const [cars, setCars] = useState<Car[]>([]) //TODO:
 
-  useEffect(() => {
-    const loadRidesAndPassengers = async () => {
-      const upcoming: {r: Ride; p: Passenger; date: Date}[] = []
-
-      for (const r of rides) {
-        const np = await fetchPassengerById(r.passenger_1)
-        if (old && new Date(r.timestamp) < today) {
-          upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
-        }
-        if (!old && new Date(r.timestamp) > today) {
-          upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
-        }
-      }
-
-      if (!old && upcoming.length && upcoming[0].r.id && !currentRide)
-        selectRide(upcoming[0].r.id)
-      if (old) setUpcoming(upcoming.reverse())
-      else setUpcoming(upcoming)
-      setLoading(false)
-    }
-
-    loadRidesAndPassengers()
-  }, [user, rides])
-
-  useEffect(() => {
-    if (upcoming.length) setLoading(false)
-  }, [upcoming])
-
-  if (upcoming.length === 0 && !isLoading) {
+  if (cars.length === 0 && !isLoading) {
     return (
       <div className={styles.container()}>
         <h3 className={styles.container.title()}>Wagens</h3>
@@ -67,67 +28,16 @@ export const Cars: React.FC<{old?: boolean}> = ({old}) => {
 
   return (
     <div className={styles.container()}>
-      <h3 className={styles.container.title()}>
-        {old ? 'Oude' : 'Aankomende'} ritten
-      </h3>
-      <div className={styles.container.rides()}>
-        {upcoming.map(u => {
-          const rideDate = new Date(u.date)
-          let displayDate
-          if (rideDate.toDateString() === today.toDateString()) {
-            displayDate = `Vandaag om ${rideDate.toLocaleTimeString('nl-BE', {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}`
-          } else if (rideDate.toDateString() === tomorrow.toDateString()) {
-            displayDate = `Morgen om ${rideDate.toLocaleTimeString('nl-BE', {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}`
-          } else if (rideDate.toDateString() === yesterday.toDateString()) {
-            displayDate = `Gisteren om ${rideDate.toLocaleTimeString('nl-BE', {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}`
-          } else {
-            displayDate = rideDate.toLocaleDateString('nl-BE', {
-              weekday: 'short',
-              day: '2-digit',
-              month: 'long',
-              hour: 'numeric',
-              minute: 'numeric'
-            })
-          }
-
-          return (
-            <div
-              className={
-                (currentRide && currentRide.id === u.r.id
-                  ? styles.container.selectedRide()
-                  : styles.container.ride()) || styles.container.ride()
-              }
-              key={u.p.id + u.r.id}
-              onClick={() => {
-                if (u.r.id) selectRide(u.r.id)
-              }}
-            >
-              <img
-                src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png"
-                alt="passenger"
-              />
-              <div>
-                <div className={styles.container.ride.group()}>
-                  <p>
-                    {u.p.firstname} {u.p.lastname}
-                  </p>
-                  <p>
-                    {u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km
-                  </p>
-                </div>
-                <span className={styles.container.ride.date()}>
-                  {displayDate}
-                </span>
-              </div>
+      <h3 className={styles.container.title()}>Wagens</h3>
+      {cars.map(car => (
+        <div className={styles.cars()} key={car.id}>
+          <div className={styles.cars.container.header()}>
+            <img src={car.picture || ''} alt="car" />
+            <div>
+              <h3 className={styles.cars.container.title()}>
+                {car.brand} {car.model}
+              </h3>
+              <span className={styles.cars.container.plate()}>{car.plate}</span>
             </div>
           </div>
         </div>
