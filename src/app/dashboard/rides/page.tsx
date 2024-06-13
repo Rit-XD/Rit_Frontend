@@ -22,7 +22,7 @@ export default async function Rides() {
           iconbefore="plus"
           className={styles.container.left.new()}
           mod="outline"
-          onClick={() => redirect(`/dashboard/`)}
+          // onClick={() => redirect(`/dashboard/`)}
         >
           Nieuwe rit
         </Button>
