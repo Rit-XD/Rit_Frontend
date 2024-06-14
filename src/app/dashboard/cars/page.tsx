@@ -1,4 +1,5 @@
 import {CarDetails} from '@/components/cars/CarDetails'
+import {CarRides} from '@/components/cars/CarRides'
 import {CarSpecs} from '@/components/cars/CarSpecs'
 import {Cars as CarsComponent} from '@/components/cars/Cars'
 import Button from '@/ui/button/Button'
@@ -29,7 +30,12 @@ export default async function Cars() {
           <CarDetails />
           <CarSpecs />
         </div>
-        <Map />
+        <div className={styles.container.left.rides()}>
+          <div className={styles.container.left.rides.left()}>
+            <CarRides old />
+          </div>
+          <Map />
+        </div>
       </div>
     </main>
   )
