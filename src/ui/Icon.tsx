@@ -26,6 +26,13 @@ const icons = {
   clock: {ratio: 16 / 16},
   car: {ratio: 27 / 22},
   car_solid: {ratio: 27 / 22},
+  transmission: {ratio: 640 / 512},
+  range: {ratio: 640 / 512},
+  fuel: {ratio: 640 / 512},
+  seat: {ratio: 640 / 512},
+  license_plate: {ratio: 16 / 11},
+  car_class: {ratio: 640 / 512},
+  car_brand: {ratio: 448 / 512}
 }
 
 export type IconType = keyof typeof icons
