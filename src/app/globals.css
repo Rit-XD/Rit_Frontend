@@ -10,7 +10,6 @@
   --str-chat__secondary-surface-color: #fafafa;
   --str-chat__primary-surface-color: #ED6A01;
   --str-chat__primary-surface-color-low-emphasis: #edf7f7;
-  --str-chat__border-radius-circle: 50%;
 }
 .str-chat__avatar-image {
   background: transparent !important;
