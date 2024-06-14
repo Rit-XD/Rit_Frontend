@@ -37,7 +37,7 @@ export const CarSpecs: React.FC = () => {
             <Icon
               mod="square"
               className={styles.container.info.grid.item.group.logo()}
-              icon="passengers"
+              icon="fuel"
             />
             <p className={styles.container.info.grid.item.group.title()}>
               Brandstof
@@ -49,7 +49,7 @@ export const CarSpecs: React.FC = () => {
           <div className={styles.container.info.grid.item.group()}>
             <Icon
               mod="square"
-              icon="finish"
+              icon="license_plate"
               className={styles.container.info.grid.item.group.logo()}
             />
             <p className={styles.container.info.grid.item.group.title()}>
@@ -62,7 +62,7 @@ export const CarSpecs: React.FC = () => {
           <div className={styles.container.info.grid.item.group()}>
             <Icon
               mod="square"
-              icon="clock"
+              icon="range"
               className={styles.container.info.grid.item.group.logo()}
             />
             <p className={styles.container.info.grid.item.group.title()}>
@@ -75,7 +75,7 @@ export const CarSpecs: React.FC = () => {
           <div className={styles.container.info.grid.item.group()}>
             <Icon
               mod="square"
-              icon="clock"
+              icon="transmission"
               className={styles.container.info.grid.item.group.logo()}
             />
             <p className={styles.container.info.grid.item.group.title()}>
