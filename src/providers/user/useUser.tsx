@@ -1,6 +1,6 @@
 'use client'
 
-import {fetchCars} from '@/components/cars/Cars.server'
+import {fetchCars} from '@/providers/cars/fetchCars'
 import {fetchRides} from '@/components/upcoming/Upcoming.server'
 import {Car} from '@/types/car.type'
 import {Ride} from '@/types/ride.type'

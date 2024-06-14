@@ -14,6 +14,7 @@ import { RidesProvider } from '@/providers/rides/useRides'
 import { fetchUser } from '@/providers/user/fetchUser'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { CarsProvider } from '@/providers/cars/useCars'
 
 const styles = fromModule(css)
 
@@ -33,37 +34,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <UserProvider>
       <RidesProvider>
-        <div className={styles.layout()}>
-          <aside className={styles.layout.sidebar()}>
-            <Link
-              href={`/dashboard`}
-              title="Rit"
-              className={styles.layout.sidebar.logo()}
-            >
-              <Image
-                src="/images/logo-rit.png"
-                alt="Logo Rit"
-                width={64}
-                height={64}
-              ></Image>
-            </Link>
-            <Nav />
-            <div className={styles.layout.sidebar.signout()}>
-              <hr className={styles.layout.sidebar.signout.hr()} />
-              <button
-                onClick={() =>
-                  supabase.auth.signOut().finally(() => location.reload())
-                }
+        <CarsProvider>
+          <div className={styles.layout()}>
+            <aside className={styles.layout.sidebar()}>
+              <Link
+                href={`/dashboard`}
+                title="Rit"
+                className={styles.layout.sidebar.logo()}
               >
-                <Icon icon="logout" />
-              </button>
+                <Image
+                  src="/images/logo-rit.png"
+                  alt="Logo Rit"
+                  width={64}
+                  height={64}
+                ></Image>
+              </Link>
+              <Nav />
+              <div className={styles.layout.sidebar.signout()}>
+                <hr className={styles.layout.sidebar.signout.hr()} />
+                <button
+                  onClick={() =>
+                    supabase.auth.signOut().finally(() => location.reload())
+                  }
+                >
+                  <Icon icon="logout" />
+                </button>
+              </div>
+            </aside>
+            <div className={styles.layout.content()}>
+              <Header />
+              {children}
             </div>
-          </aside>
-          <div className={styles.layout.content()}>
-            <Header />
-            {children}
           </div>
-        </div>
+        </CarsProvider>
       </RidesProvider>
     </UserProvider>
   )

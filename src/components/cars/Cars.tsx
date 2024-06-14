@@ -1,17 +1,17 @@
 'use client'
 
-import {useUser} from '@/providers/user/useUser'
-import {fromModule} from '@/utils/styler/Styler'
-import React, { useState } from 'react'
+import { useUser } from '@/providers/user/useUser'
+import { fromModule } from '@/utils/styler/Styler'
+import React, { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import css from './Cars.module.scss'
-import { Car } from '@/types/car.type'
+import { useCars } from '@/providers/cars/useCars'
 
 const styles = fromModule(css)
 
 export const Cars: React.FC = () => {
   const {isLoading} = useUser()
-  const [cars, setCars] = useState<Car[]>([]) //TODO:
+  const { cars } = useCars()
 
   if (cars.length === 0 && !isLoading) {
     return (
