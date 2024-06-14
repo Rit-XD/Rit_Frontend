@@ -12,27 +12,24 @@ import Link from 'next/link'
 import '../globals.css'
 import { RidesProvider } from '@/providers/rides/useRides'
 import { fetchUser } from '@/providers/user/fetchUser'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const styles = fromModule(css)
 
-export default function DashboardLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = createSupabaseForBrowser()
-
+  const router = useRouter()
+      
   const auth = async() => {
     const user  = await fetchUser();
-
-    if (!user) redirect(`/login`)
+    if (!user) router.push(`/login`)
   }
 
   useEffect(() => {
     auth()
   }, [])
+  
   return (
     <UserProvider>
       <RidesProvider>
