@@ -51,14 +51,13 @@ export const ChannelListMessenger = <
   }
 
   return (
-    <div>
       <div
         aria-label={t('aria/Channel list')}
         className={styles.channelList()}
         role='listbox'
       >
+        <h1 className={styles.title()}>Chats</h1>
         {children}
       </div>
-    </div>
   );
 };

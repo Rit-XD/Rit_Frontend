@@ -1,7 +1,7 @@
 "use client";
 
 import Messages from "./Messages";
-import { Channel, ChannelList, Chat } from "stream-chat-react";
+import { Channel, ChannelList, Chat, MessageInput, MessageList } from "stream-chat-react";
 import Button from "@/ui/button/Button";
 import { Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { useUser } from "@/providers/user/useUser";
 import { fromModule } from "@/utils/styler/Styler";
 import css from "./Chat.module.scss";
 import { ChannelListMessenger } from "./ChannelList";
+import { CustomChannelPreview } from "./ChannelPreview";
 const styles = fromModule(css);
 
 export default function ChatComponent () {
@@ -18,11 +19,6 @@ export default function ChatComponent () {
     const [chatClient, setChatClient] = useState<StreamChat>();
     const [messageText, setMessageText] = useState("");
     const { user } = useUser();
-
-    const getChannels = async () => {
-        if (!chatClient) return;
-        const channels = await chatClient.queryChannels( { members: { $in: [user!.id] } });
-    };
 
     // const watchChannel = () => {
     //     const channel = chatClient!.channel("messaging", "livestreaming_chat", {
@@ -60,33 +56,19 @@ export default function ChatComponent () {
 
 
     return (
-        <div>
+        <div className={styles.chatContainer()}>
             {chatClient && (
                 <Chat client={chatClient!}>
                     <div className={styles.chat()}>
-                        <ChannelList List={ChannelListMessenger}/>
-                        <div>
+                        <ChannelList sort={{ last_message_at: -1 }} filters={{members: {$in: [user!.id]}, type: "messaging"}} options={{ presence: true, state: true }} Preview={CustomChannelPreview}/>
                         <Channel channel={channel}>
-                            <Messages />
+                            <div className={styles.channel()}>
+                                <div className={styles.messageList()}>
+                                <MessageList />
+                                </div>
+                                <MessageInput/>
+                            </div>
                         </Channel>
-                        <Textarea
-                            id="message_text"
-                            name="message_text"
-                            placeholder="Message..."
-                            className="min-h-[100px] w-full"
-                            onChange={(e) => {setMessageText(e.target.value)}}
-                        />
-                        <Button
-                            onClick={() => {
-                                if (channel) {
-                                    channel.sendMessage({ messageText });
-                                    setMessageText("");
-                                }
-                            }}
-                        >
-                            Send Message →
-                        </Button>
-                        </div>
                     </div>
                 </Chat>
             )} 

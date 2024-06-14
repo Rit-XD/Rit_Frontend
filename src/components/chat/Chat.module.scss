@@ -1,14 +1,20 @@
+.chatContainer {
+    margin-top: 0;
+}
 .chat {
+    display: grid;
+    grid-template-columns: 250px auto;
+    height: calc(100vh - 99px);
+    overflow-y: hidden;
+}
+.channel {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 32px;
+    overflow-y: hidden;
 }
 .messageList {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    height: 100%;
-}
-.channelList {
-    display: flex;
-    flex-direction: column;
-    padding: 32px 64px;
+    overflow-y: hidden;
+    height: calc(100vh - 99px - 53px - 16px);
 }
