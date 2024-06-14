@@ -1,17 +1,14 @@
+import {CarDetails} from '@/components/cars/CarDetails'
+import {CarSpecs} from '@/components/cars/CarSpecs'
 import {Cars as CarsComponent} from '@/components/cars/Cars'
-import {DriverInfo} from '@/components/rides/DriverInfo'
-import {RideInfo} from '@/components/rides/RideInfo'
-import {fetchUser} from '@/providers/user/fetchUser'
 import Button from '@/ui/button/Button'
 import {fromModule} from '@/utils/styler/Styler'
-import {redirect} from 'next/navigation'
 import css from './Cars.module.scss'
 import {CarsMap as Map} from './CarsMap'
 
 const styles = fromModule(css)
 
 export default async function Cars() {
-
   return (
     <main className={styles.container()}>
       <div className={styles.container.left()}>
@@ -29,8 +26,8 @@ export default async function Cars() {
       </div>
       <div className={styles.container.right()}>
         <div className={styles.container.right.info()}>
-          <RideInfo />
-          <DriverInfo />
+          <CarDetails />
+          <CarSpecs />
         </div>
         <Map />
       </div>
