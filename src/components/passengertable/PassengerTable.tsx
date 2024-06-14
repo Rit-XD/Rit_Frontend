@@ -95,8 +95,9 @@ export const PassengerTable: React.FC<{
 
   const [page, setPage] = useState(1)
 
-  const rowsPerPage = (window.innerHeight - 252) / 50 - 2
-  const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1
+  // const rowsPerPage = (window.innerHeight - 252) / 50 - 2
+  const rowsPerPage = 20;
+  const pages = passengers ? Math.ceil(passengers!.length / rowsPerPage) : 1;
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage
