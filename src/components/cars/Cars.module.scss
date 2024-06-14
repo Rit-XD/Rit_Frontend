@@ -25,9 +25,8 @@
       margin-bottom: 8px;
 
       img {
-        width: 150px;
+        width: 96px;
         height: 100%;
-        border-radius: 50%;
         margin-right: 8px;
       }
     }
@@ -154,7 +153,6 @@
   &-selectedCar {
     display: flex;
     align-items: flex-start;
-    padding: 16px;
     border: 2px solid var(--primary);
     border-radius: 5px;
 
@@ -163,21 +161,6 @@
       font-size: 14px;
     }
 
-    div {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-    img {
-      width: 48px;
-      border-radius: 50%;
-      margin-right: 16px;
-    }
-    &-group {
-      display: flex;
-      flex-direction: row !important;
-      justify-content: space-between !important;
-    }
     p {
       font-weight: bold;
       color: var(--primary);
