@@ -1,0 +1,14 @@
+.chat {
+    display: flex;
+}
+.messageList {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+}
+.channelList {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 64px;
+}

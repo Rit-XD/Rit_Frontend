@@ -8,6 +8,10 @@ import { useEffect, useState } from "react";
 import { Channel as ChannelType, DevToken, StreamChat, UserResponse } from "stream-chat";
 import { generateUsername } from "unique-username-generator";
 import { useUser } from "@/providers/user/useUser";
+import { fromModule } from "@/utils/styler/Styler";
+import css from "./Chat.module.scss";
+import { ChannelListMessenger } from "./ChannelList";
+const styles = fromModule(css);
 
 export default function ChatComponent () {
     const [channel, setChannel] = useState<ChannelType>();
@@ -43,49 +47,49 @@ export default function ChatComponent () {
         if (!localUser) localStorage.setItem("local_user", user!.id);
 
         const id: string = localStorage.getItem("local_user") || "";
-        const userToConnect: UserResponse = { id };
+        const userToConnect: UserResponse = { id: id, name: user?.name? user.name : "Jij", image: user?.logo? user.logo : undefined };
 
         await newChatClient.connectUser(userToConnect, DevToken(userToConnect.id));
         
         setChatClient(newChatClient);
     };
     useEffect(() => {
-        console.log(user);
         if(user) loadChatClient();
     }, [user]);
 
 
 
     return (
-        <div className="flex max-w-[300px] flex-col gap-y-3 p-5">
-            <div className="flex w-[300px] flex-col gap-y-3">
-                <span className="border-b border-gray-100 font-semibold">Chat</span>
-                {chatClient && (
-                    <Chat client={chatClient!}>
-                        <ChannelList ></ChannelList>
+        <div>
+            {chatClient && (
+                <Chat client={chatClient!}>
+                    <div className={styles.chat()}>
+                        <ChannelList List={ChannelListMessenger}/>
+                        <div>
                         <Channel channel={channel}>
                             <Messages />
                         </Channel>
-                    </Chat>
-                )}
-                <Textarea
-                    id="message_text"
-                    name="message_text"
-                    placeholder="Message..."
-                    className="min-h-[100px] w-full"
-                    onChange={(e) => {setMessageText(e.target.value)}}
-                />
-                <Button
-                    onClick={() => {
-                        if (channel) {
-                            channel.sendMessage({ messageText });
-                            setMessageText("");
-                        }
-                    }}
-                >
-                    Send Message →
-                </Button>
-            </div>
+                        <Textarea
+                            id="message_text"
+                            name="message_text"
+                            placeholder="Message..."
+                            className="min-h-[100px] w-full"
+                            onChange={(e) => {setMessageText(e.target.value)}}
+                        />
+                        <Button
+                            onClick={() => {
+                                if (channel) {
+                                    channel.sendMessage({ messageText });
+                                    setMessageText("");
+                                }
+                            }}
+                        >
+                            Send Message →
+                        </Button>
+                        </div>
+                    </div>
+                </Chat>
+            )} 
         </div>
     );
 }

@@ -1,13 +1,17 @@
-"use server"
-import { supabaseAdmin } from "@/utils/supabase/supabaseAdmin"
-import { Driver } from "@/types/driver.type"
+'use server'
 
-export const fetchDriver = async (id: string): Promise<Driver | null> => {
-    let query = supabaseAdmin
-      .from('Driver')
-      .select('*')
-      .eq('id', id)
-      .single();
-    const {data: driver} = await query
-    return driver;
+import {fetchUser} from '@/providers/user/fetchUser'
+import {Driver} from '@/types/driver.type'
+import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
+
+export const fetchDriver = async (
+  rideDriverId: string
+): Promise<Driver | null> => {
+  let query = supabaseAdmin
+    .from('Driver')
+    .select('*')
+    .eq('id', rideDriverId)
+    .single()
+  const {data} = await query
+  return data
 }

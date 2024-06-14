@@ -62,7 +62,7 @@ export const RidesProvider: React.FC<PropsWithChildren> = ({children}) => {
   }
 
   useEffect(() => {
-    if (fetching || !user) return;
+    if (fetching || !user || rides.length) return;
     setIsloading(true)
     getRides()
     setIsloading(false)

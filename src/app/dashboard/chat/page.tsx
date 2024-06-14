@@ -8,14 +8,6 @@ export default function Chat() {
 
   return (
     <main>
-      <div
-        style={{
-          height: '75vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
         {/* <Image
           src="https://image.api.playstation.com/vulcan/ap/rnd/202204/2008/J8tdXQc59EDwrIgeHySj1yHf.png"
           width={500}
@@ -23,7 +15,6 @@ export default function Chat() {
           alt=""
         /> */}
         <ChatComponent/>
-      </div>
     </main>
   )
 }
