@@ -9,8 +9,6 @@ import {PassengersContext} from './PassengersContext'
 const styles = fromModule(css)
 
 export default async function Passengers() {
-  const user = await fetchUser()
-  if (!user) redirect(`/login`)
 
   return (
     <main className={styles.passengers()}>

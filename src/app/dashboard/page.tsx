@@ -8,8 +8,6 @@ import {redirect} from 'next/navigation'
 const styles = fromModule(css)
 
 export default async function Dashboard() {
-  const user = await fetchUser()
-  if (!user) redirect(`/login`)
 
   return (
     <main className={styles.page.main()}>

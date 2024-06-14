@@ -3,8 +3,6 @@ import Image from 'next/image'
 import {redirect} from 'next/navigation'
 
 export default async function Chat() {
-  const user = await fetchUser()
-  if (!user) redirect(`/login`)
 
   return (
     <main>

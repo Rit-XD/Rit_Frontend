@@ -1,14 +1,12 @@
 'use server'
 
 import {fetchUser} from '@/providers/user/fetchUser'
+import { useUser } from '@/providers/user/useUser'
 import {supabaseAdmin} from '@/utils/supabase/supabaseAdmin'
 
-export const getUser = async () => {
-  const user = await fetchUser()
-  return user
-}
+
 export const getPassengers = async () => {
-  const user = await getUser()
+  const {user} = useUser()
   const {data: passengers, error} = await supabaseAdmin
     .from('Passengers')
     .select('*')
@@ -28,7 +26,7 @@ export async function handleEditPassenger(
   const wheelchair = Boolean(formData.get('wheelchair'))
   const extra = String(formData.get('extra'))
   const passenger_id = String(formData.get('passenger_id'))
-  const user = await getUser()
+  const {user} = useUser()
   if (!user) return {error: ''}
 
   let query = supabaseAdmin

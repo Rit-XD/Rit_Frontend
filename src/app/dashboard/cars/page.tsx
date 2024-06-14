@@ -11,8 +11,6 @@ import {CarsMap as Map} from './CarsMap'
 const styles = fromModule(css)
 
 export default async function Cars() {
-  const user = await fetchUser()
-  if (!user) redirect(`/login`)
 
   return (
     <main className={styles.container()}>

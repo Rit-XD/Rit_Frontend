@@ -3,7 +3,7 @@
 import css from '@/app/dashboard/Dashboard.module.scss'
 import {Header} from '@/components/header/Header'
 import {Nav} from '@/components/nav/Nav'
-import {UserProvider} from '@/providers/user/useUser'
+import {UserProvider, useUser} from '@/providers/user/useUser'
 import {Icon} from '@/ui/Icon'
 import {fromModule} from '@/utils/styler/Styler'
 import {createSupabaseForBrowser} from '@/utils/supabase/createSupabaseForBrowser'
@@ -11,6 +11,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import '../globals.css'
 import { RidesProvider } from '@/providers/rides/useRides'
+import { fetchUser } from '@/providers/user/fetchUser'
+import { redirect } from 'next/navigation'
+import { useEffect } from 'react'
 
 const styles = fromModule(css)
 
@@ -21,6 +24,15 @@ export default function DashboardLayout({
 }) {
   const supabase = createSupabaseForBrowser()
 
+  const auth = async() => {
+    const user  = await fetchUser();
+
+    if (!user) redirect(`/login`)
+  }
+
+  useEffect(() => {
+    auth()
+  }, [])
   return (
     <UserProvider>
       <RidesProvider>
