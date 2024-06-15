@@ -38,20 +38,21 @@ export default function Avatar({
       }
 
       const file = event.target.files[0]
+      console.log(file);
       const fileExt = file.name.split('.').pop()
       const filePath = `${user!.id}/${Math.random()}.${fileExt}`
 
-      const {data, error: uploadError} = await supabase.storage
-        .from('profilePics')
-        .upload(filePath, file)
+      // const {data, error: uploadError} = await supabase.storage
+      //   .from('profilePics')
+      //   .upload(filePath, file)
 
-      if (uploadError) {
-        throw uploadError
-      }
-      let url = supabase.storage.from('profilePics').getPublicUrl(filePath)
-        .data.publicUrl
-      handleUploadAvatar(url)
-      router.replace('/dashboard/settings')
+      // if (uploadError) {
+      //   throw uploadError
+      // }
+      // let url = supabase.storage.from('profilePics').getPublicUrl(filePath)
+      //   .data.publicUrl
+      // handleUploadAvatar(url)
+      // router.replace('/dashboard/settings')
     } catch (error) {
       console.log('Error uploading avatar: ', error)
     } finally {

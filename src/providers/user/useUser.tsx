@@ -20,18 +20,20 @@ type UserType = {
   user: User | null
   setUser: (user: User) => void
   isLoading: boolean
+  loadUser: () => void
 }
 const Context = createContext<UserType>({
   user: null,
   setUser: () => {},
-  isLoading: true
+  isLoading: true,
+  loadUser: () => {}
 })
 
 export const useUser = () => {
   const supabase = createSupabaseForBrowser()
-  const {user, setUser, isLoading, } = useContext(Context)
+  const {user, setUser, isLoading, loadUser } = useContext(Context)
 
-  return { user, setUser, isLoading }
+  return { user, setUser, isLoading, loadUser }
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
@@ -58,7 +60,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({children}) => {
   }, [pathname, user])
 
   return (
-    <Context.Provider value={{ user, setUser, isLoading }} >
+    <Context.Provider value={{ user, setUser, isLoading, loadUser }} >
       {children}
     </Context.Provider>
   )

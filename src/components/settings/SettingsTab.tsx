@@ -15,7 +15,7 @@ import css from './SettingsTab.module.scss'
 const styles = fromModule(css)
 
 export const SettingsTab: React.FC = () => {
-  const {user} = useUser()
+  const {user, loadUser } = useUser()
   const [activeTab, setActiveTab] = useState('gegevens')
   const [state, action] = useFormState(handleEditUser, {error: ''})
   const [statePassword, actionPassword] = useFormState(handleEditPassword, {
@@ -26,6 +26,7 @@ export const SettingsTab: React.FC = () => {
 
   const submit = async (formdata: FormData) => {
     action(formdata)
+    loadUser();
   }
 
   const submitPassword = async (formdataPassword: FormData) => {
