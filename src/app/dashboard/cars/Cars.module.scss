@@ -26,11 +26,11 @@
       display: flex;
       flex-direction: row;
       grid-gap: 16px;
+      height: calc(100vh - 355px);
       &-left {
         display: flex;
         flex-direction: column;
         gap: 16px;
-        height: 100% !important;
       }
     }
   }
