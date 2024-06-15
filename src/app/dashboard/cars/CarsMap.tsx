@@ -1,12 +1,11 @@
 'use client'
+
 import {Map} from '@/components/map/Map'
-import {useUser} from '@/providers/user/useUser'
+import {useRides} from '@/providers/rides/useRides'
 import {fromModule} from '@/utils/styler/Styler'
 import {APIProvider} from '@vis.gl/react-google-maps'
 import React from 'react'
-import Skeleton from 'react-loading-skeleton'
 import css from './Cars.module.scss'
-import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -16,9 +15,11 @@ export const CarsMap: React.FC = () => {
 
   if (!currentRide?.destination)
     return (
-      <div className={styles.map.skeleton.container()}>
-        <Skeleton className={styles.map.skeleton()} />
-      </div>
+      <APIProvider apiKey={key}>
+        <div className={styles.map.skeleton.container()}>
+          <Map zoom={15} />
+        </div>
+      </APIProvider>
     )
 
   return (

@@ -47,8 +47,10 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
         filteredUpcoming[0].r.id &&
         !currentRide
       )
-        selectRide(filteredUpcoming[0].r.id)
-      setUpcoming(filteredUpcoming.filter(u => u.r.car === currentCar?.id))
+        setUpcoming(filteredUpcoming.filter(u => u.r.car === currentCar?.id))
+      if (upcoming !== undefined && upcoming.length) {
+        selectRide(upcoming[0].r.id!)
+      }
       setLoading(false)
     }
 
@@ -59,7 +61,7 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
     if (upcoming.length) setLoading(false)
   }, [upcoming])
 
-  if (upcoming.length === 0 && !isLoading) {
+  if (isLoading || loading) {
     return (
       <div className={styles.container.carrides()}>
         <h3 className={styles.container.title()}>
@@ -70,6 +72,19 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
+      </div>
+    )
+  }
+
+  if ((upcoming.length === 0 && !isLoading) || !loading) {
+    return (
+      <div className={styles.container.carrides()}>
+        <h3 className={styles.container.title()}>
+          {old ? 'Oude' : 'Aankomende'} ritten van de wagen
+        </h3>
+        <p style={{marginLeft: 16}}>
+          Er zijn geen oude ritten aan deze wagen gekoppeld.
+        </p>
       </div>
     )
   }
