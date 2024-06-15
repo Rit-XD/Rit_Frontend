@@ -89,7 +89,14 @@ export const Planner: React.FC<{
       selectedPassengers[0]!.id,
       selectedPassengers[1]?.id
     ).then(res => {
-      if (res?.status === 201) addRide(res!.data![0])
+      if (res?.status === 201) {
+        addRide(res!.data![0])
+        setSelectedPassengers([])
+        setDestination(undefined)
+        setDateTime('')
+        setSelectedPlace(null)
+      } 
+      
     })
   }
 
@@ -226,7 +233,7 @@ export const Planner: React.FC<{
                 <label htmlFor="routetype-single">Enkele rit</label>
               </div> */}
             </div>
-            <Button onClick={handlesubmit}>Plaats deze rit</Button>
+            <Button onClick={selectedPassengers.length !== 0 && destination !== undefined && dateTime !== ''? handlesubmit : ()=>{}}>Plaats deze rit</Button>
           </div>
         </div>
         <div className={styles.container.map()}>

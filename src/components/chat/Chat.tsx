@@ -18,13 +18,7 @@ export default function ChatComponent () {
     const { channel } = useChannelStateContext();
     const [client, setClient] = useState<StreamChat>();
     const { user } = useUser();
-
-    useEffect(() => {
-        console.log(channel);
-        console.log(client);
-    }, [channel, client]);
         
-
     const loadClient = async () => {
         const newClient = new StreamChat(
             process.env.NEXT_PUBLIC_STREAM_API_KEY!,
