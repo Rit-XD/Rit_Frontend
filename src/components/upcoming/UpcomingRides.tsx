@@ -39,7 +39,7 @@ export const UpcomingRides: React.FC = () => {
           upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
-      setUpcoming(upcoming)
+      setUpcoming(upcoming.slice(0, 5))
       setLoading(false)
     }
 

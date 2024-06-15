@@ -201,7 +201,13 @@ export const Planner: React.FC<{
               ))}
             </div>
             <div>
-              <div>
+              {result?.routes[0].legs[0].distance?.value && (
+                <>
+                  <p className={styles.priceTitle()}>Prijs voor deze rit:</p>
+                  <p>€ {Math.round(result?.routes[0].legs[0].distance?.value / 500 * .45 * 100) / 100}</p>
+                </>
+              )}
+              {/* <div>
                 <input
                   type="radio"
                   name="routetype"
@@ -218,7 +224,7 @@ export const Planner: React.FC<{
                   className={styles.container.planner.inputs.radio()}
                 />
                 <label htmlFor="routetype-single">Enkele rit</label>
-              </div>
+              </div> */}
             </div>
             <Button onClick={handlesubmit}>Plaats deze rit</Button>
           </div>
