@@ -1,16 +1,16 @@
 'use client'
 
-import { useUser } from '@/providers/user/useUser'
-import { Icon } from '@/ui/Icon'
-import { fromModule } from '@/utils/styler/Styler'
+import {useUser} from '@/providers/user/useUser'
+import {Icon} from '@/ui/Icon'
+import {fromModule} from '@/utils/styler/Styler'
 import {
   AdvancedMarker,
   Map as GoogleMap,
   useMap,
   useMapsLibrary
 } from '@vis.gl/react-google-maps'
-import React, { useEffect, useState } from 'react'
-import { fromAddress, setKey, setLanguage, setRegion } from 'react-geocode'
+import React, {useEffect, useState} from 'react'
+import {fromAddress, setKey, setLanguage, setRegion} from 'react-geocode'
 import css from './Map.module.scss'
 
 // const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
