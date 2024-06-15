@@ -10,6 +10,7 @@ import {fromModule} from '@/utils/styler/Styler'
 import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
+import { current } from '@reduxjs/toolkit'
 
 const styles = fromModule(css)
 
@@ -28,6 +29,7 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
   yesterday.setDate(yesterday.getDate() - 1)
 
   useEffect(() => {
+    setLoading(true)
     const loadRidesAndPassengers = async () => {
       let filteredUpcoming: {r: Ride; p: Passenger; date: Date}[] = []
 
@@ -41,25 +43,23 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
         }
       }
 
-      if (
-        old &&
-        filteredUpcoming.length &&
-        filteredUpcoming[0].r.id &&
-        !currentRide
-      )
-        setUpcoming(filteredUpcoming.filter(u => u.r.car === currentCar?.id))
-      if (upcoming !== undefined && upcoming.length) {
-        selectRide(upcoming[0].r.id!)
+      if ( filteredUpcoming.length ) {
+        filteredUpcoming = filteredUpcoming.filter(u => u.r.car === currentCar?.id)
+        setUpcoming(filteredUpcoming)
       }
+
       setLoading(false)
     }
 
     loadRidesAndPassengers()
+    if (upcoming !== undefined && upcoming.length) {
+      selectRide(upcoming[0].r.id!)
+    }
   }, [user, rides, currentCar])
 
   useEffect(() => {
-    if (upcoming.length) setLoading(false)
-  }, [upcoming])
+    console.log("Updated upcoming", upcoming);
+  }, [upcoming]);
 
   if (isLoading || loading) {
     return (
@@ -76,7 +76,7 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
     )
   }
 
-  if ((upcoming.length === 0 && !isLoading) || !loading) {
+  if (upcoming.length === 0) {
     return (
       <div className={styles.container.carrides()}>
         <h3 className={styles.container.title()}>
