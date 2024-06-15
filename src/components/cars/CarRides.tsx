@@ -29,23 +29,26 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
 
   useEffect(() => {
     const loadRidesAndPassengers = async () => {
-      const upcoming: {r: Ride; p: Passenger; date: Date}[] = []
+      let filteredUpcoming: {r: Ride; p: Passenger; date: Date}[] = []
 
       for (const r of rides) {
         const np = await fetchPassengerById(r.passenger_1)
         if (old && new Date(r.timestamp) < today) {
-          upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
+          filteredUpcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
         if (!old && new Date(r.timestamp) > today) {
-          upcoming.push({r: r, p: np, date: new Date(r.timestamp)})
+          filteredUpcoming.push({r: r, p: np, date: new Date(r.timestamp)})
         }
       }
 
-      if (!old && upcoming.length && upcoming[0].r.id && !currentRide)
-        selectRide(upcoming[0].r.id)
-      upcoming.filter(u => u.r.car === currentCar?.id)
-      if (old) setUpcoming(upcoming.reverse())
-      else setUpcoming(upcoming)
+      if (
+        old &&
+        filteredUpcoming.length &&
+        filteredUpcoming[0].r.id &&
+        !currentRide
+      )
+        selectRide(filteredUpcoming[0].r.id)
+      setUpcoming(filteredUpcoming.filter(u => u.r.car === currentCar?.id))
       setLoading(false)
     }
 
@@ -58,10 +61,12 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
 
   if (upcoming.length === 0 && !isLoading) {
     return (
-      <div className={styles.container()}>
+      <div className={styles.container.carrides()}>
         <h3 className={styles.container.title()}>
           {old ? 'Oude' : 'Aankomende'} ritten van de wagen
         </h3>
+        <Skeleton className={styles.skeleton.ride()} />
+        <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
         <Skeleton className={styles.skeleton.ride()} />
