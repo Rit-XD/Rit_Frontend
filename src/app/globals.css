@@ -17,6 +17,9 @@
 .str-chat__message.str-chat__message--me .str-chat__message-bubble {
   color: white !important;
 }
+.str-chat__list::-webkit-scrollbar {
+  margin-left: 64px;
+}
 
 .channel-preview {
   font: inherit;
@@ -26,14 +29,14 @@
   text-align: left;
   padding: 8px;
   display: flex;
-  width: calc(100% - 16px);
+  width: calc(100% - 64px);
   gap: 16px;
   align-items: center;
   font-size: 0.9em;
   line-height: 1.2em;
   cursor: pointer;
   margin: 8px;
-  box-shadow: 0px 3px 10px 4px #0000000f;
+  box-shadow: 0px 3px 10px 2px #0000000f;
 
 }
 
