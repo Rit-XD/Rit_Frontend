@@ -1,7 +1,7 @@
 "use client";
 
 import Messages from "./Messages";
-import { Channel, ChannelList, Chat, MessageInput, MessageList } from "stream-chat-react";
+import { Channel, ChannelHeader, ChannelList, Chat, MessageInput, MessageList, useChannelStateContext } from "stream-chat-react";
 import Button from "@/ui/button/Button";
 import { Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -15,29 +15,23 @@ import { CustomChannelPreview } from "./ChannelPreview";
 const styles = fromModule(css);
 
 export default function ChatComponent () {
-    const [channel, setChannel] = useState<ChannelType>();
-    const [chatClient, setChatClient] = useState<StreamChat>();
-    const [messageText, setMessageText] = useState("");
+    const { channel } = useChannelStateContext();
+    const [client, setClient] = useState<StreamChat>();
     const { user } = useUser();
 
-    // const watchChannel = () => {
-    //     const channel = chatClient!.channel("messaging", "livestreaming_chat", {
-    //         name: "Live Streaming Chat",
-    //     });
-    //     channel.watch().then(() => setChannel(channel));
-    // };
-
     useEffect(() => {
-        // if (chatClient) watchChannel();
-    }, [chatClient]);
+        console.log(channel);
+        console.log(client);
+    }, [channel, client]);
+        
 
-    const loadChatClient = async () => {
-        const newChatClient = new StreamChat(
+    const loadClient = async () => {
+        const newClient = new StreamChat(
             process.env.NEXT_PUBLIC_STREAM_API_KEY!,
             { enableWSFallback: true }
         );
 
-        if (newChatClient.user) await newChatClient.disconnectUser();
+        if (newClient.user) await newClient.disconnectUser();
 
         const localUser = localStorage.getItem("local_user");
         if (!localUser) localStorage.setItem("local_user", user!.id);
@@ -45,24 +39,28 @@ export default function ChatComponent () {
         const id: string = localStorage.getItem("local_user") || "";
         const userToConnect: UserResponse = { id: id, name: user?.name? user.name : "Jij", image: user?.logo? user.logo : undefined };
 
-        await newChatClient.connectUser(userToConnect, DevToken(userToConnect.id));
+        await newClient.connectUser(userToConnect, DevToken(userToConnect.id));
         
-        setChatClient(newChatClient);
+        setClient(newClient);
     };
     useEffect(() => {
-        if(user) loadChatClient();
+        if(user) loadClient();
     }, [user]);
 
 
 
     return (
         <div className={styles.chatContainer()}>
-            {chatClient && (
-                <Chat client={chatClient!}>
+            {client && (
+                <Chat client={client!}>
                     <div className={styles.chat()}>
+                        <div>
+                        <h1 className={styles.title()}>Chat</h1>
                         <ChannelList sort={{ last_message_at: -1 }} filters={{members: {$in: [user!.id]}, type: "messaging"}} options={{ presence: true, state: true }} Preview={CustomChannelPreview}/>
+                        </div>
                         <Channel channel={channel}>
                             <div className={styles.channel()}>
+                                <ChannelHeader />
                                 <div className={styles.messageList()}>
                                 <MessageList />
                                 </div>
