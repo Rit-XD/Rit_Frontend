@@ -14,11 +14,7 @@ export default async function Cars() {
     <main className={styles.container()}>
       <div className={styles.container.left()}>
         <h1>Wagens</h1>
-        <Button
-          iconbefore="plus"
-          className={styles.container.left.new()}
-          mod="outline"
-        >
+        <Button iconbefore="plus" className={styles.container.left.new()} mod="outline">
           Nieuwe wagen TODO:
         </Button>
         <div className={styles.container.left.rides()}>
@@ -32,6 +28,7 @@ export default async function Cars() {
         </div>
         <div className={styles.container.left.rides()}>
           <div className={styles.container.left.rides.left()}>
+            <CarRides />
             <CarRides old />
           </div>
           <Map />
