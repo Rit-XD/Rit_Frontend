@@ -115,12 +115,23 @@
     }
   }
   &-ride {
-    display: flex;
-    align-items: flex-start;
-    padding: 16px;
     border: 1px solid white;
     border-bottom: 1px solid #e5e5e5;
     transition: border 0.3s;
+    padding: 0;
+
+    &-inner {
+      display: flex;
+      flex-direction: row !important;
+      align-items: flex-start;
+      flex-grow: 1;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 5px;
+
+
+    }
 
     &:hover {
       border: 1px solid var(--primary);
@@ -155,10 +166,15 @@
   }
   &-selectedRide {
     display: flex;
+    flex-direction: row !important;
     align-items: flex-start;
     padding: 16px;
     border: 2px solid var(--primary);
     border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+
 
     &-date {
       opacity: 0.5;
