@@ -12,13 +12,13 @@ import React, {useEffect, useState} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {fetchPassengerById} from '../upcoming/Upcoming.server'
 import css from './Rides.module.scss'
+import { set } from 'date-fns'
 
 const styles = fromModule(css)
 
 export const RideInfo: React.FC = () => {
-  const [upcoming, setUpcoming] = useState<{r: Ride; p: Passenger; date: Date}[]>([])
   const [loading, setLoading] = useState(true)
-  const {currentRide, isLoading, handleDeleteRide} = useRides()
+  const {currentRide, isLoading} = useRides()
   const [passengers, setPassengers] = useState<Passenger[]>([])
   const [timestamp, setTimestamp] = useState<Date>(new Date())
   const [showDeleteCheck, setShowDeleteCheck] = useState(false)
@@ -136,7 +136,17 @@ export const DeleteRideCheck: React.FC<{
   id: string
   onClose: () => void
 }> = ({id, onClose}) => {
-  const {handleDeleteRide, currentRide} = useRides()
+  const {handleDeleteRide, currentRide, selectRide, rides} = useRides()
+  const [ upcoming, setUpcoming ] = useState<Ride[]>([])
+
+  useEffect(() => {
+    for (const r of rides) {
+      if (new Date(r.timestamp) > new Date()) {
+        setUpcoming([...upcoming, r])
+      }
+    }
+  }, [rides])
+
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (event.target === document.querySelector('[data-slot="overlay"]')) {
       onClose()
@@ -152,6 +162,7 @@ export const DeleteRideCheck: React.FC<{
             className={deleteStyles.delete()}
             onClick={() => {
               handleDeleteRide(currentRide?.id!)
+              selectRide(upcoming[1].id!)
               onClose()
             }}
           >
