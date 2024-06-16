@@ -31,6 +31,12 @@
     min-width: 350px;
     height: calc(100vh - 355px);
   }
+  &-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
 
   &-info {
     display: flex;
@@ -43,6 +49,26 @@
     border-radius: 5px;
     min-width: 350px;
     height: unset;
+
+    &-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    &-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: bold;
+      padding: 0 16px;
+      margin-bottom: 8px;
+    }
+
+    &-button {
+      color: red;
+      font-weight: bold;
+      padding: 0 16px;
+    }
 
     &-grid {
       display: grid;
@@ -69,12 +95,6 @@
     }
   }
 
-  &-title {
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    padding: 0 16px;
-    margin-bottom: 8px;
-  }
   &-rides {
     display: flex;
     flex-direction: column;
