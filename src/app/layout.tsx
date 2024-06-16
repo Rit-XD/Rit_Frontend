@@ -5,9 +5,7 @@ import {GeistSans} from 'geist/font/sans'
 import {Metadata, Viewport} from 'next'
 import './globals.css'
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : 'http://localhost:3000'
+const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
@@ -16,11 +14,7 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   manifest: '/manifest.json',
   keywords: ['nextjs', 'nextjs13', 'next13', 'pwa', 'next-pwa'],
-  authors: [
-    {name: 'Bram Colleman'},
-    {name: 'Senne Christiaens'},
-    {name: 'Tibo Vermeire'}
-  ],
+  authors: [{name: 'Bram Colleman'}, {name: 'Senne Christiaens'}, {name: 'Tibo Vermeire'}],
 
   icons: [
     {rel: 'apple-touch-icon', url: '/icons/icon-192x192.png'},
@@ -40,7 +34,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
-        <NextUIProvider locale="nl-BE">
+        <NextUIProvider id="content" locale="nl-BE">
           <UserProvider>{children}</UserProvider>
         </NextUIProvider>
       </body>
