@@ -8,7 +8,7 @@
   "prettier.arrowParens": "avoid",
   "prettier.bracketSpacing": false,
   "prettier.endOfLine": "lf",
-  "prettier.printWidth": 80,
+  "prettier.printWidth": 120,
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "prettier.tabWidth": 2,

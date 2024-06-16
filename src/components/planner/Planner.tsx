@@ -1,5 +1,7 @@
 'use client'
 
+import {useCars} from '@/providers/cars/useCars'
+import {useRides} from '@/providers/rides/useRides'
 import {useUser} from '@/providers/user/useUser'
 import {Passenger} from '@/types/passenger.type'
 import {Icon} from '@/ui/Icon'
@@ -16,7 +18,6 @@ import {MapHandler} from '../map/MapHandler'
 import {fetchPassengers} from './FetchPlanner'
 import css from './Planner.module.scss'
 import {postRide} from './PostRide'
-import { useRides } from '@/providers/rides/useRides'
 
 const styles = fromModule(css)
 
@@ -33,22 +34,17 @@ export const Planner: React.FC<{
     wheelchair: boolean
   }[]
 }> = ({initial}) => {
+  const {user} = useUser()
+  const {addRide, rides} = useRides()
+  const {cars} = useCars()
   const [passengers, setPassengers] = useState<typeof initial>()
-  const [selectedPassengers, setSelectedPassengers] = useState<typeof initial>(
-    []
-  )
+  const [selectedPassengers, setSelectedPassengers] = useState<typeof initial>([])
+  const [error, setError] = useState<string | undefined>()
 
   const [destination, setDestination] = useState<string | undefined>()
-  const [result, setResult] = useState<
-    google.maps.DirectionsResult | undefined
-  >()
+  const [result, setResult] = useState<google.maps.DirectionsResult | undefined>()
   const [dateTime, setDateTime] = useState<string>('')
-  useEffect(() => {
-    console.log('result', result)
-  }, [result])
 
-  const {user} = useUser()
-  const { addRide } = useRides()
   //load all possible passengers
   const loadPassengers = async () => {
     if (passengers?.length) return
@@ -69,40 +65,62 @@ export const Planner: React.FC<{
 
   const removeSelectedPassenger = (passengerId: string) => {
     const p: Passenger = passengers!.find(p => p.id === passengerId)!
-    setSelectedPassengers(
-      selectedPassengers.filter(selectedPassenger => selectedPassenger !== p)
-    )
+    setSelectedPassengers(selectedPassengers.filter(selectedPassenger => selectedPassenger !== p))
+  }
+
+  const carPicker = async (timestamp: string, duration: number) => {
+    const startTime = new Date(timestamp)
+    const endTime = new Date(startTime.getTime() + duration + 450 * 2000)
+    const upcomingRides = rides?.filter(ride => new Date(ride.timestamp) > new Date())
+
+    let newAvailableCars = [...cars]
+
+    upcomingRides.map(ride => {
+      if (
+        (startTime > new Date(ride.timestamp) &&
+          startTime < new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000))) ||
+        (endTime > new Date(ride.timestamp) &&
+          endTime < new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000)))
+      ) {
+        newAvailableCars = newAvailableCars.filter(car => car.id !== ride.car)
+      }
+    })
+    console.log(newAvailableCars)
+    return newAvailableCars
   }
 
   //handle submit
   const handlesubmit = async () => {
-    let origin =
-      user!.street + ' ' + user!.number + ', ' + user!.postal + ' ' + user!.city
-    postRide(
-      user!.id,
-      origin,
-      destination!,
-      result?.routes[0].legs[0].distance?.value ?? 0.1,
-      result?.routes[0].legs[0].duration?.value ?? 1,
-      'ea2251ed-98f6-4d9c-bbb3-17c7ea2a71a7',
-      dateTime,
-      selectedPassengers[0]!.id,
-      selectedPassengers[1]?.id
-    ).then(res => {
-      if (res?.status === 201) {
-        addRide(res!.data![0])
-        setSelectedPassengers([])
-        setDestination(undefined)
-        setDateTime('')
-        setSelectedPlace(null)
-      } 
-      
-    })
+    const checkCar = await carPicker(dateTime, result?.routes[0].legs[0].duration?.value!)
+    if (checkCar.length === 0) {
+      setError('Geen auto beschikbaar op het geplande tijdstip. Probeer een ander tijdstip.')
+    } else {
+      setError(undefined)
+      let origin = user!.street + ' ' + user!.number + ', ' + user!.postal + ' ' + user!.city
+      postRide(
+        user!.id,
+        origin,
+        destination!,
+        result?.routes[0].legs[0].distance?.value ?? 0.1,
+        result?.routes[0].legs[0].duration?.value ?? 1,
+        checkCar[0].id,
+        dateTime,
+        selectedPassengers[0]!.id,
+        selectedPassengers[1]?.id
+      ).then(res => {
+        if (res?.status === 201) {
+          addRide(res!.data![0])
+          setSelectedPassengers([])
+          setDestination(undefined)
+          setDateTime('')
+          setSelectedPlace(null)
+        }
+      })
+    }
   }
 
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-  const [selectedPlace, setSelectedPlace] =
-    useState<google.maps.places.PlaceResult | null>(null)
+  const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null)
 
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     setSelectedPlace(place)
@@ -168,11 +186,15 @@ export const Planner: React.FC<{
                 hourCycle={24}
                 hideTimeZone
                 showMonthAndYearPickers
-                defaultValue={now(getLocalTimeZone()).add({hours: 2})}
+                defaultValue={now(getLocalTimeZone()).add({
+                  hours: 2
+                })}
                 onChange={date => {
                   setDateTime(date.toString().split('[')[0])
                 }}
-                minValue={now(getLocalTimeZone()).add({hours: 1})}
+                minValue={now(getLocalTimeZone()).add({
+                  hours: 1
+                })}
                 classNames={{
                   base: styles.base(),
                   selectorIcon: styles.input.field(),
@@ -184,24 +206,14 @@ export const Planner: React.FC<{
           <div className={styles.container.planner.inputs()}>
             <div>
               {selectedPassengers.map((selectedPassenger, index) => (
-                <div
-                  className={styles.container.planner.inputs.passenger()}
-                  key={selectedPassenger.id}
-                >
+                <div className={styles.container.planner.inputs.passenger()} key={selectedPassenger.id}>
                   <p>
                     {selectedPassenger.firstname} {selectedPassenger.lastname}{' '}
                     {selectedPassenger.wheelchair && (
-                      <Icon
-                        className={styles.container.planner.inputs.passenger.icon()}
-                        icon="wheelchair"
-                      />
+                      <Icon className={styles.container.planner.inputs.passenger.icon()} icon="wheelchair" />
                     )}
                   </p>
-                  <div
-                    onClick={() =>
-                      removeSelectedPassenger(selectedPassenger.id)
-                    }
-                  >
+                  <div onClick={() => removeSelectedPassenger(selectedPassenger.id)}>
                     <div />
                   </div>
                 </div>
@@ -211,7 +223,7 @@ export const Planner: React.FC<{
               {result?.routes[0].legs[0].distance?.value && (
                 <>
                   <p className={styles.priceTitle()}>Prijs voor deze rit:</p>
-                  <p>€ {Math.round(result?.routes[0].legs[0].distance?.value / 500 * .45 * 100) / 100}</p>
+                  <p>€ {Math.round((result?.routes[0].legs[0].distance?.value / 500) * 0.45 * 100) / 100}</p>
                 </>
               )}
               {/* <div>
@@ -233,16 +245,20 @@ export const Planner: React.FC<{
                 <label htmlFor="routetype-single">Enkele rit</label>
               </div> */}
             </div>
-            <Button onClick={selectedPassengers.length !== 0 && destination !== undefined && dateTime !== ''? handlesubmit : ()=>{}}>Plaats deze rit</Button>
+            <Button
+              onClick={
+                selectedPassengers.length !== 0 && destination !== undefined && dateTime !== ''
+                  ? handlesubmit
+                  : () => {}
+              }
+            >
+              Plaats deze rit
+            </Button>
           </div>
+          {error && <p style={{textAlign: 'center', color: 'red', fontWeight: 'bold'}}>{error}</p>}
         </div>
         <div className={styles.container.map()}>
-          <Map
-            zoom={15}
-            destination={destination}
-            result={result}
-            setResult={setResult}
-          />
+          <Map zoom={15} destination={destination} result={result} setResult={setResult} />
           <MapHandler place={selectedPlace} />
         </div>
       </div>
