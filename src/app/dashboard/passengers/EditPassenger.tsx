@@ -36,8 +36,8 @@ export const EditPassenger: React.FC<{
   const submit = async (formdata: FormData) => {
     formdata.append('passenger_id', editingPassenger!.id)
     action(formdata)
+    loadPassengers()
     onClose()
-    router.replace('/dashboard/passengers')
   }
 
   //load all possible passengers

@@ -1,10 +1,11 @@
 'use server'
 
+import { fetchUser } from '@/providers/user/fetchUser'
 import { useUser } from '@/providers/user/useUser'
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin'
 
 export const getPassengers = async () => {
-  const {user} = useUser()
+  const user = await fetchUser()
 
   const {data: passengers, error} = await supabaseAdmin
     .from('Passengers')

@@ -23,9 +23,9 @@ export const AddPassenger: React.FC<{
   }
   const submit = async (formdata: FormData) => {
     action(formdata)
-    onClose()
-    router.replace('/dashboard/passengers')
-  }
+    window.location.href = '/dashboard/passengers'
+    }
+
 
   return (
     <div className={styles.overlay()} onMouseDown={handleOverlayClick}  data-slot="overlay">
