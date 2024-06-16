@@ -79,8 +79,10 @@ export const Planner: React.FC<{
       if (
         (startTime > new Date(ride.timestamp) &&
           startTime < new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000))) ||
-        (endTime > new Date(ride.timestamp) &&
-          endTime < new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000)))
+          (endTime > new Date(ride.timestamp) &&
+          endTime < new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000))) ||
+          (startTime < new Date(ride.timestamp) &&
+          endTime > new Date(new Date(ride.timestamp).getTime() + (ride.duration! + 450 * 2000)))
       ) {
         newAvailableCars = newAvailableCars.filter(car => car.id !== ride.car)
       }

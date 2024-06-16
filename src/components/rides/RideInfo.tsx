@@ -80,9 +80,11 @@ export const RideInfo: React.FC = () => {
     <div className={styles.container.info()}>
       <div className={styles.container.info.header()}>
         <h3 className={styles.container.info.title()}>Details van de rit</h3>
-        <button className={styles.container.info.button()} onClick={() => setShowDeleteCheck(true)}>
-          Annuleer rit
-        </button>
+        {new Date(currentRide?.timestamp!) > new Date() && (
+          <button className={styles.container.info.button()} onClick={() => setShowDeleteCheck(true)}>
+            Annuleer rit
+          </button>
+        )}
       </div>
       <div className={styles.container.info.grid()}>
         <div className={styles.container.info.grid.item()}>

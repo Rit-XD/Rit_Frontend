@@ -66,8 +66,14 @@
 
     &-button {
       color: red;
-      font-weight: bold;
       padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &-grid {
