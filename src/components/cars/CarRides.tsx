@@ -125,32 +125,34 @@ export const CarRides: React.FC<{old?: boolean}> = ({old}) => {
 
           return (
             <div
-              className={
-                (currentRide && currentRide.id === u.r.id
-                  ? styles.container.selectedRide()
-                  : styles.container.ride()) || styles.container.ride()
-              }
+              className={ styles.container.ride() }
               key={u.p.id + u.r.id}
               onClick={() => {
                 if (u.r.id) selectRide(u.r.id)
               }}
             >
-              <img
-                src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png"
-                alt="passenger"
-              />
-              <div>
-                <div className={styles.container.ride.group()}>
-                  <p>
-                    {u.p.firstname} {u.p.lastname}
-                  </p>
-                  <p>
-                    {u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km
-                  </p>
+              <div className={
+                (currentRide && currentRide.id === u.r.id
+                  ? styles.container.selectedRide()
+                  : styles.container.ride.inner())
+              }>
+                <img
+                  src="https://caledoniagladiators.com/wp-content/uploads/2023/08/person.png"
+                  alt="passenger"
+                />
+                <div>
+                  <div className={styles.container.ride.group()}>
+                    <p>
+                      {u.p.firstname} {u.p.lastname}
+                    </p>
+                    <p>
+                      {u.r.distance ? (u.r.distance / 1000).toFixed(0) : '0'} km
+                    </p>
+                  </div>
+                  <span className={styles.container.ride.date()}>
+                    {displayDate}
+                  </span>
                 </div>
-                <span className={styles.container.ride.date()}>
-                  {displayDate}
-                </span>
               </div>
             </div>
           )
