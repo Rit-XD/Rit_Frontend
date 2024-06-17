@@ -4,11 +4,11 @@
 
 @import '~stream-chat-react/dist/css/v2/index.css';
 .str-chat {
-  --str-chat__primary-color: #ED6A01;
-  --str-chat__active-primary-color: #ED6A01;
+  --str-chat__primary-color: #ed6a01;
+  --str-chat__active-primary-color: #ed6a01;
   --str-chat__surface-color: #f5f5f5;
   --str-chat__secondary-surface-color: #fafafa;
-  --str-chat__primary-surface-color: #ED6A01;
+  --str-chat__primary-surface-color: #ed6a01;
   --str-chat__primary-surface-color-low-emphasis: #edf7f7;
 }
 .str-chat__avatar-image {
@@ -37,12 +37,11 @@
   cursor: pointer;
   margin: 8px;
   box-shadow: 0px 3px 10px 2px #0000000f;
-
 }
 
 .channel-preview_selected {
   background: #fff;
-  border-color: #ED6A01;
+  border-color: #ed6a01;
   cursor: auto;
 }
 
@@ -67,7 +66,7 @@
 }
 
 .channel-preview_selected .channel-preview__header {
-  color: #ED6A01;
+  color: #ed6a01;
 }
 
 .channel-preview__timestamp {
